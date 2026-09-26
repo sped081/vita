@@ -1,0 +1,119 @@
+<title>Avatars MTL</title>
+<meta name="description" content="Quatre pistes de photo de profil pour une chaîne d'info montréalaise.">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Archivo:wght@600;700;800&family=Spectral:ital@0;1&display=swap">
+<style>
+  :root{
+    color-scheme:light;
+    --paper:#F4F1EA; --surface:#fff; --ink:#16171B; --muted:#5E616B; --line:#E5E0D6;
+    --accent:#E63917; --navy:#1B3A5B; --gold:#C8952A;
+  }
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+    color-scheme:dark;--paper:#0F1116;--surface:#181B22;--ink:#F1EEE7;--muted:#9AA0AB;--line:#282C36;--accent:#FF5A38;--navy:#8FB4DA;
+  }}
+  :root[data-theme="dark"]{color-scheme:dark;--paper:#0F1116;--surface:#181B22;--ink:#F1EEE7;--muted:#9AA0AB;--line:#282C36;--accent:#FF5A38;--navy:#8FB4DA;}
+  *{box-sizing:border-box}html,body{margin:0}
+  body{background:var(--paper);color:var(--ink);font-family:"Spectral",Georgia,serif;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1080px;margin:0 auto;padding:clamp(22px,5vw,54px) clamp(16px,4vw,40px)}
+  .eyebrow{font-family:"Archivo",sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.16em;font-size:.7rem;color:var(--accent)}
+  h1{font-family:"Oswald",sans-serif;font-weight:700;font-size:clamp(2rem,6vw,3.2rem);line-height:1;margin:.4rem 0 .5rem;letter-spacing:-.01em}
+  .sub{color:var(--muted);max-width:60ch;font-size:1.05rem;margin:0}
+  .tip{font-family:"Archivo",sans-serif;font-size:.82rem;color:var(--muted);margin-top:14px;padding:10px 14px;border:1px dashed var(--line);border-radius:10px;display:inline-block}
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:26px;margin-top:34px}
+  @media (max-width:720px){.grid{grid-template-columns:1fr}}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:0 12px 34px rgba(22,23,27,.07)}
+  .card .row{display:flex;align-items:center;gap:20px}
+  .sq{width:150px;height:150px;border-radius:22px;overflow:hidden;flex:0 0 auto;box-shadow:0 6px 18px rgba(0,0,0,.18)}
+  .circ{width:76px;height:76px;border-radius:50%;overflow:hidden;flex:0 0 auto;box-shadow:0 4px 12px rgba(0,0,0,.18)}
+  .meta h3{font-family:"Oswald",sans-serif;font-weight:600;margin:0 0 4px;font-size:1.3rem}
+  .meta p{margin:0;color:var(--muted);font-size:.92rem}
+  .cap{font-family:"Archivo",sans-serif;font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-top:14px}
+  svg{display:block;width:100%;height:100%}
+</style>
+
+<div class="wrap">
+  <div class="eyebrow">Identité visuelle</div>
+  <h1>Quatre pistes d'avatar</h1>
+  <p class="sub">Des logos-avatars pensés pour une chaîne d'info montréalaise : lisibles même en tout petit, en carré (poste) et en rond (photo de profil).</p>
+  <div class="tip">💡 Pour l'utiliser : agrandissez l'écran et faites une <b>capture d'écran</b> du carré qui vous plaît. Dites-moi le nom retenu et j'ajusterai le texte.</div>
+
+  <div class="grid">
+
+    <!-- 1. Wordmark MTL -->
+    <div class="card"><div class="row">
+      <div class="sq"><svg viewBox="0 0 300 300" aria-label="Avatar MTL wordmark">
+        <rect width="300" height="300" fill="#12233b"/>
+        <rect x="0" y="0" width="300" height="10" fill="#00209F"/>
+        <rect x="0" y="290" width="300" height="10" fill="#E63917"/>
+        <text x="150" y="150" text-anchor="middle" font-family="Oswald,sans-serif" font-weight="700" font-size="118" fill="#F4F1EA" letter-spacing="2">MTL</text>
+        <circle cx="150" cy="150" r="8" fill="#E63917" transform="translate(96,58)"/>
+        <text x="150" y="205" text-anchor="middle" font-family="Archivo,sans-serif" font-weight="700" font-size="20" fill="#E8A33D" letter-spacing="9">MONTRÉAL</text>
+      </svg></div>
+      <div class="circ"><svg viewBox="0 0 300 300">
+        <rect width="300" height="300" fill="#12233b"/>
+        <text x="150" y="188" text-anchor="middle" font-family="Oswald,sans-serif" font-weight="700" font-size="128" fill="#F4F1EA">MTL</text>
+      </svg></div>
+    </div>
+      <div class="meta cap">Piste 01 — Wordmark</div>
+      <div class="meta"><h3>Le direct</h3><p>Typo info assumée, bandes bleu-rouge du drapeau haïtien clin d'œil optionnel — ici en couleurs MTL. Ultra lisible en miniature.</p></div>
+    </div>
+
+    <!-- 2. Mont-Royal -->
+    <div class="card"><div class="row">
+      <div class="sq"><svg viewBox="0 0 300 300" aria-label="Avatar Mont-Royal">
+        <defs><linearGradient id="g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1B3A5B"/><stop offset="1" stop-color="#0d1c2e"/></linearGradient></defs>
+        <rect width="300" height="300" fill="url(#g2)"/>
+        <polygon points="150,70 250,240 50,240" fill="#1E5E3A"/>
+        <polygon points="150,70 205,240 150,240" fill="#26744a"/>
+        <g stroke="#E8A33D" stroke-width="7" stroke-linecap="round"><line x1="150" y1="46" x2="150" y2="96"/><line x1="132" y1="64" x2="168" y2="64"/></g>
+        <text x="150" y="278" text-anchor="middle" font-family="Oswald,sans-serif" font-weight="700" font-size="40" fill="#F4F1EA" letter-spacing="6">MTL</text>
+      </svg></div>
+      <div class="circ"><svg viewBox="0 0 300 300">
+        <rect width="300" height="300" fill="url(#g2)"/>
+        <polygon points="150,95 245,235 55,235" fill="#1E5E3A"/>
+        <g stroke="#E8A33D" stroke-width="9" stroke-linecap="round"><line x1="150" y1="66" x2="150" y2="120"/><line x1="130" y1="86" x2="170" y2="86"/></g>
+      </svg></div>
+    </div>
+      <div class="meta cap">Piste 02 — Icône Mont-Royal</div>
+      <div class="meta"><h3>La montagne</h3><p>La croix du Mont-Royal au-dessus de la montagne : symbole immédiat de Montréal, reconnaissable sans même lire.</p></div>
+    </div>
+
+    <!-- 3. 514 -->
+    <div class="card"><div class="row">
+      <div class="sq"><svg viewBox="0 0 300 300" aria-label="Avatar 514">
+        <rect width="300" height="300" fill="#E63917"/>
+        <text x="150" y="172" text-anchor="middle" font-family="Archivo,sans-serif" font-weight="800" font-size="120" fill="#F4F1EA" letter-spacing="-3">514</text>
+        <rect x="70" y="196" width="160" height="6" fill="#12233b"/>
+        <text x="150" y="232" text-anchor="middle" font-family="Archivo,sans-serif" font-weight="700" font-size="22" fill="#12233b" letter-spacing="8">MONTRÉAL</text>
+      </svg></div>
+      <div class="circ"><svg viewBox="0 0 300 300">
+        <rect width="300" height="300" fill="#E63917"/>
+        <text x="150" y="192" text-anchor="middle" font-family="Archivo,sans-serif" font-weight="800" font-size="130" fill="#F4F1EA" letter-spacing="-4">514</text>
+      </svg></div>
+    </div>
+      <div class="meta cap">Piste 03 — L'indicatif</div>
+      <div class="meta"><h3>Le 514</h3><p>Fort, coloré, impossible à confondre. Parfait si vous partez sur le nom « Le 514 ». Se démarque dans un feed.</p></div>
+    </div>
+
+    <!-- 4. Pin + pulse -->
+    <div class="card"><div class="row">
+      <div class="sq"><svg viewBox="0 0 300 300" aria-label="Avatar pin pouls">
+        <defs><linearGradient id="g4" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#16171B"/><stop offset="1" stop-color="#25272f"/></linearGradient></defs>
+        <rect width="300" height="300" fill="url(#g4)"/>
+        <path d="M150 62c-38 0-68 30-68 68 0 48 68 108 68 108s68-60 68-108c0-38-30-68-68-68z" fill="#E63917"/>
+        <circle cx="150" cy="130" r="30" fill="#12233b"/>
+        <polyline points="122,130 138,130 146,112 156,150 164,130 178,130" fill="none" stroke="#E8A33D" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="150" y="288" text-anchor="middle" font-family="Oswald,sans-serif" font-weight="600" font-size="30" fill="#F4F1EA" letter-spacing="7">MTL</text>
+      </svg></div>
+      <div class="circ"><svg viewBox="0 0 300 300">
+        <rect width="300" height="300" fill="url(#g4)"/>
+        <path d="M150 70c-40 0-72 32-72 72 0 50 72 114 72 114s72-64 72-114c0-40-32-72-72-72z" fill="#E63917"/>
+        <polyline points="112,150 134,150 144,124 158,182 170,150 190,150" fill="none" stroke="#F4F1EA" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg></div>
+    </div>
+      <div class="meta cap">Piste 04 — Pin + pouls</div>
+      <div class="meta"><h3>Le radar</h3><p>Un repère géo + une ligne de « pouls » : on capte ce qui bat dans la ville. Idéal pour « Radar MTL » ou « Pouls MTL ».</p></div>
+    </div>
+
+  </div>
+</div>
