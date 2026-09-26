@@ -1,0 +1,289 @@
+[
+  {
+    "id": "bagels",
+    "category": "bouffe",
+    "label": "Bouffe",
+    "illustration": "bagel",
+    "readingMinutes": 4,
+    "title": "St-Viateur ou Fairmount : le débat qui divise Montréal",
+    "summary": "Deux comptoirs du Mile End, deux clans, un seul bagel à la montréalaise.",
+    "body": [
+      {
+        "type": "paragraph",
+        "text": "Demandez à un Montréalais où acheter ses bagels, et préparez-vous à une réponse passionnée. Depuis des décennies, deux adresses du Mile End se disputent le titre : Fairmount et St-Viateur."
+      },
+      {
+        "type": "heading",
+        "text": "Deux institutions"
+      },
+      {
+        "type": "paragraph",
+        "text": "Fairmount Bagel est né en 1919. St-Viateur Bagel a suivi en 1957. Les deux boutiques sont à quelques rues l'une de l'autre, et elles sont ouvertes jour et nuit : on peut y acheter des bagels chauds à 3 h du matin."
+      },
+      {
+        "type": "heading",
+        "text": "Qu'est-ce qu'un bagel montréalais ?"
+      },
+      {
+        "type": "paragraph",
+        "text": "Il n'a rien à voir avec son cousin new-yorkais. Plus petit, plus dense et un peu sucré, il est roulé à la main, bouilli dans de l'eau miellée, puis cuit au four à bois. Les deux classiques : graines de sésame ou graines de pavot."
+      },
+      {
+        "type": "heading",
+        "text": "Alors, lequel ?"
+      },
+      {
+        "type": "paragraph",
+        "text": "Certains jurent par le moelleux de l'un, d'autres par le croustillant de l'autre. La seule vraie façon de trancher : goûter les deux le même jour. Et nous dire votre camp."
+      }
+    ]
+  },
+  {
+    "id": "bixi-metro",
+    "category": "transport",
+    "label": "Transport",
+    "illustration": "metro",
+    "readingMinutes": 3,
+    "title": "Bixi ou métro : comment traverser la ville",
+    "summary": "Deux réseaux, deux philosophies. Petit guide pour choisir.",
+    "body": [
+      {
+        "type": "paragraph",
+        "text": "Le métro de Montréal a ouvert ses portes en 1966. Ses quatre lignes, la verte, l'orange, la jaune et la bleue, font partie de la vie de tous les jours. Le Bixi, lui, est arrivé en 2009 et est devenu un symbole de l'été montréalais."
+      },
+      {
+        "type": "heading",
+        "text": "Quand le métro gagne"
+      },
+      {
+        "type": "paragraph",
+        "text": "Pour les longues distances, par mauvais temps et en hiver, le métro reste imbattable : il est à l'abri et ses rames passent souvent aux heures de pointe."
+      },
+      {
+        "type": "heading",
+        "text": "Quand le Bixi gagne"
+      },
+      {
+        "type": "paragraph",
+        "text": "Pour les trajets courts, surtout quand il faut changer de ligne, le vélo est souvent plus direct. Et on profite de la ville en chemin."
+      },
+      {
+        "type": "heading",
+        "text": "La vraie course"
+      },
+      {
+        "type": "paragraph",
+        "text": "On a décidé de faire le test en vrai : un trajet, deux amis, un Bixi et un métro, départ en même temps. Le résultat arrive en vidéo sur Instagram."
+      }
+    ]
+  },
+  {
+    "id": "cinq-affaires",
+    "category": "culture",
+    "label": "Culture",
+    "illustration": "cone",
+    "readingMinutes": 3,
+    "title": "5 affaires que seuls les Montréalais comprennent",
+    "summary": "Des cônes orange au « Bonjour-Hi », petit lexique de la vie sur l'île.",
+    "body": [
+      {
+        "type": "heading",
+        "text": "1. Les cônes orange"
+      },
+      {
+        "type": "paragraph",
+        "text": "Ils font tellement partie du paysage qu'on ne les remarque même plus. Chaque été, les chantiers transforment la ville en parcours à obstacles."
+      },
+      {
+        "type": "heading",
+        "text": "2. Le 1er juillet"
+      },
+      {
+        "type": "paragraph",
+        "text": "Le jour du déménagement : des milliers de ménages changent d'adresse en même temps. Les rues se remplissent de camions et de meubles sur les trottoirs."
+      },
+      {
+        "type": "heading",
+        "text": "3. Les escaliers extérieurs"
+      },
+      {
+        "type": "paragraph",
+        "text": "En colimaçon, en fer forgé, glacés l'hiver. Ils sont l'image même des quartiers comme le Plateau."
+      },
+      {
+        "type": "heading",
+        "text": "4. « Bonjour-Hi »"
+      },
+      {
+        "type": "paragraph",
+        "text": "La salutation d'une ville bilingue : on vous laisse choisir la langue de la conversation."
+      },
+      {
+        "type": "heading",
+        "text": "5. Le Bixi"
+      },
+      {
+        "type": "paragraph",
+        "text": "Dès qu'il fait beau, la ville entière se met à pédaler, et trouver un vélo libre devient un défi."
+      }
+    ]
+  },
+  {
+    "id": "premier-juillet",
+    "category": "culture",
+    "label": "Vie à MTL",
+    "illustration": "boxes",
+    "readingMinutes": 3,
+    "title": "Le 1er juillet, jour du déménagement",
+    "summary": "Pourquoi toute la ville semble changer d'adresse le même jour.",
+    "body": [
+      {
+        "type": "paragraph",
+        "text": "Au Québec, la plupart des baux résidentiels se terminent le 30 juin. Résultat : le 1er juillet, des dizaines de milliers de personnes déménagent en même temps, et Montréal en est l'épicentre."
+      },
+      {
+        "type": "heading",
+        "text": "Une tradition qui vient de loin"
+      },
+      {
+        "type": "paragraph",
+        "text": "Pendant longtemps, le jour du déménagement était le 1er mai. Il a été déplacé au 1er juillet dans les années 1970, pour éviter de déménager pendant l'année scolaire."
+      },
+      {
+        "type": "heading",
+        "text": "Survivre au 1er juillet"
+      },
+      {
+        "type": "list",
+        "items": [
+          "Réservez votre camion des mois à l'avance.",
+          "Récupérez des boîtes dès le mois de mai.",
+          "Prévoyez de l'eau : il fait souvent très chaud.",
+          "Soyez patients avec les voisins, tout le monde est dans le même bateau."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "quartiers",
+    "category": "quartiers",
+    "label": "Quartiers",
+    "illustration": "houses",
+    "readingMinutes": 4,
+    "title": "Le meilleur quartier de Montréal ?",
+    "summary": "Petit tour de sept quartiers qui ont chacun leurs fidèles.",
+    "body": [
+      {
+        "type": "heading",
+        "text": "Le Plateau"
+      },
+      {
+        "type": "paragraph",
+        "text": "Maisons colorées, escaliers extérieurs et terrasses : la carte postale de Montréal."
+      },
+      {
+        "type": "heading",
+        "text": "Le Mile End"
+      },
+      {
+        "type": "paragraph",
+        "text": "Les bagels, les cafés et les artistes. C'est ici que se joue le grand débat St-Viateur contre Fairmount."
+      },
+      {
+        "type": "heading",
+        "text": "Verdun"
+      },
+      {
+        "type": "paragraph",
+        "text": "Le bord du fleuve et la rue Wellington, qui s'anime de plus en plus."
+      },
+      {
+        "type": "heading",
+        "text": "Villeray"
+      },
+      {
+        "type": "paragraph",
+        "text": "Le parc Jarry et, tout près, le marché Jean-Talon."
+      },
+      {
+        "type": "heading",
+        "text": "Hochelaga"
+      },
+      {
+        "type": "paragraph",
+        "text": "Un quartier ouvrier en pleine transformation, avec la Promenade Ontario comme artère principale."
+      },
+      {
+        "type": "heading",
+        "text": "Rosemont"
+      },
+      {
+        "type": "paragraph",
+        "text": "Des rues résidentielles tranquilles et la rue Masson pour les commerces de proximité."
+      },
+      {
+        "type": "heading",
+        "text": "Saint-Henri"
+      },
+      {
+        "type": "paragraph",
+        "text": "Le canal de Lachine et le marché Atwater, parfaits pour une journée à vélo."
+      },
+      {
+        "type": "paragraph",
+        "text": "Et vous, c'est lequel ? Votez sur Instagram."
+      }
+    ]
+  },
+  {
+    "id": "histoire",
+    "category": "histoire",
+    "label": "Histoire",
+    "illustration": "cross",
+    "readingMinutes": 3,
+    "title": "Montréal en 5 dates",
+    "summary": "De Hochelaga à l'Expo 67, les moments qui ont fait la ville.",
+    "body": [
+      {
+        "type": "heading",
+        "text": "1535 · Hochelaga"
+      },
+      {
+        "type": "paragraph",
+        "text": "Jacques Cartier visite le village iroquoien de Hochelaga, sur l'île, et nomme la montagne « mont Royal »."
+      },
+      {
+        "type": "heading",
+        "text": "1642 · Ville-Marie"
+      },
+      {
+        "type": "paragraph",
+        "text": "Paul de Chomedey de Maisonneuve et Jeanne Mance fondent Ville-Marie, qui deviendra Montréal."
+      },
+      {
+        "type": "heading",
+        "text": "1760 · La capitulation"
+      },
+      {
+        "type": "paragraph",
+        "text": "Montréal capitule devant l'armée britannique : la Nouvelle-France passe sous contrôle britannique."
+      },
+      {
+        "type": "heading",
+        "text": "1967 · Expo 67"
+      },
+      {
+        "type": "paragraph",
+        "text": "L'Exposition universelle attire des millions de visiteurs et fait découvrir Montréal au monde entier."
+      },
+      {
+        "type": "heading",
+        "text": "1976 · Les Jeux olympiques"
+      },
+      {
+        "type": "paragraph",
+        "text": "Montréal accueille les Jeux olympiques d'été, et le Stade olympique devient l'un des symboles de la ville."
+      }
+    ]
+  }
+]

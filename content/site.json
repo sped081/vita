@@ -1,0 +1,18 @@
+{
+  "name": "Quoi d'neuf MTL",
+  "shortName": "QDN",
+  "description": "Tout ce qui se passe sur l'île : actu, tendances, sorties et bouffe à Montréal.",
+  "url": "https://sped081.github.io/vita",
+  "instagram": "https://www.instagram.com/quoidneufmtl/",
+  "handle": "@quoidneufmtl",
+  "city": "Montréal, Québec",
+  "language": "fr-CA",
+  "categories": [
+    { "id": "tout", "label": "Tout" },
+    { "id": "bouffe", "label": "Bouffe" },
+    { "id": "transport", "label": "Transport" },
+    { "id": "quartiers", "label": "Quartiers" },
+    { "id": "culture", "label": "Culture" },
+    { "id": "histoire", "label": "Histoire" }
+  ]
+}

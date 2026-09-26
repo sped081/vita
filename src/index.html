@@ -1,0 +1,206 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{{site.name}}</title>
+<meta name="description" content="{{site.description}}">
+<link rel="canonical" href="{{site.url}}/">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#12233b">
+<meta property="og:type" content="website">
+<meta property="og:title" content="{{site.name}}">
+<meta property="og:description" content="{{site.description}}">
+<meta property="og:image" content="{{site.url}}/img/og.png">
+<meta property="og:url" content="{{site.url}}/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Archivo:wght@500;600;700;800&family=Spectral:ital,wght@0,400;0,500;1,400&display=swap">
+<style>
+{{css}}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="logo" viewBox="0 0 224 166"><path d="M24 0h176a24 24 0 0 1 24 24v86a24 24 0 0 1-24 24h-96l-36 32v-32H24a24 24 0 0 1-24-24V24A24 24 0 0 1 24 0z" fill="#E63917"/><text x="112" y="98" text-anchor="middle" font-family="Oswald,Impact,sans-serif" font-weight="700" font-size="92" fill="#F4F1EA">QDN</text></symbol>
+    <symbol id="igicon" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.3" cy="6.7" r="1.2" fill="currentColor"/></symbol>
+  </defs>
+</svg>
+
+<header class="top"><div class="wrap">
+  <a class="brand" href="#" aria-label="Quoi d'neuf MTL, accueil"><svg><use href="#logo"/></svg><span>Quoi d'neuf <em>MTL</em></span></a>
+  <nav class="menu" id="menu" aria-label="Rubriques"></nav>
+  <div class="right">
+    <button class="tgl" id="theme" aria-label="Changer de thème">◐</button>
+    <a class="ig" href="https://www.instagram.com/quoidneufmtl/" target="_blank" rel="noopener"><svg><use href="#igicon"/></svg><span class="t">Suivre sur Instagram</span></a>
+  </div>
+</div></header>
+
+<section class="hero">
+  <svg class="stars" viewBox="0 0 1200 500" preserveAspectRatio="xMidYMin slice" aria-hidden="true">
+    <g fill="#fff"><circle cx="90" cy="60" r="1.4"/><circle cx="220" cy="130" r="1"/><circle cx="340" cy="40" r="1.2"/><circle cx="520" cy="90" r=".9"/><circle cx="640" cy="30" r="1.3"/><circle cx="760" cy="120" r="1"/><circle cx="880" cy="50" r="1.5"/><circle cx="1010" cy="100" r="1"/><circle cx="1120" cy="40" r="1.2"/><circle cx="430" cy="180" r=".8"/><circle cx="950" cy="190" r=".9"/><circle cx="150" cy="220" r=".8"/><circle cx="700" cy="210" r="1.1"/></g>
+  </svg>
+  <span class="clockchip" id="clock">Montréal</span>
+  <div class="wrap">
+    <div class="eyebrow fade"><i></i> En direct de Montréal</div>
+    <h1 class="fade d1">Quoi d'neuf, <em>Montréal</em> ?</h1>
+    <p class="fade d2">Tout ce qui se passe sur l'île : l'actu, les tendances, les sorties pis la bouffe. Une vidéo par jour sur Instagram, et les détails ici.</p>
+    <div class="cta fade d3">
+      <a class="btn red" href="https://www.instagram.com/quoidneufmtl/" target="_blank" rel="noopener"><svg width="16" height="16"><use href="#igicon"/></svg> @quoidneufmtl</a>
+      <a class="btn ghost" href="#lire">Lire les articles ↓</a>
+    </div>
+  </div>
+  <svg class="skyline" viewBox="0 0 1440 260" preserveAspectRatio="none" aria-hidden="true">
+    <!-- far hills / mont royal with cross -->
+    <path d="M0 200 C 120 140 220 110 330 120 C 400 126 440 150 520 168 L 0 168 Z" fill="#0B1528" opacity=".55"/>
+    <g fill="#0B1528">
+      <!-- Mont-Royal -->
+      <path d="M0 260 L0 190 C 80 150 160 128 250 132 C 330 136 380 165 440 190 L 440 260 Z"/>
+      <!-- cross -->
+      <rect x="246" y="86" width="6" height="52"/><rect x="232" y="100" width="34" height="6"/>
+      <!-- downtown -->
+      <rect x="470" y="150" width="40" height="110"/>
+      <rect x="520" y="120" width="30" height="140"/>
+      <path d="M560 260 V110 h40 v150z M566 110 l14 -30 h0 l14 30z"/>
+      <!-- Place Ville Marie cruciform -->
+      <path d="M620 260 V70 h18 v-14 h22 v14 h18 v190z"/>
+      <rect x="690" y="130" width="34" height="130"/>
+      <!-- 1000 de La Gauchetière pointed roof -->
+      <path d="M740 260 V95 l28 -40 l28 40 v165z"/>
+      <rect x="810" y="140" width="26" height="120"/>
+      <rect x="846" y="160" width="44" height="100"/>
+      <!-- Tour de la Bourse -->
+      <rect x="905" y="90" width="34" height="170"/>
+      <rect x="950" y="150" width="28" height="110"/>
+      <!-- Jacques-Cartier bridge -->
+      <path d="M1000 260 V200 h300 v60z" opacity="0"/>
+      <path d="M1000 205 h340" stroke="#0B1528" stroke-width="6" fill="none"/>
+      <path d="M1040 205 c 40 -70 90 -70 130 0 c 40 -70 90 -70 130 0" stroke="#0B1528" stroke-width="7" fill="none"/>
+      <rect x="1036" y="180" width="8" height="80"/><rect x="1166" y="176" width="8" height="84"/><rect x="1296" y="180" width="8" height="80"/>
+      <path d="M1000 260 V208 h340 V260z"/>
+      <!-- Olympic stadium tower -->
+      <path d="M1360 260 c 0 -60 10 -110 60 -160 l 20 8 c -40 50 -50 100 -50 152z"/>
+      <path d="M1290 260 c 20 -30 80 -40 150 -20 v20z"/>
+      <!-- ground -->
+      <rect x="0" y="236" width="1440" height="24"/>
+    </g>
+    <!-- window lights -->
+    <g fill="#E8A33D" opacity=".75">
+      <rect x="628" y="120" width="4" height="6"/><rect x="646" y="140" width="4" height="6"/><rect x="636" y="170" width="4" height="6"/>
+      <rect x="758" y="130" width="4" height="6"/><rect x="772" y="160" width="4" height="6"/><rect x="915" y="120" width="4" height="6"/><rect x="928" y="150" width="4" height="6"/><rect x="920" y="200" width="4" height="6"/>
+      <rect x="530" y="150" width="4" height="6"/><rect x="480" y="180" width="4" height="6"/><rect x="700" y="170" width="4" height="6"/>
+    </g>
+    <circle cx="249" cy="88" r="9" fill="#E8A33D" opacity=".35"/>
+  </svg>
+</section>
+
+<main class="wrap">
+  <section class="sec" id="lire">
+    <div class="sechd"><div><span class="kick">À la une</span><h2>Sur l'île cette semaine</h2></div><a class="more" href="https://www.instagram.com/quoidneufmtl/" target="_blank" rel="noopener">Toutes les vidéos →</a></div>
+    <div class="lead-grid"><div id="featured"></div><div class="list" id="list"></div></div>
+  </section>
+
+  <section class="sec">
+    <div class="sechd"><div><span class="kick">On vote</span><h2>Les grands débats</h2><p>Trois questions qui divisent la ville. Votez sur Instagram.</p></div></div>
+    <div class="debates">
+      <a class="deb" href="https://www.instagram.com/quoidneufmtl/" target="_blank" rel="noopener"><span class="kick">Bouffe</span><h3>St-Viateur <em>vs</em> Fairmount</h3><p>Le meilleur bagel de Montréal, c'est lequel ?</p><span class="lnk">Voter →</span></a>
+      <a class="deb" href="https://www.instagram.com/quoidneufmtl/" target="_blank" rel="noopener"><span class="kick">Transport</span><h3>Bixi <em>ou</em> métro</h3><p>Pour traverser la ville, t'es team quoi ?</p><span class="lnk">Voter →</span></a>
+      <a class="deb" href="https://www.instagram.com/quoidneufmtl/" target="_blank" rel="noopener"><span class="kick">Quartiers</span><h3>Le meilleur <em>quartier</em> ?</h3><p>Plateau, Verdun, Villeray… ou un autre ?</p><span class="lnk">Voter →</span></a>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sechd"><div><span class="kick">Instagram</span><h2>Sur @quoidneufmtl</h2></div><a class="more" href="https://www.instagram.com/quoidneufmtl/" target="_blank" rel="noopener">Voir le compte →</a></div>
+    <div class="igg">
+      <a href="https://www.instagram.com/quoidneufmtl/" target="_blank" rel="noopener"><img src="img/01-bienvenue.png" alt="Publication : Quoi d'neuf, Montréal ?"></a>
+      <a href="https://www.instagram.com/quoidneufmtl/" target="_blank" rel="noopener"><img src="img/02-bagels.png" alt="Publication : St-Viateur vs Fairmount"></a>
+      <a href="https://www.instagram.com/quoidneufmtl/" target="_blank" rel="noopener"><img src="img/03-bixi-metro.png" alt="Publication : Bixi ou métro"></a>
+      <a href="https://www.instagram.com/quoidneufmtl/" target="_blank" rel="noopener"><img src="img/carrousel-01.png" alt="Publication : 5 affaires que seuls les Montréalais comprennent"></a>
+      <a href="https://www.instagram.com/quoidneufmtl/" target="_blank" rel="noopener"><img src="img/quartiers.png" alt="Publication : Le meilleur quartier de MTL ?"></a>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sechd"><div><span class="kick">Pratique</span><h2>Avant de sortir</h2></div></div>
+    <div class="util">
+      <div class="ubox"><h3>L'état du métro</h3>
+        <div class="lines"><span class="ln"><i style="background:#00843D"></i>Verte</span><span class="ln"><i style="background:#EF7C00"></i>Orange</span><span class="ln"><i style="background:#F2C500"></i>Jaune</span><span class="ln"><i style="background:#0072CE"></i>Bleue</span></div>
+        <p>Les interruptions de service en temps réel, directement chez la STM.</p>
+        <a class="btn soft" href="https://www.stm.info/fr" target="_blank" rel="noopener">stm.info →</a></div>
+      <div class="ubox"><h3>La météo à Montréal</h3><p>Les prévisions officielles d'Environnement Canada, parce qu'à Montréal, ça change vite.</p>
+        <a class="btn soft" href="https://meteo.gc.ca/" target="_blank" rel="noopener">meteo.gc.ca →</a></div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div><h2>Une vidéo par jour.</h2><p>Les tendances de Montréal en 60 secondes, sur Instagram.</p></div>
+    <a class="btn" href="https://www.instagram.com/quoidneufmtl/" target="_blank" rel="noopener"><svg width="16" height="16"><use href="#igicon"/></svg> Suivre @quoidneufmtl</a>
+  </section>
+</main>
+
+<footer><div class="wrap">
+  <div><div class="fb"><svg><use href="#logo"/></svg>Quoi d'neuf <span style="color:var(--red)">&nbsp;MTL</span></div><p style="font-family:var(--body);margin:12px 0 0;max-width:38ch">Un média indépendant sur tout ce qui se passe sur l'île de Montréal.</p></div>
+  <div><h4>Rubriques</h4><ul id="fcats"></ul></div>
+  <div><h4>Suivre</h4><ul><li><a href="https://www.instagram.com/quoidneufmtl/" target="_blank" rel="noopener">Instagram · @quoidneufmtl</a></li></ul></div>
+  <div class="copy">© Quoi d'neuf MTL · Montréal, Québec</div>
+</div></footer>
+
+<div id="reader" hidden>
+  <div class="bar"><div class="wrap"><button class="back" id="back">← Retour</button><span class="sh">Quoi d'neuf MTL</span></div></div>
+  <div id="rart"></div>
+  <article class="article" id="rbody"></article>
+</div>
+
+<script>
+(function(){
+  var IG='https://www.instagram.com/quoidneufmtl/';
+  var CATS=[['tout','Tout'],['bouffe','Bouffe'],['transport','Transport'],['quartiers','Quartiers'],['culture','Culture'],['histoire','Histoire']];
+
+  // ---- vector illustrations (400x250) ----
+  /*__DATA__*/
+
+
+  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;');}
+  function art(a,tag){return '<div class="art">'+ART[a.art]+(tag?'<span class="tag">'+a.label+'</span>':'')+'</div>';}
+
+  var f=A[0];
+  document.getElementById('featured').innerHTML='<a class="feature" href="articles/'+f.id+'.html" data-open="'+f.id+'">'+art(f,true)+'<div class="txt"><span class="kick">À la une · '+f.label+'</span><h3>'+esc(f.t)+'</h3><p>'+esc(f.d)+'</p></div></a>';
+  document.getElementById('list').innerHTML=A.slice(1).map(function(a){
+    return '<a class="row" href="articles/'+a.id+'.html" data-cat="'+a.cat+'" data-open="'+a.id+'">'+art(a)+'<div><span class="kick">'+a.label+'</span><h3>'+esc(a.t)+'</h3><span class="rt">Lecture '+a.min+' min</span></div></button>';
+  }).join('');
+
+  var menu=document.getElementById('menu');
+  menu.innerHTML=CATS.map(function(c,i){return '<button data-cat="'+c[0]+'" aria-current="'+(i===0)+'">'+c[1]+'</button>';}).join('');
+  document.getElementById('fcats').innerHTML=CATS.slice(1).map(function(c){return '<li><a href="#lire" data-cat="'+c[0]+'">'+c[1]+'</a></li>';}).join('');
+  function filter(c){
+    menu.querySelectorAll('button').forEach(function(x){x.setAttribute('aria-current',x.dataset.cat===c);});
+    var rows=document.querySelectorAll('#list .row');rows.forEach(function(k){k.hidden=(c!=='tout'&&k.dataset.cat!==c);});
+    var feat=document.querySelector('.feature');feat.hidden=(c!=='tout'&&f.cat!==c);
+    document.getElementById('lire').scrollIntoView({behavior:'smooth',block:'start'});
+  }
+  document.addEventListener('click',function(e){var b=e.target.closest('[data-cat]');if(b&&!b.classList.contains('row')){e.preventDefault();filter(b.dataset.cat);}});
+
+  var reader=document.getElementById('reader');
+  function render(a){
+    document.getElementById('rart').innerHTML=art(a);
+    var body=a.b.map(function(x){
+      if(x[0]==='ul')return '<ul>'+x[1].map(function(li){return '<li>'+esc(li)+'</li>';}).join('')+'</ul>';
+      return '<'+x[0]+'>'+esc(x[1])+'</'+x[0]+'>';}).join('');
+    document.getElementById('rbody').innerHTML='<span class="kick">'+a.label+'</span><h1>'+esc(a.t)+'</h1><p class="dek">'+esc(a.d)+'</p><div class="by"><svg><use href="#logo"/></svg>Par Quoi d\'neuf MTL · Lecture '+a.min+' min</div><div class="body">'+body+'</div>'
+      +'<div class="cta"><b>Tu veux la version vidéo ?</b><span>Une vidéo par jour sur Instagram.</span><a class="btn" href="'+IG+'" target="_blank" rel="noopener">Suivre @quoidneufmtl</a></div>';
+    reader.hidden=false;reader.scrollTop=0;document.body.style.overflow='hidden';
+  }
+  function route(){var id=(location.hash||'').slice(1);var a=A.filter(function(x){return x.id===id;})[0];
+    if(a)render(a);else{reader.hidden=true;document.body.style.overflow='';}}
+  document.addEventListener('click',function(e){var o=e.target.closest('[data-open]');if(o&&!e.metaKey&&!e.ctrlKey){e.preventDefault();location.hash=o.dataset.open;}});
+  document.getElementById('back').addEventListener('click',function(){if(history.length>1&&location.hash){history.back();}else{location.hash='';}});
+  addEventListener('hashchange',route);route();
+  addEventListener('keydown',function(e){if(e.key==='Escape'&&!reader.hidden)document.getElementById('back').click();});
+
+  function tick(){try{var n=new Date();document.getElementById('clock').textContent=n.toLocaleDateString('fr-CA',{timeZone:'America/Toronto',weekday:'long',day:'numeric',month:'long'})+' · '+n.toLocaleTimeString('fr-CA',{timeZone:'America/Toronto',hour:'2-digit',minute:'2-digit'});}catch(e){}}
+  tick();setInterval(tick,30000);
+
+  var root=document.documentElement;try{var s=localStorage.getItem('qdn-theme');if(s)root.setAttribute('data-theme',s);}catch(e){}
+  document.getElementById('theme').addEventListener('click',function(){
+    var cur=root.getAttribute('data-theme');var dark=cur?cur==='dark':matchMedia('(prefers-color-scheme:dark)').matches;
+    var next=dark?'light':'dark';root.setAttribute('data-theme',next);try{localStorage.setItem('qdn-theme',next);}catch(e){}
+  });
+})();
+</script>
