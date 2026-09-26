@@ -1,0 +1,32 @@
+name: Roblox (Luau)
+
+on:
+  push:
+    paths: ["roblox/**", ".github/workflows/luau.yml"]
+  pull_request:
+    paths: ["roblox/**", ".github/workflows/luau.yml"]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: roblox
+    steps:
+      - uses: actions/checkout@v4
+      - name: Installer Rojo et luau-lsp
+        run: |
+          curl -sSL -o rojo.zip https://github.com/rojo-rbx/rojo/releases/download/v7.4.4/rojo-7.4.4-linux-x86_64.zip
+          curl -sSL -o lsp.zip https://github.com/JohnnyMorganz/luau-lsp/releases/download/1.70.0/luau-lsp-linux-x86_64.zip
+          curl -sSL -o globalTypes.d.luau https://raw.githubusercontent.com/JohnnyMorganz/luau-lsp/1.70.0/scripts/globalTypes.None.d.luau
+          unzip -o -q rojo.zip && unzip -o -q lsp.zip && chmod +x rojo luau-lsp
+      - name: Construire le jeu
+        run: ./rojo build default.project.json -o IleDesBandits.rbxlx
+      - name: Vérifier les types (mode strict)
+        run: |
+          ./rojo sourcemap default.project.json -o sourcemap.json
+          ./luau-lsp analyze --definitions=globalTypes.d.luau --sourcemap=sourcemap.json --formatter=plain src
+      - uses: actions/upload-artifact@v4
+        with:
+          name: IleDesBandits
+          path: roblox/IleDesBandits.rbxlx

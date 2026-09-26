@@ -1,0 +1,202 @@
+{
+  "name": "IleDesBandits",
+  "tree": {
+    "$className": "DataModel",
+    "ReplicatedStorage": {
+      "Shared": {
+        "$path": "src/shared"
+      }
+    },
+    "ServerScriptService": {
+      "Server": {
+        "$path": "src/server"
+      }
+    },
+    "StarterPlayer": {
+      "StarterPlayerScripts": {
+        "Client": {
+          "$path": "src/client"
+        }
+      }
+    },
+    "Workspace": {
+      "Sable": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Shape": "Cylinder",
+          "Size": [
+            4,
+            140,
+            140
+          ],
+          "Material": "Sand",
+          "Color": [
+            0.91,
+            0.83,
+            0.64
+          ],
+          "CFrame": {
+            "CFrame": {
+              "position": [
+                0,
+                -2,
+                0
+              ],
+              "orientation": [
+                [
+                  0,
+                  -1,
+                  0
+                ],
+                [
+                  1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  0,
+                  1
+                ]
+              ]
+            }
+          }
+        }
+      },
+      "Herbe": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Shape": "Cylinder",
+          "Size": [
+            4.2,
+            90,
+            90
+          ],
+          "Material": "Grass",
+          "Color": [
+            0.37,
+            0.58,
+            0.27
+          ],
+          "CFrame": {
+            "CFrame": {
+              "position": [
+                0,
+                -2,
+                0
+              ],
+              "orientation": [
+                [
+                  0,
+                  -1,
+                  0
+                ],
+                [
+                  1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  0,
+                  1
+                ]
+              ]
+            }
+          }
+        }
+      },
+      "Ocean": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "CanCollide": false,
+          "Size": [
+            1000,
+            1,
+            1000
+          ],
+          "Material": "Glass",
+          "Transparency": 0.2,
+          "Color": [
+            0.11,
+            0.5,
+            0.69
+          ],
+          "CFrame": {
+            "CFrame": {
+              "position": [
+                0,
+                -2.5,
+                0
+              ],
+              "orientation": [
+                [
+                  1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  0
+                ],
+                [
+                  0,
+                  0,
+                  1
+                ]
+              ]
+            }
+          }
+        }
+      },
+      "SpawnLocation": {
+        "$className": "SpawnLocation",
+        "$properties": {
+          "Anchored": true,
+          "Size": [
+            8,
+            1,
+            8
+          ],
+          "Material": "Wood",
+          "Color": [
+            0.66,
+            0.45,
+            0.25
+          ],
+          "Duration": 0,
+          "CFrame": {
+            "CFrame": {
+              "position": [
+                0,
+                0.6,
+                0
+              ],
+              "orientation": [
+                [
+                  1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  0
+                ],
+                [
+                  0,
+                  0,
+                  1
+                ]
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
