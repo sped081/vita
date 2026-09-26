@@ -3,13 +3,20 @@
   "version": "1.0.0",
   "description": "Site et outils de contenu de Quoi d'neuf MTL, un média sur tout ce qui se passe à Montréal.",
   "private": true,
-  "engines": { "node": ">=18" },
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "build": "node scripts/build.js",
     "serve": "node scripts/serve.js",
     "dev": "npm run build && npm run serve",
     "post": "node scripts/make-post.js",
-    "check": "node scripts/build.js && node --check scripts/make-post.js && node --check scripts/serve.js"
+    "check": "node scripts/build.js && node --check scripts/make-post.js && node --check scripts/serve.js",
+    "trailer": "node scripts/make-trailer.js"
   },
-  "license": "UNLICENSED"
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "playwright-core": "^1.56.1",
+    "ffmpeg-static": "^5.2.0"
+  }
 }

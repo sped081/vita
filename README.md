@@ -90,3 +90,14 @@ Une seule chose à faire une fois, dans le dépôt GitHub : **Settings → Pages
 - Le nom, la description, l'adresse et les rubriques : `content/site.json`.
 - Les couleurs et la typographie : les variables en tête de `src/base.css`.
 - La page d'accueil : `src/index.html`. La ligne `/*__DATA__*/` est remplacée par les articles au build.
+
+## Générer la bande-annonce (vidéo)
+
+```bash
+npm install          # une seule fois : installe playwright-core et ffmpeg-static
+npm run trailer      # → out/bande-annonce.mp4 (1080x1920, 13 s, H.264)
+```
+
+Les scènes sont décrites dans `scripts/make-trailer.js` : une page HTML dessine l'image correspondant à chaque instant,
+Playwright capture les 390 images, ffmpeg les assemble. Modifiez les textes ou la durée dans ce fichier, puis relancez.
+Instagram ajoute la musique : au moment de publier le Reel, choisissez un son en tendance.
