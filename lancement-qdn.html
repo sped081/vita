@@ -1,0 +1,276 @@
+<title>Lancement Quoi d'neuf MTL</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Archivo:wght@500;600;700&display=swap">
+<style>
+  :root{color-scheme:light;--bg:#F4F1EA;--card:#fff;--ink:#12233b;--muted:#5E616B;--line:#E5E0D6;--red:#E63917;--gold:#B4842A;--ok:#1a8f4c;--chip:#F4F1EA}
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#0F1116;--card:#181B22;--ink:#F1EEE7;--muted:#9AA0AB;--line:#282C36;--red:#FF5A38;--gold:#D6A84A;--ok:#4cc27d;--chip:#222631}}
+  :root[data-theme="dark"]{color-scheme:dark;--bg:#0F1116;--card:#181B22;--ink:#F1EEE7;--muted:#9AA0AB;--line:#282C36;--red:#FF5A38;--gold:#D6A84A;--ok:#4cc27d;--chip:#222631}
+  *{box-sizing:border-box}html,body{margin:0}
+  body{background:var(--bg);color:var(--ink);font-family:"Archivo",system-ui,sans-serif;line-height:1.5}
+  .wrap{max-width:720px;margin:0 auto;padding-inline:16px;padding-block:26px 60px;display:flex;flex-direction:column;gap:18px}
+  h1,h2,h3{font-family:"Oswald",sans-serif;font-weight:700;line-height:1.05;margin:0;text-wrap:balance}
+  h1{font-size:clamp(2rem,7vw,2.8rem)} h1 em{font-style:normal;color:var(--red)}
+  h2{font-size:1.6rem} h3{font-size:1.15rem;font-weight:600}
+  .sub{color:var(--muted);margin:0}
+  .progress{display:flex;align-items:center;gap:12px;font-size:.85rem;color:var(--muted)}
+  .bar{flex:1;height:8px;border-radius:8px;background:var(--line);overflow:hidden}
+  .bar i{display:block;height:100%;width:0;background:var(--red);transition:width .3s}
+  .day{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:14px}
+  .day.done{opacity:.6}
+  .dhead{display:flex;align-items:flex-start;gap:12px}
+  .dnum{font-family:"Oswald",sans-serif;font-weight:700;font-size:2.4rem;line-height:.9;color:var(--red);min-width:2.2ch}
+  .dhead .t{flex:1}
+  .meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+  .chip{background:var(--chip);border:1px solid var(--line);border-radius:20px;padding:2px 10px;font-size:.74rem;font-weight:600;color:var(--muted)}
+  .chip.r{color:var(--red);border-color:var(--red);background:transparent}
+  label.check{display:flex;align-items:center;gap:8px;font-size:.82rem;font-weight:600;color:var(--muted);cursor:pointer;white-space:nowrap}
+  label.check input{width:20px;height:20px;accent-color:var(--ok)}
+  .task{border-top:1px solid var(--line);padding-top:14px;display:flex;flex-direction:column;gap:10px}
+  .task>.lab{font-weight:700;text-transform:uppercase;letter-spacing:.1em;font-size:.68rem;color:var(--red)}
+  .imgs{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px}
+  .imgs img{height:170px;width:auto;border-radius:8px;border:1px solid var(--line);flex:0 0 auto}
+  .imgs.story img{height:150px}
+  .hint{font-size:.8rem;color:var(--muted)}
+  .cap{white-space:pre-line;background:var(--chip);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:.95rem;user-select:all;-webkit-user-select:all}
+  button.copy{all:unset;cursor:pointer;background:var(--red);color:#fff;font-weight:700;font-size:.95rem;padding:12px 16px;border-radius:12px;text-align:center}
+  button.copy.done{background:var(--ok)}
+  button.copy:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+  ol.steps{margin:0;padding-left:1.2rem;display:flex;flex-direction:column;gap:6px;font-size:.95rem}
+  .script{display:flex;flex-direction:column;gap:10px}
+  .beat{display:grid;grid-template-columns:64px 1fr;gap:10px;align-items:start}
+  .beat .tm{font-family:"Oswald",sans-serif;font-weight:600;font-size:.9rem;color:#fff;background:var(--ink);border-radius:8px;text-align:center;padding:4px 0}
+  :root[data-theme="dark"] .beat .tm{color:var(--bg)}
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .beat .tm{color:var(--bg)}}
+  .beat .say{font-weight:600}
+  .beat .scr,.beat .film{font-size:.84rem;color:var(--muted)}
+  .beat b{color:var(--ink)}
+  .note{border-left:3px solid var(--gold);padding:6px 12px;font-size:.88rem;color:var(--muted);background:var(--card);border-radius:0 10px 10px 0}
+</style>
+
+<div class="wrap">
+  <div>
+    <h1>Quoi d'neuf <em>MTL</em> · Semaine 1</h1>
+    <p class="sub">Tout est prêt. Suivez les jours dans l'ordre, cochez quand c'est publié.</p>
+  </div>
+  <div class="progress"><span id="ptxt">0 / 7 jours</span><div class="bar"><i id="pbar"></i></div></div>
+  <div class="note">Pour enregistrer une image : appui long dessus → <b>Enregistrer</b> (ou « Ajouter à Photos »). Les heures sont un point de départ : ajustez selon vos statistiques après 2 semaines.</div>
+
+  <!-- JOUR 1 -->
+  <section class="day" data-day="1">
+    <div class="dhead"><div class="dnum">1</div><div class="t"><h2>Lancement du compte</h2>
+      <div class="meta"><span class="chip r">Aujourd'hui</span><span class="chip">3 posts</span><span class="chip">Stories à la une</span></div></div>
+      <label class="check"><input type="checkbox"> Fait</label></div>
+
+    <div class="task"><span class="lab">1 · Le profil</span>
+      <ol class="steps">
+        <li>Photo de profil : <b>qdn-instagram.png</b> (déjà reçue).</li>
+        <li>Paramètres → Type de compte → <b>Créateur de contenu</b>.</li>
+        <li>Collez le nom, puis la bio :</li>
+      </ol>
+      <div class="cap" id="nom">Quoi d'neuf MTL</div>
+      <button class="copy" data-copy="nom">Copier le nom</button>
+      <div class="cap" id="bio">Quoi d'neuf, Montréal? 🗯️
+Actu • tendances • sorties • bouffe
+Tout ce qui se passe sur l'île en 60 sec 📍
+👇 Une vidéo par jour</div>
+      <button class="copy" data-copy="bio">Copier la bio</button>
+    </div>
+
+    <div class="task"><span class="lab">2 · Post A · Bixi ou métro (à publier en premier)</span>
+      <div class="imgs"><img src="img/03-bixi-metro.png" alt="Post Bixi ou métro"></div>
+      <div class="cap" id="c1a">Pour traverser la ville, t'es team quoi ? 🚲🚇
+Bixi ou métro ? Explique ton choix en commentaire 👇
+
+#montreal #mtl #bixi #stm #metro #514</div>
+      <button class="copy" data-copy="c1a">Copier la légende</button>
+    </div>
+
+    <div class="task"><span class="lab">3 · Post B · St-Viateur vs Fairmount</span>
+      <div class="imgs"><img src="img/02-bagels.png" alt="Post bagels"></div>
+      <div class="cap" id="c1b">LE débat qui divise Montréal 🥯
+St-Viateur ou Fairmount ?
+Dis ton camp en commentaire 👇
+
+#montreal #mtl #bagel #stviateur #fairmount #mileend #montrealfood</div>
+      <button class="copy" data-copy="c1b">Copier la légende</button>
+    </div>
+
+    <div class="task"><span class="lab">4 · Post C · Bienvenue (à publier en dernier)</span>
+      <div class="imgs"><img src="img/01-bienvenue.png" alt="Post Bienvenue"></div>
+      <div class="cap" id="c1c">Quoi d'neuf, Montréal ? 🗯️
+Ici, on te raconte tout ce qui se passe sur l'île : l'actu, les tendances, les sorties pis la bouffe.
+Une vidéo par jour, en 60 secondes.
+👉 Abonne-toi pour rien manquer.
+
+#montreal #mtl #514 #quoifaireamontreal #montrealfood</div>
+      <button class="copy" data-copy="c1c">Copier la légende</button>
+    </div>
+
+    <div class="task"><span class="lab">5 · Les stories à la une</span>
+      <div class="imgs story">
+        <img src="img/couverture-actu.png" alt="Couverture Actu"><img src="img/couverture-bouffe.png" alt="Couverture Bouffe">
+        <img src="img/couverture-sorties.png" alt="Couverture Sorties"><img src="img/couverture-culture.png" alt="Couverture Culture">
+        <img src="img/couverture-sport.png" alt="Couverture Sport">
+      </div>
+      <ol class="steps">
+        <li>Partagez le post Bienvenue en story (bouton ✈️ sous le post → <b>Ajouter à la story</b>).</li>
+        <li>Sur la story : <b>Mettre en avant</b> ❤️ → Nouveau → nommez-la <b>Actu</b>.</li>
+        <li>Sur votre profil : appui long sur « Actu » → <b>Modifier</b> → <b>Modifier la couverture</b> → icône galerie → <b>couverture-actu</b>.</li>
+        <li>Refaites pareil plus tard pour <b>Bouffe, Sorties, Culture, Sport</b> dès que vous avez une story sur ces sujets.</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- JOUR 2 -->
+  <section class="day" data-day="2">
+    <div class="dhead"><div class="dnum">2</div><div class="t"><h2>Reel 1 · « Je me présente »</h2>
+      <div class="meta"><span class="chip r">18 h</span><span class="chip">Reel · 25 s</span><span class="chip">Face caméra</span></div></div>
+      <label class="check"><input type="checkbox"> Fait</label></div>
+    <div class="task"><span class="lab">Le script</span>
+      <div class="script">
+        <div class="beat"><span class="tm">0-2 s</span><div><div class="say">« Quoi d'neuf, Montréal ? »</div><div class="scr"><b>À l'écran :</b> QUOI D'NEUF, MONTRÉAL ?</div><div class="film"><b>À filmer :</b> vous face caméra, une rue de Montréal derrière.</div></div></div>
+        <div class="beat"><span class="tm">2-8 s</span><div><div class="say">« Moi c'est [votre prénom], pis à partir d'aujourd'hui, je te dis tout ce qui se passe sur l'île. »</div><div class="scr"><b>À l'écran :</b> [prénom] · @quoidneufmtl</div></div></div>
+        <div class="beat"><span class="tm">8-18 s</span><div><div class="say">« L'actu, les tendances, les sorties, la bouffe… en 60 secondes, chaque jour. »</div><div class="film"><b>À filmer :</b> 6 plans d'une seconde : métro, Bixi, terrasse, bagel, escaliers extérieurs, cône orange.</div></div></div>
+        <div class="beat"><span class="tm">18-25 s</span><div><div class="say">« Fait que si tu veux jamais rien manquer à Montréal, abonne-toi. »</div><div class="scr"><b>À l'écran :</b> ABONNE-TOI 👆</div><div class="film"><b>À filmer :</b> retour face caméra.</div></div></div>
+      </div>
+      <p class="hint">Son : dans l'onglet Reels, choisissez un son avec une flèche ↗ (= son en tendance), volume bas sous votre voix. Ajoutez les sous-titres automatiques (Aa → Sous-titres).</p>
+      <div class="cap" id="c2">Quoi d'neuf, Montréal ? 🗯️
+Nouveau compte, une mission : te dire tout ce qui se passe sur l'île, chaque jour.
+Abonne-toi pour rien manquer 👆
+
+#montreal #mtl #514 #quoifaireamontreal #montrealfood</div>
+      <button class="copy" data-copy="c2">Copier la légende</button>
+    </div>
+  </section>
+
+  <!-- JOUR 3 -->
+  <section class="day" data-day="3">
+    <div class="dhead"><div class="dnum">3</div><div class="t"><h2>Carrousel · 5 affaires que seuls les Montréalais comprennent</h2>
+      <div class="meta"><span class="chip r">18 h</span><span class="chip">7 images</span><span class="chip">+ story sondage</span></div></div>
+      <label class="check"><input type="checkbox"> Fait</label></div>
+    <div class="task"><span class="lab">Le carrousel</span>
+      <div class="imgs">
+        <img src="img/carrousel-01.png" alt="Slide 1"><img src="img/carrousel-02.png" alt="Slide 2"><img src="img/carrousel-03.png" alt="Slide 3">
+        <img src="img/carrousel-04.png" alt="Slide 4"><img src="img/carrousel-05.png" alt="Slide 5"><img src="img/carrousel-06.png" alt="Slide 6"><img src="img/carrousel-07.png" alt="Slide 7">
+      </div>
+      <p class="hint">Dans Instagram : + → Publication → icône « plusieurs » → sélectionnez les 7 images <b>dans l'ordre 01 à 07</b>.</p>
+      <div class="cap" id="c3">5 affaires que seuls les Montréalais comprennent 🧡
+Glisse jusqu'à la fin 👉
+T'en ajouterais une 6e ? Dis-le en commentaire 👇
+
+#montreal #mtl #514 #montrealais #vivremontreal</div>
+      <button class="copy" data-copy="c3">Copier la légende</button>
+    </div>
+    <div class="task"><span class="lab">Story du jour</span>
+      <ol class="steps"><li>Story avec fond de couleur, texte : <b>BIXI OU MÉTRO ?</b></li><li>Ajoutez l'autocollant <b>Sondage</b> : « 🚲 Bixi » / « 🚇 Métro ».</li><li>Le lendemain, partagez le résultat en story.</li></ol>
+    </div>
+  </section>
+
+  <!-- JOUR 4 -->
+  <section class="day" data-day="4">
+    <div class="dhead"><div class="dnum">4</div><div class="t"><h2>Reel 2 · Bixi contre métro, la course</h2>
+      <div class="meta"><span class="chip r">17 h 30</span><span class="chip">Reel · 35 s</span><span class="chip">À tourner en ville</span></div></div>
+      <label class="check"><input type="checkbox"> Fait</label></div>
+    <div class="note">Faites la vraie course et mettez <b>vos vrais temps</b>. Le plus simple : un ami prend le métro pendant que vous prenez un Bixi, départ en même temps. Exemple de trajet : station Berri-UQAM → station Mont-Royal.</div>
+    <div class="task"><span class="lab">Le script</span>
+      <div class="script">
+        <div class="beat"><span class="tm">0-2 s</span><div><div class="say">« Bixi contre métro. Qui gagne ? »</div><div class="scr"><b>À l'écran :</b> BIXI VS MÉTRO · QUI GAGNE ?</div><div class="film"><b>À filmer :</b> vous sur le Bixi, votre ami devant l'entrée du métro.</div></div></div>
+        <div class="beat"><span class="tm">2-5 s</span><div><div class="say">« On part en même temps, de [point A] jusqu'à [point B]. »</div><div class="scr"><b>À l'écran :</b> [point A] → [point B]</div></div></div>
+        <div class="beat"><span class="tm">5-25 s</span><div><div class="say">(pas de voix, musique)</div><div class="film"><b>À filmer :</b> les deux trajets, montés en alternance et en accéléré. Un chrono à l'écran.</div></div></div>
+        <div class="beat"><span class="tm">25-30 s</span><div><div class="say">« Bixi : [X] minutes. Métro : [Y] minutes. »</div><div class="scr"><b>À l'écran :</b> les deux temps en gros, le gagnant en rouge.</div></div></div>
+        <div class="beat"><span class="tm">30-35 s</span><div><div class="say">« Pis toi, t'es team quoi ? Dis-le en commentaire. »</div><div class="film"><b>À filmer :</b> face caméra à l'arrivée.</div></div></div>
+      </div>
+      <div class="cap" id="c4">J'ai fait la course : Bixi contre métro 🚲🚇
+[point A] → [point B], départ en même temps.
+Regarde jusqu'à la fin pour le résultat 👀
+T'es team quoi ? 👇
+
+#montreal #mtl #bixi #stm #metro #514</div>
+      <button class="copy" data-copy="c4">Copier la légende</button>
+      <p class="hint">Remplacez [point A] et [point B] avant de publier.</p>
+    </div>
+  </section>
+
+  <!-- JOUR 5 -->
+  <section class="day" data-day="5">
+    <div class="dhead"><div class="dnum">5</div><div class="t"><h2>Post · Le meilleur quartier de MTL ?</h2>
+      <div class="meta"><span class="chip r">18 h</span><span class="chip">1 image</span><span class="chip">+ story quiz</span></div></div>
+      <label class="check"><input type="checkbox"> Fait</label></div>
+    <div class="task"><span class="lab">Le post</span>
+      <div class="imgs"><img src="img/quartiers.png" alt="Post quartiers"></div>
+      <div class="cap" id="c5">La grande question : c'est quoi le meilleur quartier de Montréal ? 🏙️
+Plateau, Mile End, Verdun, Villeray, Hochelaga, Rosemont, Saint-Henri… ou un autre ?
+Vote en commentaire 👇
+
+#montreal #mtl #514 #plateau #mileend #verdun</div>
+      <button class="copy" data-copy="c5">Copier la légende</button>
+    </div>
+    <div class="task"><span class="lab">Story du jour · quiz</span>
+      <ol class="steps"><li>Texte : <b>MONTRÉAL A ÉTÉ FONDÉE EN…</b></li><li>Autocollant <b>Quiz</b> : 1535 / <b>1642</b> ✅ / 1760.</li><li>Le lendemain, story réponse : « Fondée en 1642 sous le nom de Ville-Marie ! »</li></ol>
+    </div>
+  </section>
+
+  <!-- JOUR 6 -->
+  <section class="day" data-day="6">
+    <div class="dhead"><div class="dnum">6</div><div class="t"><h2>Reel 3 · 5 affaires de Montréalais, en vidéo</h2>
+      <div class="meta"><span class="chip r">18 h</span><span class="chip">Reel · 25 s</span><span class="chip">Images de la ville</span></div></div>
+      <label class="check"><input type="checkbox"> Fait</label></div>
+    <div class="task"><span class="lab">Le script</span>
+      <div class="script">
+        <div class="beat"><span class="tm">0-3 s</span><div><div class="say">« 5 affaires que seuls les Montréalais comprennent. »</div><div class="scr"><b>À l'écran :</b> 5 AFFAIRES QUE SEULS LES MONTRÉALAIS COMPRENNENT</div></div></div>
+        <div class="beat"><span class="tm">3-7 s</span><div><div class="say">« Un : les cônes orange. »</div><div class="film"><b>À filmer :</b> une rue pleine de cônes.</div></div></div>
+        <div class="beat"><span class="tm">7-11 s</span><div><div class="say">« Deux : le premier juillet. »</div><div class="film"><b>À filmer :</b> une pancarte « À louer » ou des boîtes de déménagement.</div></div></div>
+        <div class="beat"><span class="tm">11-15 s</span><div><div class="say">« Trois : les escaliers en colimaçon. »</div><div class="film"><b>À filmer :</b> des escaliers extérieurs, de bas en haut.</div></div></div>
+        <div class="beat"><span class="tm">15-19 s</span><div><div class="say">« Quatre : "Bonjour-Hi". »</div><div class="film"><b>À filmer :</b> l'entrée d'un dépanneur ou d'un commerce.</div></div></div>
+        <div class="beat"><span class="tm">19-25 s</span><div><div class="say">« Cinq : le Bixi. T'en ajouterais une sixième ? »</div><div class="film"><b>À filmer :</b> une station Bixi, puis vous face caméra.</div></div></div>
+      </div>
+      <div class="cap" id="c6">Si t'as grandi à Montréal, tu connais les 5 😂
+Laquelle t'as vécue le plus ? 👇
+
+#montreal #mtl #514 #montrealais #vivremontreal</div>
+      <button class="copy" data-copy="c6">Copier la légende</button>
+    </div>
+  </section>
+
+  <!-- JOUR 7 -->
+  <section class="day" data-day="7">
+    <div class="dhead"><div class="dnum">7</div><div class="t"><h2>Bilan de la semaine</h2>
+      <div class="meta"><span class="chip r">Dans la journée</span><span class="chip">Story</span><span class="chip">Statistiques</span></div></div>
+      <label class="check"><input type="checkbox"> Fait</label></div>
+    <div class="task"><span class="lab">À faire</span>
+      <ol class="steps">
+        <li>Répondez à <b>tous</b> les commentaires de la semaine.</li>
+        <li>Publiez la story ci-dessous, avec l'autocollant <b>Questions</b> (« Qu'est-ce que tu veux voir ? »).</li>
+        <li>Faites une capture d'écran de vos statistiques (Profil → <b>Tableau de bord professionnel</b>) et envoyez-la-moi. On prépare la semaine 2 ensemble.</li>
+      </ol>
+      <div class="cap" id="c7">Merci aux [nombre] premiers abonnés 🙏
+La semaine prochaine, on continue.
+Qu'est-ce que tu veux voir sur Quoi d'neuf MTL ?</div>
+      <button class="copy" data-copy="c7">Copier le texte de la story</button>
+    </div>
+  </section>
+</div>
+
+<script>
+  document.querySelectorAll('button.copy').forEach(function(b){
+    var label=b.textContent;
+    b.addEventListener('click',function(){
+      var el=document.getElementById(b.dataset.copy);var txt=el.textContent;
+      function ok(){b.textContent='Copié ✓';b.classList.add('done');setTimeout(function(){b.textContent=label;b.classList.remove('done');},2000);}
+      function fallback(){var r=document.createRange();r.selectNodeContents(el);var s=getSelection();s.removeAllRanges();s.addRange(r);
+        try{if(document.execCommand('copy')){ok();return;}}catch(e){}
+        b.textContent='Texte sélectionné : appuyez sur Copier';}
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(ok,fallback);}else fallback();
+    });
+  });
+  var KEY='qdn-semaine1';var state={};
+  try{state=JSON.parse(localStorage.getItem(KEY)||'{}');}catch(e){}
+  function refresh(){var days=document.querySelectorAll('.day');var n=0;
+    days.forEach(function(d){var on=!!state[d.dataset.day];d.classList.toggle('done',on);d.querySelector('input').checked=on;if(on)n++;});
+    document.getElementById('ptxt').textContent=n+' / 7 jours';document.getElementById('pbar').style.width=(n/7*100)+'%';}
+  document.querySelectorAll('.day input[type=checkbox]').forEach(function(c){
+    c.addEventListener('change',function(){var d=c.closest('.day').dataset.day;state[d]=c.checked;
+      try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}refresh();});
+  });
+  refresh();
+</script>
