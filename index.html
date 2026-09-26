@@ -1,0 +1,315 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Quoi d'neuf MTL</title>
+<meta name="description" content="Tout ce qui se passe sur l'île : actu, tendances, sorties et bouffe à Montréal.">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Archivo:wght@500;600;700&family=Spectral:ital,wght@0,400;0,500;1,400&display=swap">
+<style>
+  :root{
+    color-scheme:light;
+    --paper:#F4F1EA; --surface:#FFFFFF; --ink:#12233b; --muted:#5A5F6B; --line:#E3DED3;
+    --red:#E63917; --gold:#B4842A; --navy:#12233b; --bone:#F4F1EA; --soft:#EDE8DE;
+    --shadow:0 1px 2px rgba(18,35,59,.06),0 12px 32px rgba(18,35,59,.08);
+    --disp:"Oswald",Impact,"Arial Narrow",sans-serif; --ui:"Archivo",system-ui,sans-serif; --body:"Spectral",Georgia,serif;
+  }
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+    color-scheme:dark;--paper:#0E1320;--surface:#161D2C;--ink:#F1EEE7;--muted:#A3A9B6;--line:#263045;
+    --red:#FF5A38;--gold:#E0B35A;--soft:#1C2436;--shadow:0 1px 2px rgba(0,0,0,.4),0 14px 36px rgba(0,0,0,.35);
+  }}
+  :root[data-theme="dark"]{
+    color-scheme:dark;--paper:#0E1320;--surface:#161D2C;--ink:#F1EEE7;--muted:#A3A9B6;--line:#263045;
+    --red:#FF5A38;--gold:#E0B35A;--soft:#1C2436;--shadow:0 1px 2px rgba(0,0,0,.4),0 14px 36px rgba(0,0,0,.35);
+  }
+  *{box-sizing:border-box}html,body{margin:0}
+  body{background:var(--paper);color:var(--ink);font-family:var(--ui);line-height:1.5;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1120px;margin:0 auto;padding-inline:clamp(16px,4vw,40px)}
+  a{color:inherit}
+  h1,h2,h3{font-family:var(--disp);font-weight:700;line-height:1.02;margin:0;text-wrap:balance}
+  .kick{font-weight:700;text-transform:uppercase;letter-spacing:.14em;font-size:.68rem;color:var(--red)}
+  button{font-family:var(--ui)}
+  :focus-visible{outline:3px solid var(--red);outline-offset:2px}
+
+  /* header */
+  header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:var(--navy);color:var(--bone)}
+  header.top .wrap{display:flex;align-items:center;gap:16px;height:64px}
+  .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--bone)}
+  .brand svg{width:46px;height:auto;flex:0 0 auto}
+  .brand span{font-family:var(--disp);font-weight:700;font-size:1.35rem;letter-spacing:.01em}
+  .brand span em{font-style:normal;color:#E8A33D}
+  .clock{margin-left:auto;font-size:.78rem;opacity:.75;white-space:nowrap}
+  .ig{display:inline-flex;align-items:center;gap:8px;background:var(--red);color:#fff;text-decoration:none;
+    font-weight:700;font-size:.82rem;padding:9px 14px;border-radius:999px;white-space:nowrap}
+  .tgl{all:unset;cursor:pointer;color:var(--bone);opacity:.75;font-size:1rem;padding:6px}
+  @media (max-width:560px){.clock{display:none}.brand span{font-size:1.1rem}.ig .t{display:none}}
+
+  nav.cats{background:var(--surface);border-bottom:1px solid var(--line)}
+  nav.cats .wrap{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+  nav.cats .wrap::-webkit-scrollbar{display:none}
+  .cat{all:unset;cursor:pointer;white-space:nowrap;font-weight:600;font-size:.85rem;color:var(--muted);padding:13px 12px;border-bottom:3px solid transparent}
+  .cat:hover{color:var(--ink)} .cat[aria-current="true"]{color:var(--ink);border-color:var(--red)}
+
+  /* hero */
+  .hero{padding-block:clamp(28px,5vw,56px) 10px}
+  .hero-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(20px,4vw,48px);align-items:center}
+  @media (max-width:820px){.hero-grid{grid-template-columns:1fr}}
+  .bubble{position:relative;background:var(--red);color:#F4F1EA;border-radius:28px;padding:clamp(22px,4vw,40px);margin-bottom:34px}
+  .bubble::after{content:"";position:absolute;left:18%;bottom:-30px;border-left:34px solid transparent;border-right:0 solid transparent;border-top:32px solid var(--red)}
+  .bubble h1{font-size:clamp(2.6rem,8vw,5.2rem);letter-spacing:-.005em}
+  .hero p.lead{font-family:var(--body);font-size:clamp(1.05rem,2.4vw,1.25rem);color:var(--muted);margin:0 0 18px;max-width:46ch}
+  .pills{display:flex;flex-wrap:wrap;gap:8px}
+  .pill{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 12px;font-size:.8rem;font-weight:600;color:var(--muted)}
+
+  .feature{cursor:pointer;background:var(--surface);border:1px solid var(--line);border-radius:20px;overflow:hidden;box-shadow:var(--shadow);text-align:left;display:block;width:100%;padding:0;color:inherit}
+  .feature .art{aspect-ratio:16/9}
+  .feature .txt{padding:18px 20px 22px}
+  .feature h2{font-size:clamp(1.5rem,3.4vw,2.1rem);margin:8px 0 8px}
+  .feature p{font-family:var(--body);color:var(--muted);margin:0}
+
+  /* artwork blocks (typographic, no photos) */
+  .art{position:relative;display:flex;align-items:flex-end;padding:16px;overflow:hidden}
+  .art .big{position:absolute;right:-6px;bottom:-22px;font-family:var(--disp);font-weight:700;font-size:clamp(5rem,14vw,9rem);line-height:1;opacity:.95}
+  .art .tag{position:relative;z-index:1;font-weight:700;font-size:.66rem;text-transform:uppercase;letter-spacing:.14em;background:rgba(0,0,0,.28);color:#fff;padding:4px 9px;border-radius:999px}
+  .t-bouffe{background:#E63917;color:#F4F1EA}
+  .t-transport{background:#12233b;color:#E8A33D}
+  .t-culture{background:#E8A33D;color:#12233b}
+  .t-quartiers{background:#1E5E3A;color:#F4F1EA}
+  .t-histoire{background:#3b2a52;color:#F4F1EA}
+  .t-vie{background:#0E7C7B;color:#F4F1EA}
+
+  /* sections */
+  .rowhd{display:flex;align-items:center;gap:12px;margin:46px 0 18px}
+  .rowhd h2{font-size:1.5rem;text-transform:uppercase;letter-spacing:.02em}
+  .rowhd .rule{flex:1;height:2px;background:var(--ink)}
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  @media (max-width:860px){.cards{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:540px){.cards{grid-template-columns:1fr}}
+  .card{all:unset;cursor:pointer;display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:var(--shadow)}
+  .card:focus-visible{outline:3px solid var(--red);outline-offset:2px}
+  .card .art{aspect-ratio:16/10}
+  .card .txt{padding:14px 16px 18px;display:flex;flex-direction:column;gap:6px}
+  .card h3{font-size:1.18rem}
+  .card p{font-family:var(--body);color:var(--muted);margin:0;font-size:.95rem}
+  .card .rt{font-size:.72rem;color:var(--muted);margin-top:4px}
+  .hidden{display:none!important}
+
+  .debates{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  @media (max-width:760px){.debates{grid-template-columns:1fr}}
+  .deb{background:var(--navy);color:var(--bone);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:10px}
+  .deb h3{font-size:1.5rem}
+  .deb h3 em{font-style:normal;color:#FF6A48}
+  .deb p{margin:0;font-size:.9rem;opacity:.8}
+  .deb a{align-self:flex-start;color:#E8A33D;font-weight:700;font-size:.85rem;text-decoration:none}
+  .deb a:hover{text-decoration:underline}
+
+  .utility{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:46px}
+  @media (max-width:700px){.utility{grid-template-columns:1fr}}
+  .ubox{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:10px}
+  .lines{display:flex;gap:8px;flex-wrap:wrap}
+  .ln{display:inline-flex;align-items:center;gap:6px;font-size:.82rem;font-weight:600}
+  .ln i{width:12px;height:12px;border-radius:50%;display:inline-block}
+  .ubox a.btn{align-self:flex-start;background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:9px 14px;font-weight:700;font-size:.85rem;text-decoration:none}
+
+  .follow{margin:46px 0 10px;background:var(--red);color:#fff;border-radius:22px;padding:clamp(24px,5vw,44px);display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+  .follow h2{font-size:clamp(1.7rem,4.5vw,2.6rem)}
+  .follow p{margin:6px 0 0;opacity:.9}
+  .follow a{background:var(--navy);color:#F4F1EA;text-decoration:none;font-weight:700;padding:14px 22px;border-radius:999px;white-space:nowrap}
+
+  footer{border-top:1px solid var(--line);margin-top:40px;background:var(--surface)}
+  footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-block:24px 30px;font-size:.8rem;color:var(--muted)}
+
+  /* article view */
+  #reader{position:fixed;inset:0;z-index:50;background:var(--paper);overflow-y:auto}
+  #reader .bar{position:sticky;top:0;background:var(--navy);color:var(--bone);padding-top:env(safe-area-inset-top,0px)}
+  #reader .bar .wrap{display:flex;align-items:center;gap:12px;height:56px}
+  #reader .back{all:unset;cursor:pointer;font-weight:700;font-size:.9rem}
+  #reader .art{aspect-ratio:21/8;border-radius:0}
+  .article{max-width:680px;margin:0 auto;padding:28px 16px 70px}
+  .article h1{font-size:clamp(2rem,6vw,3.2rem);margin:10px 0 12px}
+  .article .dek{font-family:var(--body);font-size:1.2rem;color:var(--muted);margin:0 0 18px}
+  .article .by{font-size:.78rem;color:var(--muted);border-bottom:1px solid var(--line);padding-bottom:16px;margin-bottom:22px}
+  .article .body p{font-family:var(--body);font-size:1.14rem;line-height:1.72;margin:0 0 1.1em}
+  .article .body h2{font-size:1.5rem;margin:1.6em 0 .5em}
+  .article .body ul{font-family:var(--body);font-size:1.1rem;line-height:1.65;padding-left:1.2rem}
+  .article .cta{margin-top:30px;background:var(--navy);color:var(--bone);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:10px}
+  .article .cta a{align-self:flex-start;background:var(--red);color:#fff;text-decoration:none;font-weight:700;padding:11px 18px;border-radius:999px}
+</style>
+
+<header class="top"><div class="wrap">
+  <a class="brand" href="#" aria-label="Quoi d'neuf MTL, accueil">
+    <svg viewBox="0 0 224 166" aria-hidden="true"><path d="M24 0 h176 a24 24 0 0 1 24 24 v86 a24 24 0 0 1 -24 24 h-96 l-36 32 v-32 h-44 a24 24 0 0 1 -24 -24 v-86 a24 24 0 0 1 24 -24z" fill="#E63917"/><text x="112" y="98" text-anchor="middle" font-family="Oswald,Impact,sans-serif" font-weight="700" font-size="92" fill="#F4F1EA">QDN</text></svg>
+    <span>Quoi d'neuf <em>MTL</em></span>
+  </a>
+  <span class="clock" id="clock">Montréal</span>
+  <button class="tgl" id="theme" aria-label="Changer de thème">◐</button>
+  <a class="ig" href="https://www.instagram.com/quoidneufmtl/" target="_blank" rel="noopener">◎ <span class="t">Instagram</span></a>
+</div></header>
+
+<nav class="cats" aria-label="Rubriques"><div class="wrap" id="cats"></div></nav>
+
+<main class="wrap">
+  <section class="hero"><div class="hero-grid">
+    <div>
+      <div class="bubble"><h1>Quoi d'neuf, Montréal ?</h1></div>
+      <p class="lead">Tout ce qui se passe sur l'île : l'actu, les tendances, les sorties pis la bouffe. Une vidéo par jour sur Instagram, les détails ici.</p>
+      <div class="pills"><span class="pill">Actu</span><span class="pill">Tendances</span><span class="pill">Sorties</span><span class="pill">Bouffe</span><span class="pill">Culture</span></div>
+    </div>
+    <div id="featured"></div>
+  </div></section>
+
+  <div class="rowhd"><h2>Les débats</h2><div class="rule"></div></div>
+  <div class="debates">
+    <div class="deb"><span class="kick" style="color:#E8A33D">Bouffe</span><h3>St-Viateur <em>vs</em> Fairmount</h3><p>Le meilleur bagel de Montréal, c'est lequel ?</p><a href="https://www.instagram.com/quoidneufmtl/" target="_blank" rel="noopener">Vote sur Instagram →</a></div>
+    <div class="deb"><span class="kick" style="color:#E8A33D">Transport</span><h3>Bixi <em>ou</em> métro</h3><p>Pour traverser la ville, t'es team quoi ?</p><a href="https://www.instagram.com/quoidneufmtl/" target="_blank" rel="noopener">Vote sur Instagram →</a></div>
+    <div class="deb"><span class="kick" style="color:#E8A33D">Quartiers</span><h3>Le meilleur <em>quartier</em> ?</h3><p>Plateau, Verdun, Villeray… ou un autre ?</p><a href="https://www.instagram.com/quoidneufmtl/" target="_blank" rel="noopener">Vote sur Instagram →</a></div>
+  </div>
+
+  <div class="rowhd"><h2>À lire</h2><div class="rule"></div></div>
+  <div class="cards" id="cards"></div>
+
+  <div class="utility">
+    <div class="ubox">
+      <span class="kick">Pratique</span>
+      <h3 style="font-size:1.3rem">L'état du métro, en direct</h3>
+      <div class="lines"><span class="ln"><i style="background:#00843D"></i>Verte</span><span class="ln"><i style="background:#EF7C00"></i>Orange</span><span class="ln"><i style="background:#F2C500"></i>Jaune</span><span class="ln"><i style="background:#0072CE"></i>Bleue</span></div>
+      <a class="btn" href="https://www.stm.info/fr" target="_blank" rel="noopener">Voir l'état du réseau sur stm.info →</a>
+    </div>
+    <div class="ubox">
+      <span class="kick">Pratique</span>
+      <h3 style="font-size:1.3rem">La météo à Montréal</h3>
+      <p style="margin:0;color:var(--muted);font-family:var(--body)">Avant de sortir, vérifiez les prévisions d'Environnement Canada.</p>
+      <a class="btn" href="https://meteo.gc.ca/" target="_blank" rel="noopener">Voir la météo →</a>
+    </div>
+  </div>
+
+  <section class="follow">
+    <div><h2>Une vidéo par jour.</h2><p>Les tendances de Montréal en 60 secondes, sur Instagram.</p></div>
+    <a href="https://www.instagram.com/quoidneufmtl/" target="_blank" rel="noopener">Suivre @quoidneufmtl</a>
+  </section>
+</main>
+
+<footer><div class="wrap">
+  <div><b style="color:var(--ink)">Quoi d'neuf MTL</b> · Tout ce qui se passe sur l'île.</div>
+  <div>Montréal, Québec · <a href="https://www.instagram.com/quoidneufmtl/" target="_blank" rel="noopener">@quoidneufmtl</a></div>
+</div></footer>
+
+<div id="reader" hidden>
+  <div class="bar"><div class="wrap"><button class="back" id="back">← Retour</button></div></div>
+  <div id="rart"></div>
+  <article class="article" id="rbody"></article>
+</div>
+
+<script>
+(function(){
+  var IG='https://www.instagram.com/quoidneufmtl/';
+  var CATS=[['tout','Tout'],['bouffe','Bouffe'],['transport','Transport'],['quartiers','Quartiers'],['culture','Culture'],['histoire','Histoire']];
+  var A=[
+    {id:'bagels',cat:'bouffe',art:'t-bouffe',big:'🥯',label:'Bouffe',min:4,
+     t:"St-Viateur ou Fairmount : le débat qui divise Montréal",
+     d:"Deux comptoirs du Mile End, deux clans, un seul bagel à la montréalaise.",
+     b:[["p","Demandez à un Montréalais où acheter ses bagels, et préparez-vous à une réponse passionnée. Depuis des décennies, deux adresses du Mile End se disputent le titre : Fairmount et St-Viateur."],
+        ["h2","Deux institutions"],
+        ["p","Fairmount Bagel est né en 1919. St-Viateur Bagel a suivi en 1957. Les deux boutiques sont à quelques rues l'une de l'autre, et elles sont ouvertes jour et nuit : on peut y acheter des bagels chauds à 3 h du matin."],
+        ["h2","Qu'est-ce qu'un bagel montréalais ?"],
+        ["p","Il n'a rien à voir avec son cousin new-yorkais. Plus petit, plus dense et un peu sucré, il est roulé à la main, bouilli dans de l'eau miellée, puis cuit au four à bois. Les deux classiques : graines de sésame ou graines de pavot."],
+        ["h2","Alors, lequel ?"],
+        ["p","Certains jurent par le moelleux de l'un, d'autres par le croustillant de l'autre. La seule vraie façon de trancher : goûter les deux le même jour. Et nous dire votre camp."]]},
+    {id:'bixi-metro',cat:'transport',art:'t-transport',big:'🚲',label:'Transport',min:3,
+     t:"Bixi ou métro : comment traverser la ville",
+     d:"Deux réseaux, deux philosophies. Petit guide pour choisir.",
+     b:[["p","Le métro de Montréal a ouvert ses portes en 1966. Ses quatre lignes, la verte, l'orange, la jaune et la bleue, font partie de la vie de tous les jours. Le Bixi, lui, est arrivé en 2009 et est devenu un symbole de l'été montréalais."],
+        ["h2","Quand le métro gagne"],
+        ["p","Pour les longues distances, par mauvais temps et en hiver, le métro reste imbattable : il est à l'abri et ses rames passent souvent aux heures de pointe."],
+        ["h2","Quand le Bixi gagne"],
+        ["p","Pour les trajets courts, surtout quand il faut changer de ligne, le vélo est souvent plus direct. Et on profite de la ville en chemin."],
+        ["h2","La vraie course"],
+        ["p","On a décidé de faire le test en vrai : un trajet, deux amis, un Bixi et un métro, départ en même temps. Le résultat arrive en vidéo sur Instagram."]]},
+    {id:'cinq-affaires',cat:'culture',art:'t-culture',big:'5',label:'Culture',min:3,
+     t:"5 affaires que seuls les Montréalais comprennent",
+     d:"Des cônes orange au « Bonjour-Hi », petit lexique de la vie sur l'île.",
+     b:[["h2","1. Les cônes orange"],["p","Ils font tellement partie du paysage qu'on ne les remarque même plus. Chaque été, les chantiers transforment la ville en parcours à obstacles."],
+        ["h2","2. Le 1er juillet"],["p","Le jour du déménagement : des milliers de ménages changent d'adresse en même temps. Les rues se remplissent de camions et de meubles sur les trottoirs."],
+        ["h2","3. Les escaliers extérieurs"],["p","En colimaçon, en fer forgé, glacés l'hiver. Ils sont l'image même des quartiers comme le Plateau."],
+        ["h2","4. « Bonjour-Hi »"],["p","La salutation d'une ville bilingue : on vous laisse choisir la langue de la conversation."],
+        ["h2","5. Le Bixi"],["p","Dès qu'il fait beau, la ville entière se met à pédaler, et trouver un vélo libre devient un défi."]]},
+    {id:'premier-juillet',cat:'culture',art:'t-vie',big:'1/7',label:'Vie à MTL',min:3,
+     t:"Le 1er juillet, jour du déménagement",
+     d:"Pourquoi toute la ville semble changer d'adresse le même jour.",
+     b:[["p","Au Québec, la plupart des baux résidentiels se terminent le 30 juin. Résultat : le 1er juillet, des dizaines de milliers de personnes déménagent en même temps, et Montréal en est l'épicentre."],
+        ["h2","Une tradition qui vient de loin"],
+        ["p","Pendant longtemps, le jour du déménagement était le 1er mai. Il a été déplacé au 1er juillet dans les années 1970, pour éviter de déménager pendant l'année scolaire."],
+        ["h2","Survivre au 1er juillet"],
+        ["ul",["Réservez votre camion des mois à l'avance.","Récupérez des boîtes dès le mois de mai.","Prévoyez de l'eau : il fait souvent très chaud.","Soyez patients avec les voisins, tout le monde est dans le même bateau."]]]},
+    {id:'quartiers',cat:'quartiers',art:'t-quartiers',big:'MTL',label:'Quartiers',min:4,
+     t:"Le meilleur quartier de Montréal ?",
+     d:"Petit tour de sept quartiers qui ont chacun leurs fidèles.",
+     b:[["h2","Le Plateau"],["p","Maisons colorées, escaliers extérieurs et terrasses : la carte postale de Montréal."],
+        ["h2","Le Mile End"],["p","Les bagels, les cafés et les artistes. C'est ici que se joue le grand débat St-Viateur contre Fairmount."],
+        ["h2","Verdun"],["p","Le bord du fleuve et la rue Wellington, qui s'anime de plus en plus."],
+        ["h2","Villeray"],["p","Le parc Jarry et, tout près, le marché Jean-Talon."],
+        ["h2","Hochelaga"],["p","Un quartier ouvrier en pleine transformation, avec la Promenade Ontario comme artère principale."],
+        ["h2","Rosemont"],["p","Des rues résidentielles tranquilles et la rue Masson pour les commerces de proximité."],
+        ["h2","Saint-Henri"],["p","Le canal de Lachine et le marché Atwater, parfaits pour une journée à vélo."],
+        ["p","Et vous, c'est lequel ? Votez sur Instagram."]]},
+    {id:'histoire',cat:'histoire',art:'t-histoire',big:'1642',label:'Histoire',min:3,
+     t:"Montréal en 5 dates",
+     d:"De Hochelaga à l'Expo 67, les moments qui ont fait la ville.",
+     b:[["h2","1535 · Hochelaga"],["p","Jacques Cartier visite le village iroquoien de Hochelaga, sur l'île, et nomme la montagne « mont Royal »."],
+        ["h2","1642 · Ville-Marie"],["p","Paul de Chomedey de Maisonneuve et Jeanne Mance fondent Ville-Marie, qui deviendra Montréal."],
+        ["h2","1760 · La capitulation"],["p","Montréal capitule devant l'armée britannique : la Nouvelle-France passe sous contrôle britannique."],
+        ["h2","1967 · Expo 67"],["p","L'Exposition universelle attire des millions de visiteurs et fait découvrir Montréal au monde entier."],
+        ["h2","1976 · Les Jeux olympiques"],["p","Montréal accueille les Jeux olympiques d'été, et le Stade olympique devient l'un des symboles de la ville."]]}
+  ];
+
+  function art(a,extra){return '<div class="art '+a.art+(extra||'')+'"><span class="tag">'+a.label+'</span><span class="big" aria-hidden="true">'+a.big+'</span></div>';}
+  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;');}
+
+  // featured = first
+  var f=A[0];
+  document.getElementById('featured').innerHTML='<button class="feature" data-open="'+f.id+'">'+art(f)+'<div class="txt"><span class="kick">À la une · '+f.label+'</span><h2>'+esc(f.t)+'</h2><p>'+esc(f.d)+'</p></div></button>';
+
+  // cards
+  document.getElementById('cards').innerHTML=A.slice(1).map(function(a){
+    return '<button class="card" data-cat="'+a.cat+'" data-open="'+a.id+'">'+art(a)+'<div class="txt"><span class="kick">'+a.label+'</span><h3>'+esc(a.t)+'</h3><p>'+esc(a.d)+'</p><span class="rt">Lecture '+a.min+' min</span></div></button>';
+  }).join('');
+
+  // categories
+  var cb=document.getElementById('cats');
+  cb.innerHTML=CATS.map(function(c,i){return '<button class="cat" data-cat="'+c[0]+'" aria-current="'+(i===0)+'">'+c[1]+'</button>';}).join('');
+  cb.addEventListener('click',function(e){var b=e.target.closest('.cat');if(!b)return;
+    cb.querySelectorAll('.cat').forEach(function(x){x.setAttribute('aria-current','false');});b.setAttribute('aria-current','true');
+    var c=b.dataset.cat;document.querySelectorAll('#cards .card').forEach(function(k){k.classList.toggle('hidden',c!=='tout'&&k.dataset.cat!==c);});
+    document.getElementById('cards').scrollIntoView({behavior:'smooth',block:'start'});
+  });
+
+  // reader
+  var reader=document.getElementById('reader');
+  function render(a){
+    document.getElementById('rart').innerHTML=art(a);
+    var body=a.b.map(function(x){
+      if(x[0]==='ul')return '<ul>'+x[1].map(function(li){return '<li>'+esc(li)+'</li>';}).join('')+'</ul>';
+      return '<'+x[0]+'>'+esc(x[1])+'</'+x[0]+'>';}).join('');
+    document.getElementById('rbody').innerHTML='<span class="kick">'+a.label+'</span><h1>'+esc(a.t)+'</h1><p class="dek">'+esc(a.d)+'</p><div class="by">Par Quoi d\'neuf MTL · Lecture '+a.min+' min</div><div class="body">'+body+'</div>'
+      +'<div class="cta"><b>Tu veux la version vidéo ?</b><span>Une vidéo par jour sur Instagram.</span><a href="'+IG+'" target="_blank" rel="noopener">Suivre @quoidneufmtl</a></div>';
+    reader.hidden=false;reader.scrollTop=0;document.body.style.overflow='hidden';
+  }
+  function route(){var id=(location.hash||'').slice(1);var a=A.filter(function(x){return x.id===id;})[0];
+    if(a)render(a);else{reader.hidden=true;document.body.style.overflow='';}}
+  document.addEventListener('click',function(e){var o=e.target.closest('[data-open]');if(o){location.hash=o.dataset.open;}});
+  document.getElementById('back').addEventListener('click',function(){
+    if(history.length>1&&location.hash){history.back();}else{location.hash='';}
+  });
+  addEventListener('hashchange',route);route();
+  addEventListener('keydown',function(e){if(e.key==='Escape'&&!reader.hidden)document.getElementById('back').click();});
+
+  // clock
+  function tick(){try{var n=new Date();document.getElementById('clock').textContent=n.toLocaleDateString('fr-CA',{timeZone:'America/Toronto',weekday:'long',day:'numeric',month:'long'})+' · '+n.toLocaleTimeString('fr-CA',{timeZone:'America/Toronto',hour:'2-digit',minute:'2-digit'});}catch(e){}}
+  tick();setInterval(tick,30000);
+
+  // theme
+  var root=document.documentElement;try{var s=localStorage.getItem('qdn-theme');if(s)root.setAttribute('data-theme',s);}catch(e){}
+  document.getElementById('theme').addEventListener('click',function(){
+    var cur=root.getAttribute('data-theme');var dark=cur?cur==='dark':matchMedia('(prefers-color-scheme:dark)').matches;
+    var next=dark?'light':'dark';root.setAttribute('data-theme',next);try{localStorage.setItem('qdn-theme',next);}catch(e){}
+  });
+})();
+</script>
