@@ -285,7 +285,7 @@ children.push(
   new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: 'Infrastructure virtualisée de VIREXON Technologies', size: 32 })] }),
   new Paragraph({ spacing: { after: 900 }, alignment: AlignmentType.CENTER, children: [new TextRun({ text: 'Équipe 04 — Automne 2026', size: 26, color: '595959' })] }),
 );
-const coverRows = [['Représentant de l\'équipe', '[Nom]'], ['Membres de l\'équipe', '[Nom 1], [Nom 2], [Nom 3], [Nom 4]'], ['Numéro d\'équipe', '04'], ['Enseignant', '[Nom de l\'enseignant]'], ['Date de remise', '[Date indiquée sur Léa]']];
+const coverRows = [['Représentant de l\'équipe', 'Vitaleme Celestin'], ['Membres de l\'équipe', 'Vitaleme Celestin, Boris Rousseau Mbakam, Ricardo Martin Orbegoso Contreras'], ['Numéro d\'équipe', '04'], ['Enseignant', '[Nom de l\'enseignant]'], ['Date de remise', '[Date indiquée sur Léa]']];
 children.push(new Table({ width: { size: 7200, type: WidthType.DXA }, columnWidths: [2800, 4400], alignment: AlignmentType.CENTER,
   rows: coverRows.map(([k, v]) => new TableRow({ children: [
     new TableCell({ width: { size: 2800, type: WidthType.DXA }, shading: { type: ShadingType.CLEAR, fill: LIGHT, color: 'auto' }, margins: { top: 80, bottom: 80, left: 120, right: 120 }, children: [new Paragraph({ children: [b(k)] })] }),
@@ -350,7 +350,7 @@ children.push(todo('Ajoutez les difficultés rencontrées et les solutions trouv
 // Conclusions
 children.push(h1(`${sec}. Conclusions`)); sec++;
 children.push(p('Chaque membre de l\'équipe rédige sa propre conclusion : ce qu\'il a réalisé, ce qu\'il a appris, les difficultés rencontrées et ce qu\'il ferait autrement.'));
-['[Nom 1]', '[Nom 2]', '[Nom 3]', '[Nom 4]'].forEach((m) => { children.push(h2(`Conclusion de ${m}`)); children.push(todo('Conclusion personnelle (au moins un paragraphe, rédigée par le membre lui-même).')); });
+['Vitaleme Celestin', 'Boris Rousseau Mbakam', 'Ricardo Martin Orbegoso Contreras'].forEach((m) => { children.push(h2(`Conclusion de ${m}`)); children.push(todo('Conclusion personnelle (au moins un paragraphe, rédigée par le membre lui-même).')); });
 
 // Webographie
 children.push(h1(`${sec}. Webographie`)); sec++;
