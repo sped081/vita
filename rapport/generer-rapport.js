@@ -3,7 +3,7 @@ const fs = require('fs');
 const {
   Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, PageBreak, Table, TableRow, TableCell,
   WidthType, ShadingType, BorderStyle, LevelFormat, TableOfContents, Header, Footer, PageNumber, PositionalTab,
-  PositionalTabAlignment, PositionalTabRelativeTo, PositionalTabLeader, Bookmark, InternalHyperlink, TabStopType, Tab,
+  PositionalTabAlignment, PositionalTabRelativeTo, PositionalTabLeader, Bookmark, InternalHyperlink, TabStopType, Tab, ImageRun,
 } = require('docx');
 const PAGES = process.argv[3] && fs.existsSync(process.argv[3]) ? JSON.parse(fs.readFileSync(process.argv[3], 'utf8')) : {};
 const HEADS = [];
@@ -99,7 +99,7 @@ const DEMOS = [
         tableau: true },
       { titre: 'Installation de Proxmox VE (VIR-QC-PVE-01)',
         objectif: "installer l'hyperviseur et séparer le réseau de gestion (vmbr0) du réseau des machines virtuelles (vmbr1).",
-        manip: ["Installation de Proxmox VE depuis l'ISO sur clé USB.", 'Adresse de gestion 192.168.160.2/24, passerelle 192.168.160.1, DNS 192.168.160.10.', 'Création du pont vmbr1, sans adresse IP, réservé aux machines virtuelles.', "Accès à l'interface web https://192.168.160.2:8006 (compte root, PAM)."],
+        manip: ["Installation de Proxmox VE depuis l'ISO sur clé USB.", 'Adresse de gestion 192.168.160.2/24 (réseau de gestion 192.168.160.0/24), passerelle 192.168.160.1.', 'Création du pont vmbr1, sans adresse IP, réservé aux machines virtuelles.', "Accès à l'interface web https://192.168.160.2:8006 (compte root, PAM)."],
         cmds: ['pveversion', 'cat /etc/network/interfaces', 'ip -br addr', 'curl -k -s -o /dev/null -w "%{http_code}\\n" https://192.168.160.2:8006', 'grep -H net /etc/pve/qemu-server/*.conf'],
         reponse: "Le fichier /etc/network/interfaces montre vmbr0 avec l'adresse 192.168.160.2/24 et vmbr1 en mode manuel, sans adresse. L'interface web répond sur le port 8006 (code 200) et les cartes réseau des machines virtuelles sont reliées à vmbr1.",
         captures: [['Fichier /etc/network/interfaces', 'les deux ponts : vmbr0 pour la gestion, vmbr1 pour les machines virtuelles.'], ["Interface web : Nœud → System → Network", 'les ponts vus depuis la console de gestion.']] },
@@ -129,23 +129,23 @@ const DEMOS = [
         captures: [['Datacenter → Backup', 'la tâche planifiée, son horaire et les VM sélectionnées.'], ['PBS → Datastore → Content', 'les sauvegardes présentes sur PBS.']],
         questions: ["La grille parle de « fin de semaine » et le guide de « vendredi 22 h » : quel horaire a été retenu et pourquoi ?"] },
       { titre: 'pfSense : routeur et pare-feu (VIR-QC-FW-01)',
-        objectif: 'installer le routeur pare-feu qui relie le réseau des machines virtuelles au réseau du laboratoire.',
-        manip: ['VM pfSense : 2 vCPU, 2 Go, deux cartes réseau (WAN sur vmbr0, LAN sur vmbr1), créée sans modèle.', 'Assignation des interfaces WAN et LAN et adressage du LAN.', 'Règles de pare-feu : le LAN est autorisé vers les services nécessaires, tout le reste est bloqué (refus par défaut).'],
+        objectif: 'installer le routeur pare-feu qui relie le réseau du siège (192.168.161.0/24) au réseau de l\'école (10.70.0.0/16).',
+        manip: ['VM pfSense : 2 vCPU, 2 Go, deux cartes réseau (WAN sur vmbr0, LAN sur vmbr1), créée sans modèle.', 'Assignation des interfaces : WAN en DHCP sur le réseau de l\'école (10.70.x.x/16), LAN 192.168.161.1/24.', 'Règles de pare-feu : le LAN est autorisé vers les services nécessaires, tout le reste est bloqué (refus par défaut).'],
         cmds: ['# Console pfSense, option 8 (Shell)', 'pfctl -si | head -3', 'netstat -rn | head -15', 'ping -c 3 8.8.8.8'],
         reponse: 'pfctl indique « Status: Enabled » ; la table de routage contient une route par défaut vers la passerelle du laboratoire et pfSense joint Internet.',
         captures: [['Firewall → Rules (LAN et WAN)', 'les règles de filtrage en place.'], ['Console pfSense : pfctl -si', 'que le pare-feu est actif.']] },
       { titre: 'Service DHCP',
         objectif: 'distribuer automatiquement les adresses aux postes clients.',
-        manip: ['Services → DHCP Server : plage 192.168.160.100 à 192.168.160.200, passerelle .1, DNS 10.70.160.10.', 'Test depuis une VM Windows sur vmbr1.'],
+        manip: ['Services → DHCP Server → LAN : plage 192.168.161.50 à 192.168.161.200, passerelle 192.168.161.1, DNS 192.168.161.10 (VIR-QC-DC-01).', 'Les serveurs gardent une adresse fixe (192.168.161.10 à .16) hors de la plage.', 'Test depuis le poste VIR-QC-WS-01 (Windows 11) sur vmbr1.'],
         cmds: ['ipconfig /release', 'ipconfig /renew', 'ipconfig /all', 'tracert 8.8.8.8', 'net config workstation'],
-        reponse: "La VM obtient une adresse de la plage, le serveur DHCP indiqué est pfSense et tracert montre pfSense comme premier saut.",
+        reponse: "Le poste obtient une adresse entre 192.168.161.50 et .200 (par exemple 192.168.161.50), le serveur DHCP indiqué est 192.168.161.1 (pfSense) et tracert montre pfSense comme premier saut.",
         captures: [['ipconfig /all sur la VM Windows', 'une adresse obtenue par DHCP auprès de pfSense.'], ['Status → DHCP Leases', 'le bail attribué au poste.']] },
       { titre: 'VPN entre le siège et les succursales',
-        objectif: 'relier les réseaux des succursales (MTL, SHE, TR) au siège par des tunnels chiffrés.',
-        manip: ['VPN → OpenVPN (ou IPsec) : un tunnel site à site par succursale.', 'Plage 10.70.160.200 à .254 réservée aux tunnels.', 'Règles de pare-feu WAN et OpenVPN.'],
-        cmds: ['# Depuis un poste distant, tunnel établi', 'ipconfig', 'ping <IP d\'une VM du siège>'],
-        reponse: 'Le tunnel est à l\'état « up » dans Status → OpenVPN et les hôtes du siège répondent à travers le tunnel.',
-        captures: [['Status → OpenVPN', 'les tunnels établis.'], ['Ping à travers le tunnel', 'que le trafic passe entre les sites.']] },
+        objectif: 'relier les réseaux des succursales au siège par des tunnels IPsec site à site : Montréal (192.168.162.0/24, partiellement déployée), Sherbrooke (192.168.163.0/24) et Trois-Rivières (192.168.164.0/24), planifiées.',
+        manip: ['VPN → IPsec : une phase 1 par succursale (pair = WAN du pfSense distant : VIR-MTL-FW-01, VIR-SHE-FW-01, VIR-TR-FW-01).', 'Phase 2 : réseau local 192.168.161.0/24 vers le LAN de la succursale.', 'Firewall → Rules → IPsec : autoriser le trafic entre les sites.'],
+        cmds: ['# Depuis un poste du siège', 'ping 192.168.162.1        # pfSense de Montréal', 'ping 192.168.162.10       # VIR-MTL-DC-01', 'tracert 192.168.162.10'],
+        reponse: 'Le tunnel vers Montréal est « ESTABLISHED » dans Status → IPsec et les hôtes de la succursale répondent à travers le tunnel. Les tunnels de Sherbrooke et Trois-Rivières sont configurés en prévision de leur déploiement.',
+        captures: [['Status → IPsec', 'les tunnels établis vers les succursales.'], ['Ping à travers le tunnel', 'que le trafic passe entre les sites.']] },
     ],
   },
   {
@@ -154,7 +154,7 @@ const DEMOS = [
     etapes: [
       { titre: 'Contrôleur de domaine principal (VIR-QC-DC-01)',
         objectif: 'créer la forêt equipe4.lan sur un serveur Windows Server 2022.',
-        manip: ['Clone de TPL-WS2022, adresse 10.70.160.10, nom VIR-QC-DC-01.', 'Installation des rôles AD DS et DNS, promotion en contrôleur de domaine d\'une nouvelle forêt.'],
+        manip: ['Clone de TPL-WS2022, adresse 192.168.161.10, nom VIR-QC-DC-01.', 'Installation des rôles AD DS et DNS, promotion en contrôleur de domaine d\'une nouvelle forêt.'],
         cmds: ['Install-WindowsFeature AD-Domain-Services,DNS -IncludeManagementTools', 'Install-ADDSForest -DomainName equipe4.lan -DomainNetbiosName EQUIPE4 -InstallDNS', 'Get-ADDomain | Format-List DNSRoot,NetBIOSName'],
         reponse: 'Get-ADDomain affiche le domaine equipe4.lan et le nom NetBIOS EQUIPE4.',
         captures: [['Get-ADDomain', 'que la forêt equipe4.lan est créée.']] },
@@ -184,7 +184,7 @@ const DEMOS = [
         captures: [['Permissions du partage Informatique', 'les droits accordés aux groupes.'], ['Lecteurs mappés dans l\'Explorateur', 'les lecteurs Informatique et Marketing sur le poste.']] },
       { titre: 'Service DNS principal et secondaire',
         objectif: 'résoudre tous les noms de l\'entreprise, avec une zone secondaire BIND9 dans chaque site.',
-        manip: ['Zone principale intégrée à AD sur VIR-QC-DC-01.', 'SOA : TTL de cache 60 min, Refresh 2 h, Retry 30 min.', 'Un enregistrement A pour chaque serveur, un MX réservé au futur serveur de courriel.', 'Zone secondaire (slave) BIND9 sur Debian dans chaque site.'],
+        manip: ['Zone principale intégrée à AD sur VIR-QC-DC-01.', 'SOA : TTL de cache 60 min, Refresh 2 h, Retry 30 min.', 'Un enregistrement A pour chaque serveur, un MX réservé au futur serveur de courriel.', 'Zone secondaire (slave) BIND9 sur VIR-QC-DNS-01 (192.168.161.11) au siège et sur un serveur DNS dans chaque succursale (ex. VIR-MTL-DNS-01, 192.168.162.11).'],
         cmds: ['Get-DnsServerResourceRecord -ZoneName equipe4.lan -RRType SOA | Select -Expand RecordData', 'Get-DnsServerResourceRecord -ZoneName equipe4.lan | Format-Table HostName,RecordType,RecordData', '# Sur le DNS secondaire', 'systemctl status bind9 --no-pager | head -5', 'dig @localhost equipe4.lan SOA', '# Depuis un poste', 'nslookup vir-qc-dc-01.equipe4.lan', 'ping vir-qc-nas-01.equipe4.lan'],
         reponse: 'La zone contient les paramètres SOA demandés, les enregistrements A et MX ; le serveur secondaire répond avec le même numéro de série ; les hôtes sont joignables par leur nom.',
         captures: [['Enregistrement SOA de la zone', 'les délais TTL, Refresh et Retry exigés.'], ['Enregistrements A et MX', 'que tous les serveurs sont déclarés.'], ['dig sur le serveur secondaire', 'que la zone est répliquée.'], ['ping par nom d\'hôte', 'que les hôtes sont joignables par leur nom.']] },
@@ -306,13 +306,18 @@ children.push(todo('Ajoutez au besoin un paragraphe sur l\'organisation de l\'é
 
 // Architecture
 children.push(h1('2. Architecture et plan d\'adressage'));
-children.push(h2('2.1 Serveurs physiques'));
-children.push(table(['Serveur', 'Nom d\'hôte', 'Rôle', 'Adresse IP'], [['Serveur 07', 'VIR-QC-PVE-01', 'Hyperviseur Proxmox VE', '192.168.160.2/24'], ['Serveur 08', 'VIR-QC-PBS-01', 'Proxmox Backup Server', '192.168.160.3/24']], [1600, 2200, 3160, 2400]));
-children.push(h2('2.2 Réseaux'));
-children.push(table(['Réseau', 'Usage'], [['10.70.160.0/24', 'LAN Serveurs et infrastructure (vmbr1 des VM)'], ['192.168.160.0/24', 'Réseau clients et DMZ (DHCP pfSense .100 à .200 ; DMZ .128/25)'], ['10.70.161.0/24', 'Succursale de Montréal (planifiée)'], ['10.70.162.0/24', 'Succursale de Sherbrooke (planifiée)'], ['10.70.163.0/24', 'Succursale de Trois-Rivières (planifiée)'], ['10.70.160.200 – .254', 'Réservé aux tunnels VPN']], [3000, 6360]));
+children.push(p("L'infrastructure couvre quatre sites : le siège de Québec, entièrement déployé, la succursale de Montréal, partiellement déployée, et celles de Sherbrooke et de Trois-Rivières, planifiées. Chaque succursale est reliée au siège par un tunnel VPN IPsec."));
+children.push(new Paragraph({ alignment: AlignmentType.CENTER, spacing: { before: 120 }, children: [new ImageRun({ type: 'png', data: fs.readFileSync(__dirname + '/topologie.png'), transformation: { width: 624, height: 416 }, altText: { title: 'Topologie physique', description: 'Topologie physique de VIREXON Technologies', name: 'topologie' } })] }));
+figN++;
+children.push(new Paragraph({ alignment: AlignmentType.CENTER, spacing: { before: 80, after: 60 }, children: [new TextRun({ text: `Figure ${figN} — Topologie physique de VIREXON Technologies`, italics: true, size: 20 })] }));
+children.push(p([b('Commentaire : '), new TextRun("au siège, le réseau de gestion (vmbr0, 192.168.160.0/24) relie Proxmox VE, PBS et le poste d'administration. Les machines virtuelles sont sur vmbr1 (192.168.161.0/24), derrière le pare-feu VIR-QC-FW-01, qui sort vers le réseau de l'école (10.70.0.0/16) et porte les tunnels IPsec vers les succursales.")]));
+children.push(h2('2.1 Équipements physiques'));
+children.push(table(['Serveur', 'Nom d\'hôte', 'Rôle', 'Adresse IP'], [['Serveur 07', 'VIR-QC-PVE-01', 'Hyperviseur Proxmox VE', '192.168.160.2/24'], ['Serveur 08', 'VIR-QC-PBS-01', 'Proxmox Backup Server', '192.168.160.3/24'], ['Commutateur', 'VIR-QC-SW-01', 'Commutateur de gestion (vmbr0)', '192.168.160.1'], ['Commutateur', 'VIR-QC-SW-02', 'Commutateur du réseau des VM (vmbr1)', '192.168.161.2'], ['Poste', 'VIR-QC-WS-01', 'Poste d\'administration', '192.168.160.10']], [1600, 2200, 3160, 2400]));
+children.push(h2('2.2 Plan d\'adressage global'));
+children.push(table(['Site', 'Sous-réseau', 'Masque', 'Hôtes utilisables', 'Passerelle'], [['Gestion (vmbr0)', '192.168.160.0/24', '255.255.255.0', '.1 à .254', '192.168.160.1'], ['Québec (VIR-QC)', '192.168.161.0/24', '255.255.255.0', '.1 à .254', '192.168.161.1'], ['Montréal (VIR-MTL)', '192.168.162.0/24', '255.255.255.0', '.1 à .254', '192.168.162.1'], ['Sherbrooke (VIR-SHE)', '192.168.163.0/24', '255.255.255.0', '.1 à .254', '192.168.163.1'], ['Trois-Rivières (VIR-TR)', '192.168.164.0/24', '255.255.255.0', '.1 à .254', '192.168.164.1'], ['WAN (réseau de l\'école)', '10.70.0.0/16', '255.255.0.0', '10.70.0.1 à .255.254', 'DHCP de l\'école']], [1950, 2000, 1850, 1610, 1950]));
+children.push(p('Le DHCP de pfSense distribue 192.168.161.50 à 192.168.161.200 aux postes de travail du siège.', { spacing: { before: 120 } }));
 children.push(h2('2.3 Machines virtuelles et services'));
-children.push(table(['Nom d\'hôte', 'Service', 'Adresse IP'], [['VIR-QC-FW-01', 'pfSense : routeur, pare-feu, DHCP, VPN', '[à compléter]'], ['VIR-QC-DC-01', 'Active Directory, DNS principal', '10.70.160.10'], ['VIR-QC-NAS-01', 'TrueNAS : stockage NFS / SMB', '[à compléter]'], ['VIR-QC-NC-01', 'NextCloud (conteneur)', '[à compléter]'], ['VIR-QC-MON-01', 'Supervision (conteneur)', '[à compléter]'], ['VIR-QC-WEB-01', 'Site Web HTTPS (conteneur)', '[à compléter]'], ['VIR-QC-ANS-01', 'Ansible', '[à compléter]'], ['VIR-QC-WS-01', 'Poste Windows 11', 'DHCP']], [2600, 4360, 2400]));
-children.push(...capture('Schéma réseau de l\'infrastructure (siège et succursales)', 'l\'ensemble des équipements, des ponts vmbr0 / vmbr1, de pfSense et des tunnels VPN vers les succursales.'));
+children.push(table(['Nom d\'hôte', 'Service', 'Adresse IP'], [['VIR-QC-FW-01', 'pfSense : routeur, pare-feu, DHCP, VPN IPsec', 'LAN 192.168.161.1 · WAN DHCP 10.70.x.x'], ['VIR-QC-DC-01', 'Active Directory, DNS principal', '192.168.161.10'], ['VIR-QC-DNS-01', 'DNS secondaire (BIND9)', '192.168.161.11'], ['VIR-QC-NAS-01', 'TrueNAS : stockage NFS / SMB', '192.168.161.12'], ['VIR-QC-WEB-01', 'Site Web (nginx + HTTPS)', '192.168.161.13'], ['VIR-QC-MON-01', 'Supervision', '192.168.161.14'], ['VIR-QC-NC-01', 'NextCloud', '192.168.161.15'], ['VIR-QC-ANS-01', 'Ansible', '192.168.161.16'], ['VIR-QC-WS-01', 'Poste Windows 11', 'DHCP (ex. 192.168.161.50)'], ['VIR-MTL-FW-01', 'pfSense de Montréal (VPN IPsec)', '192.168.162.1'], ['VIR-MTL-DC-01', 'AD (DC) de Montréal', '192.168.162.10'], ['VIR-MTL-DNS-01', 'DNS secondaire de Montréal', '192.168.162.11']], [2600, 4360, 2400]));
 
 // Démos
 let sec = 3, n = 0;
