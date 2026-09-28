@@ -285,7 +285,7 @@ children.push(
   new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: 'Infrastructure virtualisée de VIREXON Technologies', size: 32 })] }),
   new Paragraph({ spacing: { after: 900 }, alignment: AlignmentType.CENTER, children: [new TextRun({ text: 'Équipe 04 — Automne 2026', size: 26, color: '595959' })] }),
 );
-const coverRows = [['Représentant de l\'équipe', 'Vitaleme Celestin'], ['Membres de l\'équipe', 'Vitaleme Celestin, Boris Rousseau Mbakam, Ricardo Martin Orbegoso Contreras'], ['Numéro d\'équipe', '04'], ['Enseignant', '[Nom de l\'enseignant]'], ['Date de remise', '[Date indiquée sur Léa]']];
+const coverRows = [['Représentant de l\'équipe', 'Vitaleme Celestin'], ['Membres de l\'équipe', 'Vitaleme Celestin, Boris Rousseau Mbakam, Ricardo Martin Orbegoso Contreras'], ['Numéro d\'équipe', '04'], ['Enseignant', 'Louis Savard'], ['Date de remise', '[Date indiquée sur Léa]']];
 children.push(new Table({ width: { size: 7200, type: WidthType.DXA }, columnWidths: [2800, 4400], alignment: AlignmentType.CENTER,
   rows: coverRows.map(([k, v]) => new TableRow({ children: [
     new TableCell({ width: { size: 2800, type: WidthType.DXA }, shading: { type: ShadingType.CLEAR, fill: LIGHT, color: 'auto' }, margins: { top: 80, bottom: 80, left: 120, right: 120 }, children: [new Paragraph({ children: [b(k)] })] }),
