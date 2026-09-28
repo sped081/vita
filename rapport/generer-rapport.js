@@ -3,8 +3,10 @@ const fs = require('fs');
 const {
   Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, PageBreak, Table, TableRow, TableCell,
   WidthType, ShadingType, BorderStyle, LevelFormat, TableOfContents, Header, Footer, PageNumber, PositionalTab,
-  PositionalTabAlignment, PositionalTabRelativeTo, PositionalTabLeader,
+  PositionalTabAlignment, PositionalTabRelativeTo, PositionalTabLeader, Bookmark, InternalHyperlink, TabStopType, Tab,
 } = require('docx');
+const PAGES = process.argv[3] && fs.existsSync(process.argv[3]) ? JSON.parse(fs.readFileSync(process.argv[3], 'utf8')) : {};
+const HEADS = [];
 
 const FONT = 'Calibri', MONO = 'Consolas';
 const ACCENT = '1F4E79', LIGHT = 'DCE6F1', CODEBG = 'F2F2F2', FILL = 'FFF4CE';
@@ -13,8 +15,9 @@ const W = 9360; // largeur utile (Letter, marges 1 po)
 const p = (text, o = {}) => new Paragraph({ spacing: { after: 120 }, ...o, children: [].concat(text).map((t) => typeof t === 'string' ? new TextRun(t) : t) });
 const b = (t) => new TextRun({ text: t, bold: true });
 const i = (t) => new TextRun({ text: t, italics: true });
-const h1 = (t) => new Paragraph({ heading: HeadingLevel.HEADING_1, pageBreakBefore: true, children: [new TextRun(t)] });
-const h2 = (t) => new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun(t)] });
+const mk = (lvl, t) => { const id = 'h' + HEADS.length; HEADS.push({ id, lvl, t }); return new Bookmark({ id, children: [new TextRun(t)] }); };
+const h1 = (t) => new Paragraph({ heading: HeadingLevel.HEADING_1, pageBreakBefore: true, children: [mk(1, t)] });
+const h2 = (t) => new Paragraph({ heading: HeadingLevel.HEADING_2, children: [mk(2, t)] });
 const h3 = (t) => new Paragraph({ heading: HeadingLevel.HEADING_3, children: [new TextRun(t)] });
 const bullet = (t) => new Paragraph({ numbering: { reference: 'puces', level: 0 }, spacing: { after: 60 }, children: [].concat(t).map((x) => typeof x === 'string' ? new TextRun(x) : x) });
 const code = (lines) => lines.map((l, k) => new Paragraph({
@@ -84,7 +87,7 @@ function etape(e) {
 
 const DEMOS = [
   {
-    titre: 'Démonstration 1 — Virtualisation, sauvegardes et réseau (28 septembre)',
+    titre: 'Démonstration 1 — Virtualisation, sauvegardes et réseau',
     intro: "Cette démonstration met en place le socle de l'infrastructure : l'hyperviseur, le serveur de sauvegarde, les modèles de machines virtuelles et le routeur pare-feu pfSense qui fournit le DHCP et le VPN.",
     etapes: [
       { titre: 'Inventaire matériel et câblage',
@@ -146,7 +149,7 @@ const DEMOS = [
     ],
   },
   {
-    titre: 'Démonstration 2 — Active Directory, GPO, partages et DNS (30 septembre)',
+    titre: 'Démonstration 2 — Active Directory, GPO, partages et DNS',
     intro: "Cette démonstration met en place l'annuaire de l'entreprise, ses 200 comptes, les stratégies de groupe, les partages de fichiers et le service DNS.",
     etapes: [
       { titre: 'Contrôleur de domaine principal (VIR-QC-DC-01)',
@@ -194,7 +197,7 @@ const DEMOS = [
     ],
   },
   {
-    titre: 'Démonstration 3 — Stockage TrueNAS (6 octobre)',
+    titre: 'Démonstration 3 — Stockage TrueNAS',
     intro: 'Cette démonstration met en place le serveur de stockage redondant et ses partages NFS et SMB.',
     etapes: [
       { titre: 'Installation de TrueNAS (VIR-QC-NAS-01)',
@@ -218,7 +221,7 @@ const DEMOS = [
     ],
   },
   {
-    titre: 'Démonstration 4 — NextCloud et supervision (8 octobre)',
+    titre: 'Démonstration 4 — NextCloud et supervision',
     intro: 'Cette démonstration déploie deux services en conteneurs : le partage de fichiers NextCloud et la supervision.',
     etapes: [
       { titre: 'NextCloud en conteneur (VIR-QC-NC-01)',
@@ -242,7 +245,7 @@ const DEMOS = [
     ],
   },
   {
-    titre: 'Démonstration 5 — Site Web sécurisé, supervision et pare-feux d\'hôtes (9 octobre)',
+    titre: 'Démonstration 5 — Site Web, supervision et pare-feux',
     intro: 'Cette démonstration termine le projet avec l\'intranet sécurisé, la supervision complète, l\'automatisation et la sécurité des hôtes.',
     etapes: [
       { titre: 'Site Web sécurisé HTTPS (VIR-QC-WEB-01)',
@@ -292,8 +295,7 @@ children.push(new Paragraph({ spacing: { before: 800 }, alignment: AlignmentType
 
 // Table des matières
 children.push(new Paragraph({ pageBreakBefore: true, children: [new TextRun({ text: 'Table des matières', bold: true, size: 32, color: ACCENT })] }));
-children.push(new TableOfContents('Table des matières', { hyperlink: true, headingStyleRange: '1-2' }));
-children.push(p(i('Si la table est vide à l\'ouverture, cliquez dessus puis « Mettre à jour la table » (ou F9) dans Word.'), { spacing: { before: 200 } }));
+const TOC_AT = children.length;
 
 // Introduction
 children.push(h1('1. Introduction'));
@@ -314,8 +316,10 @@ children.push(...capture('Schéma réseau de l\'infrastructure (siège et succur
 
 // Démos
 let sec = 3, n = 0;
-DEMOS.forEach((d) => {
+const DATES = ['28 septembre 2026', '30 septembre 2026', '6 octobre 2026', '8 octobre 2026', '9 octobre 2026'];
+DEMOS.forEach((d, di) => {
   children.push(h1(`${sec}. ${d.titre}`));
+  children.push(p([b('Date de la démonstration : '), DATES[di]]));
   children.push(p(d.intro));
   d.etapes.forEach((e) => {
     n++; children.push(...etape({ ...e, n }));
@@ -355,6 +359,16 @@ children.push(p('Les scripts fournis et utilisés pendant le projet :'));
 children.push(table(['Script', 'Langage', 'Exécuté sur', 'Rôle'], [['creer-vm.sh', 'Bash', 'VIR-QC-PVE-01', 'Création de VM (clone lié ou vierge)'], ['Creer-Utilisateurs-AD.ps1', 'PowerShell', 'VIR-QC-DC-01', 'OU, groupes et 200 utilisateurs'], ['maj-linux.yml', 'Ansible', 'VIR-QC-ANS-01', 'Mises à jour tous les soirs'], ['install-outils.yml', 'Ansible', 'VIR-QC-ANS-01', 'curl, tree, net-tools, dnsutils'], ['metriques.yml', 'Ansible', 'VIR-QC-ANS-01', 'Métriques CPU, RAM, stockage']], [2700, 1400, 2160, 3100]));
 children.push(todo('Collez ici le code de chaque script, ou joignez-le en fichier séparé selon les consignes de l\'enseignant.'));
 
+const toc = HEADS.map((hd) => new Paragraph({
+  spacing: { before: hd.lvl === 1 ? 140 : 20, after: 20 }, indent: { left: hd.lvl === 1 ? 0 : 360 },
+  tabStops: [{ type: TabStopType.RIGHT, position: W, leader: 'dot' }],
+  children: [new InternalHyperlink({ anchor: hd.id, children: [
+    new TextRun({ text: hd.t, bold: hd.lvl === 1, size: hd.lvl === 1 ? 22 : 20 }),
+    new TextRun({ children: [new Tab(), String(PAGES[hd.t] || '00')], bold: hd.lvl === 1, size: hd.lvl === 1 ? 22 : 20 }),
+  ] })],
+}));
+children.splice(TOC_AT, 0, ...toc);
+fs.writeFileSync(__dirname + '/heads.json', JSON.stringify(HEADS.map((x) => x.t)));
 const doc = new Document({
   creator: 'Équipe 04', title: 'Rapport final — Projet d\'intégration 2', description: 'Infrastructure virtualisée de VIREXON Technologies',
   styles: {
