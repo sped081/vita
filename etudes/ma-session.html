@@ -105,6 +105,18 @@
   .ecard .rm{font-weight:700;font-size:.84rem}
   .ecard .md{margin-top:auto;padding-top:10px;font-size:.8rem;color:var(--muted)}
 
+  /* relief, oracle, constellation, IA */
+  .relief svg{display:block;width:100%;height:auto;border-radius:12px}
+  .relief .info{margin-top:12px;font-size:.95rem}
+  .insight{margin:0 0 10px;padding:10px 12px;border-radius:10px;background:var(--pri-2);font-size:.92rem}
+  .skywrap{border-radius:14px;overflow:hidden;background:#060A16;margin:6px 0 12px}
+  #sky{display:block;width:100%;height:300px;cursor:pointer;touch-action:manipulation}
+  @media (max-width:520px){#sky{height:250px}}
+  .skystats{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .aibox{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px}
+  .aibox .hint{margin:0}
+  .btn[disabled]{opacity:.55;cursor:default}
+
   /* horaire */
   .tt-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:16px;background:var(--card);box-shadow:var(--shadow)}
   .tt{display:grid;min-width:640px;position:relative}
@@ -240,12 +252,16 @@ function example(){
       {id:uid(),course:'mat',name:'Test 2',date:d(-4),weight:20,grade:61,exam:false},
       {id:uid(),course:'mat',name:'Examen final',date:d(20),weight:60,grade:null,exam:true}],
     notes:{
-      res:"# Notes du cours 4\nL'adresse IP identifie une machine sur le réseau.\nQu'est-ce que iSCSI ? :: Un protocole qui transporte des commandes SCSI sur un réseau IP pour accéder à du stockage à distance.\nPort TCP par défaut d'iSCSI :: 3260\nÀ quelle couche OSI se trouve l'adresse IP ? :: La couche 3 (réseau)\nCombien d'adresses utilisables dans un /24 ? :: 254",
-      vir:"ESXi est un hyperviseur de type… :: Type 1 (bare-metal) : il s'installe directement sur le matériel.\nÀ quoi sert vMotion ? :: Déplacer une machine virtuelle allumée d'un hôte à un autre sans l'arrêter.\nQu'est-ce qu'un datastore ? :: L'espace de stockage où ESXi garde les fichiers des machines virtuelles.",
-      fra:"Comparaison :: Rapprochement de deux éléments à l'aide d'un outil de comparaison (comme, tel, pareil à).\nMétaphore :: Rapprochement de deux éléments sans outil de comparaison.",
-      mat:"Dérivée de x² :: 2x\nDérivée d'une constante :: 0"},
+      res:"# Notes du cours 4\nL'adresse IP identifie une machine sur le réseau.\nQu'est-ce que iSCSI ? :: Un protocole qui transporte des commandes SCSI sur un réseau IP pour accéder à du stockage à distance.\nPort TCP par défaut d'iSCSI :: 3260\nÀ quelle couche OSI se trouve l'adresse IP ? :: La couche 3 (réseau)\nCombien d'adresses utilisables dans un /24 ? :: 254\nMasque de sous-réseau d'un /24 :: 255.255.255.0\nQuel protocole attribue automatiquement les adresses IP ? :: DHCP\nÀ quoi sert le DNS ? :: Traduire un nom de domaine en adresse IP.\nÀ quelle couche OSI travaille un commutateur (switch) ? :: La couche 2 (liaison de données)",
+      vir:"ESXi est un hyperviseur de type… :: Type 1 (bare-metal) : il s'installe directement sur le matériel.\nÀ quoi sert vMotion ? :: Déplacer une machine virtuelle allumée d'un hôte à un autre sans l'arrêter.\nQu'est-ce qu'un datastore ? :: L'espace de stockage où ESXi garde les fichiers des machines virtuelles.\nQu'est-ce qu'un snapshot ? :: Une copie de l'état d'une machine virtuelle à un instant donné, pour pouvoir y revenir.\nÀ quoi sert vCenter ? :: Gérer plusieurs hôtes ESXi depuis une seule console.\nQu'est-ce qu'un vSwitch ? :: Un commutateur virtuel qui relie les machines virtuelles au réseau.",
+      fra:"Comparaison :: Rapprochement de deux éléments à l'aide d'un outil de comparaison (comme, tel, pareil à).\nMétaphore :: Rapprochement de deux éléments sans outil de comparaison.\nPersonnification :: Attribuer des caractéristiques humaines à un objet ou à un animal.\nAntithèse :: Opposer deux mots ou deux idées contraires dans une même phrase.\nHyperbole :: Exagérer une idée pour frapper l'esprit.",
+      mat:"Dérivée de x² :: 2x\nDérivée d'une constante :: 0\nDérivée de sin(x) :: cos(x)\nDérivée de eˣ :: eˣ\nDérivée de ln(x) :: 1/x"},
     done:{},cards:{}};
 }
+var _example=example;
+example=function(){var ex=_example(),now=Date.now(),i=0,M=[[6,1],[0.8,2.5],[12,2],[2,5],[0.5,3],[20,1],[3,0.5]];
+  Object.keys(ex.notes).forEach(function(cid){ex.notes[cid].split('\n').forEach(function(l){var k=l.indexOf('::');if(k<0)return;var m=M[i++%M.length];ex.cards[cid+'|'+l.slice(0,k).trim()]={s:m[0],last:now-m[1]*DAY,reps:2};});});
+  return ex;};
 function blank(){return {v:1,example:false,target:60,courses:[],classes:[],evals:[],notes:{},done:{},cards:{}};}
 
 // ---------- état et sauvegarde ----------
@@ -274,6 +290,7 @@ function boot(){
   var local=lsGet();S=valid(local)?normalize(local):example();
   render();badge(savedLabel());
   if(!window.claude||!window.claude.use)return;
+  window.claude.use('sample').then(function(fn){ai=fn||null;if(ai&&tab==='cards')render();}).catch(function(){});
   Promise.all([window.claude.use('db'),window.claude.use('user')]).then(function(r){
     var db=r[0],user=r[1];if(!db||!user)return;
     return user.id().then(function(id){
@@ -321,9 +338,149 @@ function plan(){
 }
 function cards(cid){
   var txt=S.notes[cid]||'';return txt.split('\n').map(function(l){var i=l.indexOf('::');if(i<0)return null;
-    var q=l.slice(0,i).trim(),a=l.slice(i+2).trim();return q&&a?{q:q,a:a,key:cid+'|'+q}:null;}).filter(Boolean);
+    var q=l.slice(0,i).trim(),a=l.slice(i+2).trim();return q&&a?{q:q,a:a,key:cid+'|'+q,cid:cid}:null;}).filter(Boolean);
 }
-function box(key){var c=S.cards[key];return c?c.box:0;}
+// ---------- mémoire : courbe de l'oubli ----------
+// Chaque fiche a une « stabilité » s (en jours). La probabilité de s'en souvenir
+// décroît avec le temps : R = exp(-jours depuis la dernière révision / s).
+// Une bonne réponse multiplie la stabilité, une erreur la fait chuter.
+var DAY=864e5;
+function mem(key){var c=S.cards[key];if(!c)return null;if(c.s===undefined){c.s=[0.5,2,6,15][Math.min(3,c.box||0)];c.last=c.last||Date.now();}return c;}
+function recall(key,now){var c=mem(key);if(!c||!c.last)return 0;var t=Math.max(0,((now||Date.now())-c.last)/DAY);return Math.exp(-t/Math.max(0.2,c.s));}
+function memLabel(key){if(!mem(key))return 'Nouvelle';var r=recall(key);return r>=0.8?'Brillante':r>=0.4?'Pâlit':'S\'éteint';}
+
+// ---------- oracle : simulation de fins de session ----------
+function hashStr(s){var h=2166136261;for(var i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}return h>>>0;}
+function rng(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+function gauss(r){var u=1-r(),v=r();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);}
+function isGraded(e){return e.grade!==null&&e.grade!==''&&isFinite(e.grade);}
+function mean(a){return a.reduce(function(x,y){return x+y;},0)/a.length;}
+function stdev(a){var m=mean(a);return Math.sqrt(a.reduce(function(x,y){return x+(y-m)*(y-m);},0)/(a.length-1));}
+// Simule 3 000 fins de session pour un cours. `boost` ajoute des points à la
+// note attendue sur tout ce qui reste (pour mesurer où l'effort compte le plus).
+function oracle(cid,boost){
+  var W=0,P=0,g=[],gw=[],rem=[];
+  S.evals.forEach(function(e){if(e.course!==cid)return;var w=+e.weight||0;W+=w;if(isGraded(e)){P+=w*e.grade;g.push(+e.grade);gw.push(w);}else rem.push(w);});
+  if(!W)return null;
+  if(!rem.length)return {p:(P/W)>=S.target?1:0,done:true};
+  var all=S.evals.filter(isGraded).map(function(e){return +e.grade;});
+  var mu=g.length?g.reduce(function(s,x,i){return s+x*gw[i];},0)/gw.reduce(function(a,b){return a+b;},0):(all.length?mean(all):70);
+  // Peu de notes dans ce cours : on les combine avec votre moyenne dans les autres cours (ou 72 % si vous n'en avez pas encore).
+  if(g.length){var others=S.evals.filter(function(e){return isGraded(e)&&e.course!==cid;}).map(function(e){return +e.grade;}),prior=others.length?mean(others):72,k=g.length/(g.length+1);mu=k*mu+(1-k)*prior;}
+  var sd=g.length>=2?stdev(g):12;sd=Math.max(6,Math.min(20,sd));
+  var r=rng(hashStr(cid)),N=3000,win=0;
+  for(var i=0;i<N;i++){var shift=gauss(r)*sd*0.5,tot=P;
+    for(var j=0;j<rem.length;j++){var x=mu+boost+shift+gauss(r)*sd*0.75;x=x<0?0:x>100?100:x;tot+=rem[j]*x;}
+    if(tot/W>=S.target)win++;}
+  return {p:win/N,done:false};
+}
+function prob(p){return p>0.995?'> 99 %':p<0.005?'< 1 %':Math.round(p*100)+' %';}
+function probColor(p){return p>=0.8?'#2F7D4F':p>=0.5?'#D9730D':'#C0392B';}
+function rOracle(){
+  var rows=S.courses.map(function(c){var o=oracle(c.id,0);if(!o)return null;var o5=o.done?o:oracle(c.id,5);return {c:c,o:o,p5:o5.p};}).filter(Boolean);
+  if(!rows.length)return '<div class="empty">Ajoutez des évaluations avec leur pondération pour consulter l\'oracle.</div>';
+  var open=rows.filter(function(x){return !x.o.done;}).sort(function(a,b){return (b.p5-b.o.p)-(a.p5-a.o.p);});
+  var best=open[0],h='';
+  if(best&&best.p5-best.o.p>=0.03)h+='<p class="insight">Là où votre effort compte le plus : <b>'+esc(best.c.name)+'</b>. Si vous gagnez 5 points sur ce qu\'il reste, vos chances de réussir passent de <b>'+prob(best.o.p)+'</b> à <b>'+prob(best.p5)+'</b>.</p>';
+  else if(open.length)h+='<p class="insight">Vos chances bougent peu d\'un cours à l\'autre : suivez simplement votre plan d\'étude.</p>';
+  h+=rows.map(function(x){var p=x.o.p;return '<div class="row">'+courseTag(x.c)+'<div class="t"><b>'+esc(x.c.name)+'</b><div class="bar" style="margin-top:6px"><i style="width:'+Math.max(2,p*100)+'%;background:'+probColor(p)+'"></i></div></div><span class="chip">'+(x.o.done?(p?'Réussi':'Échoué'):prob(p))+'</span></div>';}).join('');
+  return h+'<p class="tip">Chances de finir à '+esc(S.target)+' % ou plus, d\'après 3 000 fins de session simulées à partir de vos notes. C\'est une estimation, pas une garantie.</p>';
+}
+
+// ---------- relief de la session ----------
+function weekStart(d){return addDays(d,-dayIdx(d));}
+var reliefWeeks=[],reliefFirst=null;
+function relief(){
+  if(!S.evals.length)return '<div class="empty">Ajoutez vos évaluations : votre session prendra la forme d\'une chaîne de montagnes.</div>';
+  var t=today(),dates=S.evals.map(function(e){return parse(e.date).getTime();});
+  var first=weekStart(new Date(Math.min.apply(null,dates.concat([t.getTime()])))),last=weekStart(new Date(Math.max.apply(null,dates)));
+  var nW=Math.max(2,Math.round(diffDays(first,last)/7)+1),load=[],items=[];
+  for(var i=0;i<nW;i++){load.push(0);items.push([]);}
+  S.evals.forEach(function(e){var w=Math.floor(diffDays(first,parse(e.date))/7);if(w>=0&&w<nW){load[w]+=(+e.weight||0);items[w].push(e);}});
+  reliefWeeks=items;reliefFirst=first;
+  var max=Math.max.apply(null,load)||1,W=600,H=210,TOP=40,BASE=182,step=(W-90)/(nW-1);
+  function X(i){return 40+i*step;}function Y(v){return BASE-(v/max)*(BASE-TOP);}
+  function smooth(p){var d='M'+p[0][0].toFixed(1)+','+p[0][1].toFixed(1);
+    for(var i=0;i<p.length-1;i++){var p0=p[i-1]||p[i],p1=p[i],p2=p[i+1],p3=p[i+2]||p2;
+      var c1=[p1[0]+(p2[0]-p0[0])/6,Math.min(BASE,p1[1]+(p2[1]-p0[1])/6)],c2=[p2[0]-(p3[0]-p1[0])/6,Math.min(BASE,p2[1]-(p3[1]-p1[1])/6)];
+      d+=' C'+c1[0].toFixed(1)+','+c1[1].toFixed(1)+' '+c2[0].toFixed(1)+','+c2[1].toFixed(1)+' '+p2[0].toFixed(1)+','+p2[1].toFixed(1);}return d;}
+  var pts=load.map(function(v,i){return [X(i),Y(v)];});
+  var back=load.map(function(v,i){return [X(i)+step/2,Y(v*0.5+max*0.15)];});back.unshift([0,Y(max*0.15)]);
+  var s='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Relief de la session : hauteur des sommets selon la pondération des évaluations de chaque semaine">'+
+    '<defs><linearGradient id="rsky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0B1826"/><stop offset="1" stop-color="#1D3B4A"/></linearGradient>'+
+    '<linearGradient id="rfront" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8FE0C6"/><stop offset=".55" stop-color="#1F8A7A"/><stop offset="1" stop-color="#0F4C45"/></linearGradient></defs>'+
+    '<rect width="'+W+'" height="'+H+'" fill="url(#rsky)"/>';
+  for(var k=0;k<40;k++){var rr=rng(k+7);s+='<circle cx="'+(rr()*W).toFixed(0)+'" cy="'+(rr()*110).toFixed(0)+'" r="'+(rr()*1.2+.3).toFixed(1)+'" fill="#fff" opacity="'+(rr()*.5+.2).toFixed(2)+'"/>';}
+  s+='<path d="'+smooth(back)+' L'+W+','+H+' L0,'+H+' Z" fill="#2C5E62" opacity=".55"/>';
+  s+='<path d="'+smooth(pts)+' L'+X(nW-1)+','+H+' L'+X(0)+','+H+' Z" fill="url(#rfront)"/>';
+  var peaks=[];for(var i2=0;i2<nW;i2++){var v=load[i2];if(v>0&&v>=(load[i2-1]||0)&&v>=(load[i2+1]||0))peaks.push(i2);}
+  peaks.forEach(function(i){if(load[i]>=max*0.55){var x=X(i),y=Y(load[i]);s+='<path d="M'+(x-13)+','+(y+11)+' L'+x+','+y+' L'+(x+13)+','+(y+11)+' L'+(x+6)+','+(y+7)+' L'+x+','+(y+12)+' L'+(x-6)+','+(y+7)+' Z" fill="#F4F7F6"/>';}});
+  peaks.slice().sort(function(a,b){return load[b]-load[a];}).slice(0,3).forEach(function(i){var x=X(i),y=Y(load[i]);
+    s+='<line x1="'+x+'" y1="'+y+'" x2="'+x+'" y2="'+(y-20)+'" stroke="#fff" stroke-width="1.5"/><path d="M'+x+','+(y-20)+' l12,4 l-12,4 Z" fill="#E5484D"/>'+
+      '<text x="'+(x>W-80?x-4:x+15)+'" y="'+(y-12)+'" fill="#fff" font-size="11" font-weight="700" text-anchor="'+(x>W-80?'end':'start')+'" font-family="Figtree,sans-serif">'+load[i]+' pts</text>';});
+  for(var i3=0;i3<nW;i3+=Math.max(1,Math.round(nW/6))){s+='<text x="'+X(i3)+'" y="'+(H-6)+'" fill="#CFE7E1" font-size="10" text-anchor="middle" font-family="Figtree,sans-serif">'+esc(fmtShort.format(addDays(first,i3*7)))+'</text>';}
+  var ti=diffDays(first,t)/7;if(ti>=0&&ti<=nW-1){var i0=Math.floor(ti),f=ti-i0,yv=load[i0]*(1-f)+(load[Math.min(nW-1,i0+1)]||0)*f,tx=40+ti*step,ty=Y(yv);
+    s+='<line x1="'+tx+'" y1="'+(ty-4)+'" x2="'+tx+'" y2="'+(TOP-14)+'" stroke="#FFE066" stroke-width="1.5" stroke-dasharray="3 3"/><circle cx="'+tx+'" cy="'+ty+'" r="5" fill="#FFE066" stroke="#0B1826" stroke-width="2"/>'+
+      '<text x="'+tx+'" y="'+(TOP-18)+'" fill="#FFE066" font-size="11" font-weight="700" text-anchor="middle" font-family="Figtree,sans-serif">Vous êtes ici</text>';}
+  for(var i4=0;i4<nW;i4++)s+='<rect data-week="'+i4+'" x="'+(X(i4)-step/2)+'" y="0" width="'+step+'" height="'+H+'" fill="transparent" style="cursor:pointer"><title>'+load[i4]+' points de pondération</title></rect>';
+  s+='</svg>';
+  var cw=Math.max(0,Math.floor(diffDays(first,t)/7)),bi=-1;for(var j=cw;j<nW;j++)if(load[j]>0&&(bi<0||load[j]>load[bi]))bi=j;
+  var info='';
+  if(bi>=0){var ws=addDays(first,bi*7),go=addDays(ws,-14);
+    info='Votre prochain sommet : la semaine du <b>'+esc(fmtDate.format(ws))+'</b>, avec '+items[bi].length+' évaluation'+(items[bi].length>1?'s':'')+' qui valent <b>'+load[bi]+' points</b> de pondération. '+
+      (diffDays(t,go)<=0?'<b>Commencez à grimper maintenant.</b>':'Commencez à grimper le <b>'+esc(fmtDate.format(go))+'</b>, deux semaines avant.');}
+  else info='Plus aucun sommet devant vous. Bonne fin de session !';
+  return s+'<div class="info" id="reliefInfo">'+info+'</div><p class="tip">Touchez une semaine pour voir ce qui s\'y trouve.</p>';
+}
+var fmtShort=new Intl.DateTimeFormat('fr-CA',{day:'numeric',month:'short'});
+
+// ---------- constellation de la mémoire ----------
+var skyLayout=[],skyHits=[],skyRun=false,skySize='',REDUCE=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function rgba(hex,a){var n=parseInt(hex.slice(1),16);return 'rgba('+(n>>16&255)+','+(n>>8&255)+','+(n&255)+','+a.toFixed(3)+')';}
+function layoutSky(w,h){
+  var groups=S.courses.map(function(c){return {c:c,cards:cards(c.id)};}).filter(function(g){return g.cards.length;}),n=groups.length;
+  return groups.map(function(g,gi){
+    var ang=(gi/n)*Math.PI*2-Math.PI/2,cx=n===1?w/2:w/2+Math.cos(ang)*w*0.3,cy=n===1?h/2:h/2+Math.sin(ang)*h*0.26;
+    var R=Math.min(w,h)*(n===1?0.34:n<=2?0.24:0.19);
+    var pts=g.cards.map(function(card){var hh=hashStr(card.key),a=(hh%3600)/3600*Math.PI*2,rr=R*(0.35+((hh>>>12)%1000)/1000*0.65);
+      return {x:cx+Math.cos(a)*rr,y:cy+Math.sin(a)*rr*0.8,card:card,color:g.c.color,a:a,ph:(hh%628)/100};});
+    pts.sort(function(p,q){return p.a-q.a;});
+    return {c:g.c,cx:cx,cy:cy,R:R,pts:pts};
+  });
+}
+var dust=(function(){var r=rng(42),a=[];for(var i=0;i<110;i++)a.push([r(),r(),r()*1.1+.2,r()*6]);return a;})();
+function drawSky(ts){
+  var cv=$('sky');if(!cv||tab!=='cards'||$('s-cards').hidden){skyRun=false;return;}
+  var w=cv.clientWidth,h=cv.clientHeight,dpr=Math.min(2,window.devicePixelRatio||1),key=w+'x'+h+'|'+S.courses.length+'|'+Object.keys(S.notes).map(function(k){return cards(k).length;}).join(',');
+  if(skySize!==key){cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);skyLayout=layoutSky(w,h);skySize=key;}
+  var ctx=cv.getContext('2d'),t=(ts||0)/1000,now=Date.now();ctx.setTransform(dpr,0,0,dpr,0,0);
+  var g=ctx.createLinearGradient(0,0,0,h);g.addColorStop(0,'#060A16');g.addColorStop(1,'#13203A');ctx.fillStyle=g;ctx.fillRect(0,0,w,h);
+  dust.forEach(function(d){ctx.fillStyle='rgba(255,255,255,'+(0.18+0.12*Math.sin(t*0.8+d[3]))+')';ctx.fillRect(d[0]*w,d[1]*h,d[2],d[2]);});
+  skyHits=[];
+  skyLayout.forEach(function(gp){
+    var avg=0;gp.pts.forEach(function(p){p.r=recall(p.card.key,now);avg+=p.r;});avg/=gp.pts.length||1;
+    ctx.strokeStyle='rgba(255,255,255,'+(0.08+0.3*avg).toFixed(3)+')';ctx.lineWidth=1;ctx.beginPath();
+    gp.pts.forEach(function(p,i){if(i)ctx.lineTo(p.x,p.y);else ctx.moveTo(p.x,p.y);});if(gp.pts.length>2)ctx.closePath();ctx.stroke();
+    gp.pts.forEach(function(p){
+      var tw=REDUCE?1:0.82+0.18*Math.sin(t*1.8+p.ph),a=(0.1+0.9*p.r)*tw,size=1.6+3.6*p.r;
+      var rg=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,size*5);rg.addColorStop(0,rgba(p.color,a*0.75));rg.addColorStop(1,rgba(p.color,0));
+      ctx.fillStyle=rg;ctx.beginPath();ctx.arc(p.x,p.y,size*5,0,7);ctx.fill();
+      ctx.fillStyle='rgba(255,255,255,'+a.toFixed(3)+')';ctx.beginPath();ctx.arc(p.x,p.y,size,0,7);ctx.fill();
+      skyHits.push(p);});
+    ctx.fillStyle='rgba(235,240,255,.75)';ctx.font='600 12px Figtree, system-ui, sans-serif';ctx.textAlign='center';
+    ctx.fillText(gp.c.name,gp.cx,Math.min(h-8,gp.cy+gp.R*0.8+22));
+  });
+  if(!skyLayout.length){ctx.fillStyle='rgba(235,240,255,.7)';ctx.font='500 14px Figtree, system-ui, sans-serif';ctx.textAlign='center';ctx.fillText('Écrivez des fiches pour allumer vos premières étoiles.',w/2,h/2);}
+  if(REDUCE){skyRun=false;return;}
+  requestAnimationFrame(drawSky);
+}
+function startSky(){skySize='';if(!skyRun){skyRun=true;requestAnimationFrame(drawSky);}}
+function skyClick(ev){
+  var cv=$('sky');if(!cv)return;var b=cv.getBoundingClientRect(),x=ev.clientX-b.left,y=ev.clientY-b.top,best=null,bd=26;
+  skyHits.forEach(function(p){var d=Math.hypot(p.x-x,p.y-y);if(d<bd){bd=d;best=p;}});
+  if(best)startStudy([best.card]);
+}
+function allCards(){var out=[];S.courses.forEach(function(c){out=out.concat(cards(c.id));});return out;}
 
 // ---------- rendu ----------
 var tab='today';
@@ -367,7 +524,9 @@ function rToday(){
   var evs=events(7);
   h+='<div class="sechd"><h2>Évènements</h2><button data-tab="sched">Voir l\'horaire ›</button></div>';
   h+=evs.length?'<div class="hscroll">'+evs.map(ecard).join('')+'</div>':'<div class="card" style="margin-bottom:22px"><div class="empty">Rien cette semaine. Ajoutez vos cours dans l\'onglet Horaire.</div></div>';
+  h+='<div class="card relief" style="margin-bottom:16px"><h2>🏔️ Le relief de votre session</h2>'+relief()+'</div>';
   h+='<div class="grid">';
+  h+='<div class="card"><h2>🔮 L\'oracle de fin de session</h2>'+rOracle()+'</div>';
   h+='<div class="card"><h2>À réviser aujourd\'hui</h2>'+(ses.length?ses.map(sessionRow).join(''):'<div class="empty">Rien de prévu. Le plan se remplit tout seul quand vous ajoutez des examens.</div>')+'</div>';
   h+='<div class="card"><h2>Moyennes</h2>'+(S.courses.length?S.courses.map(function(c){var s=stats(c.id);var v=s.current;return '<div class="row">'+courseTag(c)+'<div class="t"><b>'+esc(c.name)+'</b><div class="bar" style="margin-top:6px"><i style="width:'+(v==null?0:Math.min(100,v))+'%;background:'+esc(c.color)+'"></i></div></div><span class="chip">'+(v==null?'—':pct(v))+'</span></div>';}).join(''):'<div class="empty">Ajoutez un cours dans l\'onglet Cours.</div>')+'</div>';
   $('s-today').innerHTML=h+'</div>';
@@ -418,6 +577,7 @@ function rCourses(){
     else if(s.need>100)msg='Même avec 100 % au reste, vous ne pouvez plus atteindre '+esc(S.target)+' %. Parlez-en à votre enseignant ou enseignante.';
     else msg='Pour finir à <b>'+esc(S.target)+' %</b>, il vous faut en moyenne <b>'+pct(s.need)+'</b> sur les '+s.remaining+' % qui restent.';
     if(s.W!==0&&s.W!==100)msg+=' <span style="color:var(--warn)">Attention : les pondérations totalisent '+s.W+' % au lieu de 100 %.</span>';
+    var orc=oracle(c.id,0);if(orc&&!orc.done)msg+=' Selon l\'oracle, vos chances de finir à '+esc(S.target)+' % ou plus : <b style="color:'+probColor(orc.p)+'">'+prob(orc.p)+'</b>.';
     h+='<div class="need">'+msg+'</div>';
     h+='<form class="form" data-fev="'+esc(c.id)+'" style="margin-top:12px"><label>Évaluation<input type="text" name="n" placeholder="Examen 1" maxlength="60" required></label><label>Date<input type="date" name="d" required></label><label>Pondération %<input class="num" type="number" name="w" min="0" max="100" step="0.5" required></label><label style="flex-direction:row;align-items:center;gap:6px;padding-bottom:8px"><input type="checkbox" name="x">Examen</label><button class="btn ghost" type="submit">Ajouter</button></form></div>';
   });
@@ -436,31 +596,65 @@ function rPlan(){
   $('s-plan').innerHTML=h;
 }
 
-var openCourse=null;
+var openCourse=null,ai=null,aiBusy=false,aiMsg='',aiCtl=null;
 function rCards(){
-  if(!S.courses.length){$('s-cards').innerHTML='<div class="card"><div class="empty">Créez d\'abord un cours dans « Cours et notes ».</div></div>';return;}
+  if(!S.courses.length){$('s-cards').innerHTML='<div class="card"><div class="empty">Créez d\'abord un cours dans l\'onglet Cours.</div></div>';return;}
   if(!openCourse||!S.courses.some(function(c){return c.id===openCourse;}))openCourse=S.courses[0].id;
-  var h='<div class="card" style="margin-bottom:16px"><div class="form">'+S.courses.map(function(c){var cs=cards(c.id);return '<button class="btn '+(c.id===openCourse?'':'ghost')+' sm" data-oc="'+esc(c.id)+'">'+courseTag(c)+' '+esc(c.name)+' · '+cs.length+'</button>';}).join('')+'</div></div>';
-  var c=course(openCourse),cs=cards(openCourse),todo=cs.filter(function(x){return box(x.key)<2;}).length;
-  h+='<div class="grid"><div class="card"><h2>Notes de cours · '+esc(c.name)+'</h2><p class="hint">Écrivez vos notes librement. Chaque ligne au format <code>Question :: Réponse</code> devient une fiche de révision.</p><textarea id="notes" spellcheck="true" aria-label="Notes de cours">'+esc(S.notes[openCourse]||'')+'</textarea></div>';
-  h+='<div class="card"><h2>Fiches</h2>'+(cs.length?'<p style="margin:0 0 12px;color:var(--muted)">'+cs.length+' fiche'+(cs.length>1?'s':'')+' · <b>'+todo+'</b> à revoir</p><button class="btn" id="startStudy">Réviser maintenant</button>'+
-    cs.slice(0,8).map(function(x){var b=box(x.key);return '<div class="row"><div class="t"><b>'+esc(x.q)+'</b><span>'+esc(x.a)+'</span></div><span class="chip">'+(b>=2?'Maîtrisée':b===1?'En cours':'Nouvelle')+'</span></div>';}).join('')+(cs.length>8?'<div class="empty">… et '+(cs.length-8)+' autres.</div>':'')
-    :'<div class="empty">Aucune fiche encore. Ajoutez une ligne comme <code>Port d\'iSCSI :: 3260</code> dans vos notes.</div>')+'</div></div>';
+  var all=allCards(),now=Date.now(),bright=all.filter(function(x){return recall(x.key,now)>=0.8;}).length,fading=all.filter(function(x){return recall(x.key,now)<0.5;});
+  var h='<div class="card" style="margin-bottom:16px"><h2>🌌 La constellation de votre mémoire</h2>'+
+    '<p class="hint" style="margin-top:0">Chaque fiche est une étoile. Elle pâlit à mesure que vous l\'oubliez, selon la courbe de l\'oubli, et se rallume quand vous la révisez. Touchez une étoile pour la raviver.</p>'+
+    '<div class="skywrap"><canvas id="sky" aria-label="Constellation : '+all.length+' fiches, '+bright+' brillantes, '+fading.length+' qui s\'éteignent"></canvas></div>'+
+    '<div class="skystats"><span class="chip">'+all.length+' étoiles</span><span class="chip">'+bright+' brillent</span><span class="chip'+(fading.length?' hot':'')+'">'+fading.length+' s\'éteignent</span>'+
+    (fading.length?'<button class="btn sm" id="revive" style="margin-left:auto">Raviver les étoiles qui s\'éteignent</button>':'')+'</div></div>';
+  h+='<div class="card" style="margin-bottom:16px"><div class="form">'+S.courses.map(function(c){var cs=cards(c.id);return '<button class="btn '+(c.id===openCourse?'':'ghost')+' sm" data-oc="'+esc(c.id)+'">'+courseTag(c)+' '+esc(c.name)+' · '+cs.length+'</button>';}).join('')+'</div></div>';
+  var c=course(openCourse),cs=cards(openCourse),todo=cs.filter(function(x){return recall(x.key,now)<0.5;}).length;
+  h+='<div class="grid"><div class="card"><h2>Notes de cours · '+esc(c.name)+'</h2><p class="hint">Écrivez vos notes librement. Chaque ligne au format <code>Question :: Réponse</code> devient une fiche de révision.</p><textarea id="notes" spellcheck="true" aria-label="Notes de cours">'+esc(S.notes[openCourse]||'')+'</textarea>'+
+    (ai?'<div class="aibox"><button class="btn" id="aiGen"'+(aiBusy?' disabled':'')+'>✨ Créer des fiches avec l\'IA</button>'+(aiBusy?'<button class="btn ghost sm" id="aiStop">Arrêter</button>':'')+'<span class="hint" role="status">'+esc(aiMsg)+'</span></div>':'')+'</div>';
+  h+='<div class="card"><h2>Fiches</h2>'+(cs.length?'<p style="margin:0 0 12px;color:var(--muted)">'+cs.length+' fiche'+(cs.length>1?'s':'')+' · <b>'+todo+'</b> à raviver</p><button class="btn" id="startStudy">Réviser maintenant</button>'+
+    cs.slice(0,8).map(function(x){return '<div class="row"><div class="t"><b>'+esc(x.q)+'</b><span>'+esc(x.a)+'</span></div><span class="chip">'+memLabel(x.key)+'</span></div>';}).join('')+(cs.length>8?'<div class="empty">… et '+(cs.length-8)+' autres.</div>':'')
+    :'<div class="empty">Aucune fiche encore. Ajoutez une ligne comme <code>Port d\'iSCSI :: 3260</code> dans vos notes'+(ai?', ou laissez l\'IA les créer.':'.')+'</div>')+'</div></div>';
   $('s-cards').innerHTML=h;
+  startSky();
+}
+function aiGenerate(){
+  var cid=openCourse,notes=(S.notes[cid]||'').trim();
+  if(notes.length<40){aiMsg='Écrivez d\'abord quelques lignes de notes.';render();return;}
+  aiBusy=true;aiMsg='L\'IA lit vos notes… (jusqu\'à une minute)';aiCtl=new AbortController();render();
+  var existing=cards(cid).map(function(x){return x.q.toLowerCase();});
+  var prompt='Tu aides un étudiant de cégep à réviser. À partir des notes de cours ci-dessous (cours : '+course(cid).name+'), crée entre 5 et 12 fiches de révision en français.\n'+
+    'Règles : une question courte et précise ; une réponse d\'une ou deux phrases ; utilise UNIQUEMENT l\'information présente dans les notes, n\'invente rien ; ne recrée pas les fiches déjà écrites au format « Question :: Réponse ».\n'+
+    'Réponds uniquement avec un tableau JSON, par exemple : [{"q":"Port TCP par défaut d\'iSCSI ?","a":"3260"}]\n\nNOTES :\n'+notes.slice(0,12000);
+  ai.json(prompt,{signal:aiCtl.signal}).then(function(arr){
+    if(!Array.isArray(arr))throw {code:'invalid_json'};
+    var add=[];arr.forEach(function(x){if(!x||typeof x.q!=='string'||typeof x.a!=='string')return;
+      var q=x.q.replace(/::/g,':').replace(/\s+/g,' ').trim().slice(0,200),a=x.a.replace(/::/g,':').replace(/\s+/g,' ').trim().slice(0,400);
+      if(!q||!a||existing.indexOf(q.toLowerCase())>=0)return;existing.push(q.toLowerCase());add.push(q+' :: '+a);});
+    if(add.length)S.notes[cid]=(S.notes[cid]||'').replace(/\s*$/,'')+'\n\n# Fiches créées par l\'IA\n'+add.join('\n');
+    aiBusy=false;aiMsg=add.length?add.length+' fiches ajoutées à la fin de vos notes. Relisez-les : l\'IA peut se tromper.':'Aucune nouvelle fiche trouvée dans ces notes.';commit();
+  },function(e){
+    aiBusy=false;var code=e&&e.code;
+    if(['not_granted','sampling_disabled','not_declared','capability_disabled','capability_removed'].indexOf(code)>=0){ai=null;aiMsg='';}
+    else if(code==='cancelled')aiMsg='';
+    else if(code==='rate_limited')aiMsg='Trop de demandes pour le moment. Réessayez un peu plus tard.';
+    else if(code==='invalid_json')aiMsg='La réponse de l\'IA était illisible. Réessayez.';
+    else if(code==='prompt_too_large')aiMsg='Vos notes sont trop longues : découpez-les en plusieurs cours.';
+    else aiMsg='Une erreur est survenue. Réessayez.';
+    render();
+  });
 }
 
 // ---------- révision des fiches ----------
 var deck=[],di=0,shown=false,right=0;
-function startStudy(){var cs=cards(openCourse);deck=cs.slice().sort(function(a,b){return box(a.key)-box(b.key)||Math.random()-.5;});di=0;shown=false;right=0;$('study').hidden=false;rFlash();}
+function startStudy(list){var cs=list||cards(openCourse),now=Date.now();deck=cs.slice().sort(function(a,b){return recall(a.key,now)-recall(b.key,now)||Math.random()-.5;});di=0;shown=false;right=0;$('study').hidden=false;rFlash();}
 function rFlash(){
   var f=$('flash');
-  if(di>=deck.length){f.innerHTML='<div class="meta"><span>'+esc(course(openCourse).name)+'</span><span>Terminé</span></div><div class="q">Bravo ! '+right+' / '+deck.length+' réussies.</div><div class="acts"><button class="btn" id="fRe">Recommencer</button><button class="btn ghost" id="fClose">Fermer</button></div>';$('fRe').focus();return;}
+  if(di>=deck.length){f.innerHTML='<div class="meta"><span>'+esc(deck.length&&deck[0].cid?course(deck[0].cid).name:'')+'</span><span>Terminé</span></div><div class="q">Bravo ! '+right+' / '+deck.length+' réussies.</div><div class="acts"><button class="btn" id="fRe">Recommencer</button><button class="btn ghost" id="fClose">Fermer</button></div>';$('fRe').focus();return;}
   var c=deck[di];
-  f.innerHTML='<div class="meta"><span>'+esc(course(openCourse).name)+'</span><span>'+(di+1)+' / '+deck.length+'</span></div><div class="q">'+esc(c.q)+'</div>'+
+  f.innerHTML='<div class="meta"><span>'+esc(course(c.cid||openCourse).name)+' · '+esc(memLabel(c.key))+'</span><span>'+(di+1)+' / '+deck.length+'</span></div><div class="q">'+esc(c.q)+'</div>'+
     (shown?'<div class="a">'+esc(c.a)+'</div><div class="acts"><button class="btn danger" id="fNo">À revoir</button><button class="btn" id="fYes">Je savais</button></div>':'<div class="acts"><button class="btn" id="fShow">Voir la réponse</button><button class="btn ghost" id="fClose">Arrêter</button></div>');
   var b=$('fShow')||$('fYes');if(b)b.focus();
 }
-function grade(ok){var c=deck[di],cur=box(c.key);S.cards[c.key]={box:ok?Math.min(3,cur+1):0};if(ok)right++;di++;shown=false;commit();rFlash();}
+function grade(ok){var c=deck[di],cur=mem(c.key)||{s:0.5,reps:0},st=ok?(cur.reps?cur.s*2.5:1):Math.max(0.3,cur.s*0.4);S.cards[c.key]={s:Math.round(st*1000)/1000,last:Date.now(),reps:(cur.reps||0)+1};if(ok)right++;di++;shown=false;commit();rFlash();}
 
 // ---------- événements ----------
 document.addEventListener('click',function(e){
@@ -473,10 +667,19 @@ document.addEventListener('click',function(e){
     else{t.dataset.arm='1';t.textContent='Confirmer la suppression';setTimeout(function(){if(t.isConnected){delete t.dataset.arm;t.textContent='Supprimer';}},3000);}return;}
   if(t.dataset.oc){openCourse=t.dataset.oc;render();return;}
   if(t.id==='startStudy'){startStudy();return;}
+  if(t.id==='revive'){var now=Date.now();startStudy(allCards().filter(function(x){return recall(x.key,now)<0.5;}));return;}
+  if(t.id==='aiGen'){if(ai&&!aiBusy)aiGenerate();return;}
+  if(t.id==='aiStop'){if(aiCtl)aiCtl.abort();return;}
   if(t.id==='fShow'){shown=true;rFlash();return;}
   if(t.id==='fYes'){grade(true);return;}if(t.id==='fNo'){grade(false);return;}
-  if(t.id==='fRe'){startStudy();return;}
+  if(t.id==='fRe'){startStudy(deck);return;}
   if(t.id==='fClose'){$('study').hidden=true;render();return;}
+});
+document.addEventListener('click',function(e){
+  if(e.target.id==='sky'){skyClick(e);return;}
+  var wk=e.target.closest&&e.target.closest('[data-week]');if(!wk)return;
+  var i=+wk.getAttribute('data-week'),list=reliefWeeks[i]||[],box=$('reliefInfo');if(!box)return;
+  box.innerHTML='<b>Semaine du '+esc(fmtDate.format(addDays(reliefFirst,i*7)))+'</b> : '+(list.length?list.map(function(x){return esc(x.name)+' ('+esc(course(x.course).name)+', '+esc(x.weight)+' %)';}).join(' · '):'aucune évaluation, profitez-en pour prendre de l\'avance.');
 });
 document.addEventListener('change',function(e){
   var t=e.target;
@@ -508,7 +711,7 @@ addEventListener('keydown',function(e){if($('study').hidden)return;if(e.key==='E
 var root=document.documentElement;try{var th=localStorage.getItem('ms-theme');if(th)root.setAttribute('data-theme',th);}catch(e){}
 $('theme').onclick=function(){var cur=root.getAttribute('data-theme');var dark=cur?cur==='dark':matchMedia('(prefers-color-scheme:dark)').matches;var n=dark?'light':'dark';root.setAttribute('data-theme',n);try{localStorage.setItem('ms-theme',n);}catch(e){}};
 
-window.__ms={stats:stats,plan:plan,cards:cards,state:function(){return S;}};
+window.__ms={stats:stats,plan:plan,cards:cards,oracle:oracle,recall:recall,state:function(){return S;}};
 boot();
 })();
 </script>
