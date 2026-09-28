@@ -1,0 +1,11 @@
+{
+  "appId": "com.sped081.masession",
+  "appName": "Ma Session",
+  "webDir": "www",
+  "backgroundColor": "#090C13",
+  "ios": {
+    "backgroundColor": "#090C13",
+    "contentInset": "never",
+    "preferredContentMode": "mobile"
+  }
+}

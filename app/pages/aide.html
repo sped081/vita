@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="fr-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#090C13">
+<title>Aide · Ma Session</title>
+<link rel="icon" type="image/png" href="icons/icon-64.png">
+<link rel="stylesheet" href="fonts/fonts.css">
+<style>
+  :root{color-scheme:dark;--bg:#090C13;--panel:#121827;--ink:#EEF1F7;--muted:#8E97AB;--line:rgba(255,255,255,.08);--pri:#4FD1B8;--gold:#FFD24D}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.65 "Figtree",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  main{max-width:720px;margin:0 auto;padding:calc(20px + env(safe-area-inset-top,0px)) 20px calc(48px + env(safe-area-inset-bottom,0px))}
+  a{color:var(--pri)}
+  .back{display:inline-block;margin-bottom:22px;font-weight:700;text-decoration:none}
+  h1,h2{font-family:"Fraunces",Georgia,serif;line-height:1.15;letter-spacing:-.01em}
+  h1{font-size:2.1rem;margin:0 0 6px}
+  h2{font-size:1.2rem;margin:0 0 6px}
+  .lead{color:var(--muted);margin:0 0 26px}
+  details{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px 16px;margin:12px 0}
+  summary{cursor:pointer;font-weight:700}
+  details p{margin:10px 0 2px;color:#CBD2E0}
+  .contact{margin-top:30px;padding:18px;border-radius:18px;background:linear-gradient(135deg,rgba(79,209,184,.16),rgba(255,210,77,.08));border:1px solid rgba(79,209,184,.3)}
+</style>
+</head>
+<body>
+<main>
+  <a class="back" href="index.html">← Retour à Ma Session</a>
+  <h1>Aide</h1>
+  <p class="lead">Ma Session organise votre session au cégep : horaire, notes, cote R, plan d'étude, fiches et mode Focus.</p>
+
+  <details open><summary>Par où commencer ?</summary>
+    <p>À la première ouverture, une session d'exemple montre ce que fait l'app. Touchez « Effacer l'exemple et commencer », créez vos cours dans l'onglet Cours, puis ajoutez les évaluations de chaque plan de cours avec leur date et leur pondération. Le plan d'étude se remplit tout seul.</p></details>
+  <details><summary>Comment la cote R est-elle estimée ?</summary>
+    <p>Avec la formule du BCI : (Z × IDGZ + IFGZ + 5) × 5, où Z compare votre note à la moyenne et à l'écart-type de votre groupe. Entrez ces deux valeurs sous chaque cours (elles sont souvent affichées dans Léa). La force et la dispersion du groupe ne sont connues qu'en fin de session : l'app suppose un groupe moyen. C'est une estimation, pas votre cote R officielle.</p></details>
+  <details><summary>Qu'est-ce que l'oracle ?</summary>
+    <p>Pour chaque cours, l'app simule 3 000 fins de session à partir de vos notes pour estimer vos chances d'atteindre votre note visée, et vous montre où un effort de 5 points compte le plus.</p></details>
+  <details><summary>Comment créer des fiches de révision ?</summary>
+    <p>Dans l'onglet Fiches, écrivez vos notes. Chaque ligne au format « Question :: Réponse » devient une fiche. Touchez la carte pour la retourner, puis glissez-la à droite si vous saviez la réponse, à gauche sinon.</p></details>
+  <details><summary>À quoi servent les étoiles dorées ?</summary>
+    <p>Chaque séance Focus terminée ou séance cochée dans votre plan allume une étoile dorée dans le ciel de l'accueil. Étudiez un peu chaque jour pour allonger votre série.</p></details>
+  <details><summary>Mes données sont-elles sauvegardées ?</summary>
+    <p>Oui, sur votre appareil, automatiquement. Pour changer de téléphone, ouvrez Réglages, touchez « Copier ma sauvegarde », gardez le texte, puis collez-le dans « Restaurer une sauvegarde » sur le nouvel appareil.</p></details>
+  <details><summary>Comment tout effacer ?</summary>
+    <p>Réglages → « Effacer toutes mes données ». Supprimer l'app efface aussi tout.</p></details>
+
+  <div class="contact"><h2>Une question, un bogue, une idée ?</h2>Écrivez-nous : <a href="mailto:{{CONTACT}}">{{CONTACT}}</a><br>Consultez aussi notre <a href="confidentialite.html">politique de confidentialité</a>.</div>
+</main>
+</body>
+</html>

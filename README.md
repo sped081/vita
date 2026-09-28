@@ -101,3 +101,9 @@ npm run trailer      # → out/bande-annonce.mp4 (1080x1920, 13 s, H.264)
 Les scènes sont décrites dans `scripts/make-trailer.js` : une page HTML dessine l'image correspondant à chaque instant,
 Playwright capture les 390 images, ffmpeg les assemble. Modifiez les textes ou la durée dans ce fichier, puis relancez.
 Instagram ajoute la musique : au moment de publier le Reel, choisissez un son en tendance.
+
+## Ma Session (organiseur d'études et app iPhone)
+
+- `etudes/ma-session.html` : l'app elle-même, une seule page (horaire, notes, cote R, oracle, fiches, mode Focus).
+- `app/` : la même page emballée pour l'iPhone avec Capacitor, prête pour l'App Store. Marche à suivre complète dans [`app/README.md`](app/README.md).
+- Le déploiement GitHub Pages publie aussi la version web installable dans `ma-session/`.

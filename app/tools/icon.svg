@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <!-- Icône de Ma Session : le relief de la session sous une étoile gagnée. Plein cadre, sans transparence (iOS arrondit lui-même les coins). -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1B2B5C"/>
+      <stop offset=".55" stop-color="#0C1330"/>
+      <stop offset="1" stop-color="#070A14"/>
+    </linearGradient>
+    <radialGradient id="aurora" cx="150" cy="120" r="720" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#4FD1B8" stop-opacity=".32"/>
+      <stop offset="1" stop-color="#4FD1B8" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="violet" cx="930" cy="200" r="520" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#8C7BFF" stop-opacity=".28"/>
+      <stop offset="1" stop-color="#8C7BFF" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="halo" cx="512" cy="372" r="330" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFE38A" stop-opacity=".62"/>
+      <stop offset=".35" stop-color="#FFD24D" stop-opacity=".2"/>
+      <stop offset="1" stop-color="#FFD24D" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="star" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFFBEA"/>
+      <stop offset=".6" stop-color="#FFE9A6"/>
+      <stop offset="1" stop-color="#FFC93A"/>
+    </linearGradient>
+    <radialGradient id="core" cx="512" cy="372" r="46" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset=".45" stop-color="#FFFFFF" stop-opacity=".75"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="back" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3B6C8A"/>
+      <stop offset="1" stop-color="#101A33"/>
+    </linearGradient>
+    <linearGradient id="front" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#A6F7E4"/>
+      <stop offset=".38" stop-color="#2BB39A"/>
+      <stop offset="1" stop-color="#083A36"/>
+    </linearGradient>
+  </defs>
+  <rect width="1024" height="1024" fill="url(#bg)"/>
+  <rect width="1024" height="1024" fill="url(#aurora)"/>
+  <rect width="1024" height="1024" fill="url(#violet)"/>
+  <g fill="#fff">
+    <circle cx="140" cy="210" r="5" opacity=".8"/><circle cx="252" cy="120" r="3.5" opacity=".6"/><circle cx="318" cy="268" r="3" opacity=".5"/>
+    <circle cx="760" cy="150" r="4.5" opacity=".75"/><circle cx="868" cy="310" r="3.5" opacity=".55"/><circle cx="690" cy="258" r="3" opacity=".45"/>
+    <circle cx="92" cy="420" r="3" opacity=".45"/><circle cx="930" cy="470" r="4" opacity=".6"/><circle cx="220" cy="540" r="2.5" opacity=".4"/>
+    <circle cx="820" cy="560" r="2.5" opacity=".4"/><circle cx="400" cy="90" r="2.5" opacity=".5"/><circle cx="600" cy="110" r="3" opacity=".55"/>
+  </g>
+  <rect width="1024" height="1024" fill="url(#halo)"/>
+  <path d="M0 760 C90 740 150 650 240 660 C320 668 360 600 430 610 C520 622 560 700 650 690 C740 680 800 610 880 620 C950 628 990 680 1024 690 V1024 H0 Z" fill="url(#back)" opacity=".9"/>
+  <path d="M0 880 C110 860 190 770 290 776 C380 782 432 664 512 604 C592 664 644 782 734 776 C834 770 914 860 1024 880 V1024 H0 Z" fill="url(#front)"/>
+  <path d="M470 636 L512 604 L554 636 L534 628 L512 646 L490 628 Z" fill="#F4FFFB"/>
+  <path d="M0 880 C110 860 190 770 290 776 C380 782 432 664 512 604 C592 664 644 782 734 776 C834 770 914 860 1024 880" fill="none" stroke="#D8FFF4" stroke-width="7" stroke-linecap="round" opacity=".85"/>
+  <path d="M512 150 Q526 358 716 372 Q526 386 512 594 Q498 386 308 372 Q498 358 512 150 Z" fill="url(#star)"/>
+  <circle cx="512" cy="372" r="46" fill="url(#core)"/>
+</svg>

@@ -25,6 +25,13 @@ jobs:
           node-version: 22
       - name: Vérifier et construire le site
         run: npm run check
+      - name: Construire Ma Session (version web installable)
+        env:
+          MS_CONTACT: ${{ vars.MS_CONTACT }}
+        run: |
+          node app/build.js --check
+          mkdir -p dist/ma-session
+          cp -R app/www/. dist/ma-session/
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

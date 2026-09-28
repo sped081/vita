@@ -1,0 +1,26 @@
+{
+  "name": "ma-session-app",
+  "version": "1.0.0",
+  "description": "Ma Session pour iPhone : l'organiseur d'études des cégépiens, emballé avec Capacitor.",
+  "private": true,
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "node build.js",
+    "check": "node build.js --check",
+    "ios": "node build.js && npx cap sync ios",
+    "open": "npx cap open ios",
+    "assets": "node tools/make-assets.js",
+    "screenshots": "node tools/make-screenshots.js"
+  },
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@capacitor/core": "^8.5.2",
+    "@capacitor/ios": "^8.5.2",
+    "@capacitor/preferences": "^8.0.1"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^8.5.2"
+  }
+}

@@ -1,0 +1,11 @@
+node_modules/
+# Construit par « npm run build » à partir de etudes/ma-session.html
+www/
+# Fichiers générés par Xcode et Capacitor sur le Mac
+ios/App/Pods/
+ios/App/App/public/
+ios/App/App/capacitor.config.json
+ios/App/App/config.xml
+ios/**/xcuserdata/
+ios/**/DerivedData/
+ios/**/*.xcuserstate
