@@ -1,7 +1,8 @@
-// Rend episode.html en vidéo verticale 1080 × 1920 (60 i/s) avec bruitages, musique et, si elle existe, la voix.
-// Usage : node render.js                 -> episode-dns-sans-voix.mp4 (+ episode-dns.mp4 si voix/ contient la voix)
-//         node render.js --peek 3,12,28  -> captures PNG de contrôle dans peek/
-// La voix : une réplique par fichier dans voix/ (01.wav, 02.mp3…), dans l'ordre de voix.json.
+// Rend une page de vidéo de Ping en MP4 vertical 1080 × 1920 avec bruitages, musique et, si elle existe, la voix.
+// Usage : node commun/render.js ping-dns/episode.html               -> <OUTPUT>-sans-voix.mp4 (+ <OUTPUT>.mp4 avec la voix)
+//         node commun/render.js ping-dns/episode.html --peek 3,12   -> captures PNG de contrôle dans peek/
+// La page fournit window.renderAt(t), DURATION, FPS, EVENTS et OUTPUT (nom des fichiers).
+// La voix : une réplique par fichier dans voix/ à côté de la page (01.wav, 02.mp3…), dans l'ordre de voix.json.
 // Chaque réplique est posée à son temps ; la bouche de Ping suit le volume de la voix.
 // Demande playwright-core (CHROMIUM_PATH si besoin) et ffmpeg.
 const fs = require('fs');
@@ -9,15 +10,18 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 const { chromium } = require(process.env.PW_MODULE || 'playwright-core');
 
-const here = __dirname;
-const W = 1080, H = 1920, FPS = 60, DUR = 65, SR = 48000;
-const frames = path.join(here, '.frames');
 const args = process.argv.slice(2);
-const peek = args[0] === '--peek' ? args[1].split(',').map(Number) : null;
+if (!args[0]) { console.error('usage : node commun/render.js <page.html> [--peek t1,t2]'); process.exit(1); }
+const html = path.resolve(args[0]);
+const here = path.dirname(html);
+const W = 1080, H = 1920, SR = 48000;
+let FPS = 60, DUR = 60;
+const frames = path.join(here, '.frames');
+const peek = args[1] === '--peek' ? args[2].split(',').map(Number) : null;
 
 async function page(browser, mouth) {
   const p = await browser.newPage({ viewport: { width: W, height: H } });
-  await p.goto('file://' + path.join(here, 'episode.html'));
+  await p.goto('file://' + html);
   await p.evaluate(() => document.fonts.ready);
   if (mouth) await p.evaluate((m) => { window.MOUTH = m; }, mouth);
   return p;
@@ -131,10 +135,14 @@ function audio(events, V) {
 
 (async () => {
   fs.rmSync(frames, { recursive: true, force: true }); fs.mkdirSync(frames);
+  const browser = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined, args: ['--no-sandbox'] });
+  const probe = await page(browser);
+  const info = await probe.evaluate(() => ({ dur: window.DURATION, fps: window.FPS, events: window.EVENTS, out: window.OUTPUT }));
+  await probe.close();
+  DUR = info.dur; FPS = info.fps;
   const clips = voice();
   const V = clips ? voiceTrack(clips) : null;
   const mouth = V ? mouthFrom(V) : null;
-  const browser = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined, args: ['--no-sandbox'] });
   if (peek) {
     const dir = path.join(here, 'peek'); fs.mkdirSync(dir, { recursive: true });
     const p = await page(browser, mouth);
@@ -143,7 +151,7 @@ function audio(events, V) {
   }
   const total = FPS * DUR, workers = 4;
   const pages = await Promise.all(Array.from({ length: workers }, () => page(browser, mouth)));
-  const events = await pages[0].evaluate(() => window.EVENTS);
+  const events = info.events;
   let next = 0, done = 0;
   await Promise.all(pages.map(async (p) => {
     while (next < total) {
@@ -157,8 +165,8 @@ function audio(events, V) {
   const vid = path.join(frames, 'video.mp4');
   execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-framerate', String(FPS), '-i', path.join(frames, '%05d.jpg'),
     '-c:v', 'libx264', '-preset', 'medium', '-crf', '20', '-pix_fmt', 'yuv420p', vid], { stdio: 'inherit' });
-  const outs = [['episode-dns-sans-voix.mp4', null]];
-  if (V) outs.unshift(['episode-dns.mp4', V]);
+  const outs = [[`${info.out}-sans-voix.mp4`, null]];
+  if (V) outs.unshift([`${info.out}.mp4`, V]);
   for (const [name, v] of outs) {
     const wav = path.join(frames, 'audio.wav');
     fs.writeFileSync(wav, audio(events, v));

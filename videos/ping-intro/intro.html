@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Ping — Présentation de la chaîne</title>
+<link rel="stylesheet" href="../commun/fonts/fonts.css">
+<link rel="stylesheet" href="../commun/base.css">
+<style>
+  .tile{width:180px;height:200px;border-radius:34px;border:8px solid #0B0F1E;display:flex;align-items:center;justify-content:center;font:700 150px Fredoka;box-shadow:0 14px 0 rgba(0,0,0,.3)}
+  .node{width:240px;display:flex;flex-direction:column;align-items:center;gap:14px;font:900 36px 'Nunito Sans';color:#EAFBFF}
+  .term{width:940px;border-radius:30px;background:#070A14;border:7px solid #0B0F1E;box-shadow:0 0 0 5px #2ED3A6,0 18px 0 rgba(0,0,0,.35);overflow:hidden}
+  .term .tb{height:64px;background:#1C2440;border-bottom:6px solid #0B0F1E;display:flex;align-items:center;gap:14px;padding:0 24px}
+  .term .tb i{width:20px;height:20px;border-radius:50%;border:4px solid #0B0F1E}
+  .term .tx{padding:28px 34px 34px;font:800 32px/1.55 'DejaVu Sans Mono',ui-monospace,monospace;color:#EAFBFF;white-space:pre}
+  .center{left:0;width:1080px;display:flex;justify-content:center}
+</style>
+</head>
+<body>
+<div id="v">
+  <div id="grid"></div>
+  <div class="tint" id="tint1" style="background:radial-gradient(70% 45% at 50% 22%,rgba(61,90,254,.30),transparent 70%)"></div>
+  <div class="tint" id="tint2" style="background:radial-gradient(70% 45% at 50% 22%,rgba(255,201,60,.20),transparent 70%)"></div>
+  <div class="tint" id="tint3" style="background:radial-gradient(70% 45% at 50% 22%,rgba(46,211,166,.24),transparent 70%)"></div>
+  <div class="tint" id="tint4" style="background:radial-gradient(70% 45% at 50% 22%,rgba(122,77,255,.28),transparent 70%)"></div>
+  <div class="tint" id="tint5" style="background:radial-gradient(70% 45% at 50% 22%,rgba(255,107,61,.26),transparent 70%)"></div>
+
+  <div id="chip"><span id="chipText">Salut !</span></div>
+  <div id="track"><div id="fill"></div></div>
+  <div id="stage" style="position:absolute;inset:0;transform-origin:50% 32%">
+
+  <!-- 1. Salut ! -->
+  <div class="abs tile" id="l0" style="left:144px;top:290px;background:#3D5AFE;color:#FFFFFF">P</div>
+  <div class="abs tile" id="l1" style="left:348px;top:290px;background:#2ED3A6;color:#151A2E">I</div>
+  <div class="abs tile" id="l2" style="left:552px;top:290px;background:#FFC93C;color:#151A2E">N</div>
+  <div class="abs tile" id="l3" style="left:756px;top:290px;background:#FF6B3D;color:#151A2E">G</div>
+  <div class="abs center" id="hello" style="top:540px"><span class="pill" style="background:#F7F9FC">Ton guide du réseau</span></div>
+
+  <!-- 2. Le réseau -->
+  <div class="abs node" id="n0" style="left:40px;top:330px">
+    <svg width="220" height="170" viewBox="0 0 220 170" aria-hidden="true"><rect x="22" y="10" width="176" height="118" rx="14" fill="#0E1630" stroke="#0B0F1E" stroke-width="7"/><rect x="34" y="22" width="152" height="94" rx="8" fill="none" stroke="#2B3EA8" stroke-width="6"/><path d="M60 60 h70 M60 82 h46" stroke="#2ED3A6" stroke-width="8" stroke-linecap="round"/><path d="M4 136 H216 L200 164 H20 Z" fill="#2B3EA8" stroke="#0B0F1E" stroke-width="7" stroke-linejoin="round"/></svg>
+    <span>Ton ordi</span>
+  </div>
+  <div class="abs node" id="n1" style="left:420px;top:330px">
+    <svg width="220" height="170" viewBox="0 0 220 170" aria-hidden="true"><path d="M56 76 L40 14 M164 76 L180 14" stroke="#0B0F1E" stroke-width="10" stroke-linecap="round"/><circle cx="40" cy="14" r="11" fill="#2ED3A6" stroke="#0B0F1E" stroke-width="5"/><circle cx="180" cy="14" r="11" fill="#FFC93C" stroke="#0B0F1E" stroke-width="5"/><path d="M86 40 Q110 22 134 40 M96 54 Q110 44 124 54" fill="none" stroke="#FF6B3D" stroke-width="6" stroke-linecap="round"/><rect x="12" y="76" width="196" height="80" rx="22" fill="#3D5AFE" stroke="#0B0F1E" stroke-width="7"/><circle class="led" cx="50" cy="116" r="9" fill="#2ED3A6" stroke="#0B0F1E" stroke-width="3"/><circle class="led" cx="80" cy="116" r="9" fill="#FFC93C" stroke="#0B0F1E" stroke-width="3"/><circle class="led" cx="110" cy="116" r="9" fill="#2ED3A6" stroke="#0B0F1E" stroke-width="3"/><rect x="140" y="106" width="44" height="20" rx="5" fill="#0E1630" stroke="#0B0F1E" stroke-width="3"/></svg>
+    <span>Routeur</span>
+  </div>
+  <div class="abs node" id="n2" style="left:800px;top:320px">
+    <svg width="190" height="190" viewBox="0 0 200 200" aria-hidden="true"><circle cx="100" cy="100" r="88" fill="#2B3EA8" stroke="#0B0F1E" stroke-width="8"/><path d="M48 62 q22 -18 44 -4 q10 16 -6 26 q-18 4 -22 20 q-12 6 -22 -8 q-6 -20 6 -34 Z M118 118 q20 -10 36 4 q4 22 -14 34 q-20 6 -26 -10 q-4 -16 4 -28 Z M120 40 q18 2 28 16 q-10 6 -24 0 Z" fill="#2ED3A6" stroke="#0B0F1E" stroke-width="4"/><ellipse cx="100" cy="100" rx="40" ry="88" fill="none" stroke="#EAFBFF" stroke-width="4" opacity=".45"/><path d="M12 100 H188" stroke="#EAFBFF" stroke-width="4" opacity=".45"/></svg>
+    <span>Internet</span>
+  </div>
+  <div class="abs" id="w0" style="left:262px;top:410px;width:170px;height:0;border-top:9px dashed #2ED3A6;transform-origin:left center"></div>
+  <div class="abs" id="w1" style="left:642px;top:410px;width:166px;height:0;border-top:9px dashed #2ED3A6;transform-origin:left center"></div>
+  <div class="abs" id="pk0" style="left:0;top:0;width:34px;height:34px;border-radius:9px;background:#2ED3A6;border:5px solid #0B0F1E"></div>
+  <div class="abs" id="pk1" style="left:0;top:0;width:34px;height:34px;border-radius:9px;background:#FFC93C;border:5px solid #0B0F1E"></div>
+  <div class="abs" id="pk2" style="left:0;top:0;width:34px;height:34px;border-radius:9px;background:#2ED3A6;border:5px solid #0B0F1E"></div>
+  <div class="abs" id="mini" style="left:0;top:0;width:110px;height:92px">
+    <svg width="110" height="92" viewBox="0 0 110 92" aria-hidden="true"><path d="M30 14 L22 2 M80 14 L88 2" stroke="#0B0F1E" stroke-width="5" stroke-linecap="round"/><rect x="6" y="12" width="98" height="76" rx="22" fill="#3D5AFE" stroke="#0B0F1E" stroke-width="5"/><rect x="18" y="24" width="74" height="48" rx="12" fill="#0E1630"/><ellipse cx="42" cy="46" rx="8" ry="10" fill="#EAFBFF"/><ellipse cx="68" cy="46" rx="8" ry="10" fill="#EAFBFF"/><path d="M47 60 Q55 66 63 60" fill="none" stroke="#2ED3A6" stroke-width="3.5" stroke-linecap="round"/></svg>
+  </div>
+  <div class="abs pill" id="tagNet" style="left:300px;top:640px;background:#2ED3A6">C'est moi, le paquet !</div>
+
+  <!-- 3. Mon nom -->
+  <div class="abs term" id="term" style="left:70px;top:290px">
+    <div class="tb"><i style="background:#FF6B3D"></i><i style="background:#FFC93C"></i><i style="background:#2ED3A6"></i><span style="margin-left:18px;font:700 32px Fredoka;color:#AEB6C8">Invite de commandes</span></div>
+    <div class="tx"><span style="color:#2ED3A6">C:\&gt;</span> <span id="cmd"></span><span id="caret" style="display:inline-block;width:20px;height:38px;background:#2ED3A6;vertical-align:-7px"></span>
+<span id="o0" style="color:#7E89A8">Envoi d'une requête 'ping' sur google.com</span>
+<span id="o1">Réponse de 142.250.65.78 : temps=12 ms</span>
+<span id="o2">Réponse de 142.250.65.78 : temps=11 ms</span>
+<span id="o3">Réponse de 142.250.65.78 : temps=13 ms</span></div>
+  </div>
+  <div class="abs pill" id="ask" style="left:470px;top:770px;background:#FFC93C">ping → «&nbsp;T'es là&nbsp;?&nbsp;»</div>
+  <div class="abs pill" id="ans" style="left:470px;top:880px;background:#2ED3A6">réponse → «&nbsp;Oui&nbsp;!&nbsp;»</div>
+
+  <!-- 4. La série -->
+  <div class="abs" id="watch" style="left:380px;top:236px;width:320px;height:320px">
+    <svg width="320" height="320" viewBox="0 0 320 320" aria-hidden="true"><rect x="138" y="4" width="44" height="30" rx="8" fill="#FFC93C" stroke="#0B0F1E" stroke-width="6"/><circle cx="160" cy="176" r="136" fill="#F7F9FC" stroke="#0B0F1E" stroke-width="9"/><circle cx="160" cy="176" r="112" fill="none" stroke="#DDE3F0" stroke-width="22"/><circle id="arc" cx="160" cy="176" r="112" fill="none" stroke="#2ED3A6" stroke-width="22" stroke-linecap="round" stroke-dasharray="703.7" stroke-dashoffset="703.7" transform="rotate(-90 160 176)"/><text id="wtxt" x="160" y="200" text-anchor="middle" font-family="Fredoka" font-weight="700" font-size="74" fill="#151A2E">0:00</text></svg>
+  </div>
+  <div class="abs" id="title" style="left:90px;top:586px;width:900px;padding:34px 40px;border-radius:40px;background:#F7F9FC;border:8px solid #0B0F1E;box-shadow:0 16px 0 rgba(0,0,0,.3);text-align:center;color:#151A2E;font:700 76px/1.08 Fredoka">Une minute pour comprendre <span style="color:#3D5AFE">l'informatique</span></div>
+
+  <!-- 5. Au menu -->
+  <div class="abs pill" id="t0" style="left:90px;top:300px;background:#2ED3A6">DNS</div>
+  <div class="abs pill" id="t1" style="left:330px;top:300px;background:#FFC93C">Adresse IP</div>
+  <div class="abs pill" id="t2" style="left:720px;top:300px;background:#8FAAFF">Wi-Fi</div>
+  <div class="abs pill" id="t3" style="left:130px;top:430px;background:#FF6B3D">Pare-feu</div>
+  <div class="abs pill" id="t4" style="left:470px;top:430px;background:#C2A8FF">VPN</div>
+  <div class="abs pill" id="t5" style="left:680px;top:430px;background:#2ED3A6">Routeur</div>
+  <div class="abs pill" id="t6" style="left:80px;top:560px;background:#FFC93C">Serveurs</div>
+  <div class="abs pill" id="t7" style="left:400px;top:560px;background:#8FAAFF">Cloud</div>
+  <div class="abs pill" id="t8" style="left:650px;top:560px;background:#FF6B3D">Linux</div>
+  <div class="abs pill" id="t9" style="left:250px;top:690px;background:#C2A8FF">Cybersécurité</div>
+  <div class="abs stamp" id="st" style="left:250px;top:790px;border-color:#2ED3A6;color:#2ED3A6;font-size:84px">Sans jargon</div>
+
+  <!-- 6. Abonne-toi -->
+  <div class="abs" id="ep" style="left:110px;top:270px;width:860px;padding:36px 44px;border-radius:44px;background:#F7F9FC;border:8px solid #0B0F1E;box-shadow:0 18px 0 rgba(0,0,0,.3);color:#151A2E;display:flex;gap:30px;align-items:center">
+    <svg width="150" height="150" viewBox="0 0 150 150" aria-hidden="true" style="flex:none"><circle cx="75" cy="75" r="66" fill="#FF6B3D" stroke="#0B0F1E" stroke-width="8"/><path d="M60 46 L106 75 L60 104 Z" fill="#FFFFFF" stroke="#0B0F1E" stroke-width="6" stroke-linejoin="round"/></svg>
+    <div style="flex:1"><span class="pill" style="display:inline-block;background:#FFC93C;font-size:38px;padding:8px 24px">Épisode 1</span><div style="font:700 60px/1.08 Fredoka;margin-top:16px">C'est quoi réellement le DNS&nbsp;?</div></div>
+  </div>
+  <div class="abs center" id="sub2" style="top:600px"><span style="display:flex;align-items:center;gap:22px;padding:22px 46px;border-radius:999px;background:#FF3D3D;border:7px solid #0B0F1E;box-shadow:0 12px 0 rgba(0,0,0,.3);font:700 64px Fredoka;color:#FFFFFF"><svg width="58" height="58" viewBox="0 0 58 58" aria-hidden="true"><path d="M29 6 C17 6 13 16 13 26 V36 L7 44 H51 L45 36 V26 C45 16 41 6 29 6 Z" fill="#FFFFFF" stroke="#0B0F1E" stroke-width="4" stroke-linejoin="round"/><circle cx="29" cy="50" r="6" fill="#FFFFFF" stroke="#0B0F1E" stroke-width="4"/></svg>Abonne-toi</span></div>
+
+  </div>
+  <div class="abs" id="ping" style="left:30px;top:880px;width:420px;height:500px;transform-origin:50% 100%"></div>
+  <div id="sub"></div>
+</div>
+
+<script src="../commun/ping-base.js"></script>
+<script>
+// ---------- Ping dans cette vidéo ----------
+const POSE=[
+ [0,'wave','rest',[0,3],0],[2.6,'rest','rest',[0,2],0],[3.0,'rest','point',[6,-6],3],
+ [5.6,'rest','present',[4,-5],2],[8.6,'hip','think',[3,-6],-4],[9.6,'rest','point',[6,-6],3],
+ [11.4,'rest','think',[2,-2],-3],[13.2,'cheer','cheer',[0,2],0],[15.4,'rest','present',[3,-5],2],
+ [18.2,'hip','point',[6,-6],2],[20.8,'rest','point',[6,-6],3],[23.6,'hip','hip',[0,3],-4],
+ [26.2,'rest','point',[0,-7],2],[28.8,'wave','rest',[0,3],0]
+];
+const JUMPS=[13.3,29.0];
+const EXPR=[[0,'happy'],[1.2,'content'],[8.6,'curious'],[13.2,'happy'],[15.4,'content'],[18.2,'happy'],[20.8,'content'],[23.6,'smirk'],[26.2,'happy'],[27.2,'content'],[28.8,'happy']];
+// position de Ping : [temps, x, y, échelle] ; il marche quand il change de place
+const KEYS=[[0.1,-520,-120,1.35],[1.0,300,-120,1.35],[2.8,300,-120,1.35],[3.6,30,0,1],[26.0,30,0,1],[26.8,300,-60,1.15]];
+function pingAt(t){
+  if(t<=KEYS[0][0])return KEYS[0].slice(1);
+  for(let i=0;i<KEYS.length-1;i++){const a=KEYS[i],b=KEYS[i+1];if(t<b[0]){const p=(i===0?out3:inOut)((t-a[0])/(b[0]-a[0]));return [lerp(a[1],b[1],p),lerp(a[2],b[2],p),lerp(a[3],b[3],p)];}}
+  return KEYS[KEYS.length-1].slice(1);
+}
+function walking(t){for(let i=0;i<KEYS.length-1;i++){const a=KEYS[i],b=KEYS[i+1];if(t>a[0]&&t<b[0]-0.05&&a[1]!==b[1])return true;}return false;}
+
+const CHAPTERS=[[0,'Salut !'],[3,'Le réseau'],[8.6,'Mon nom'],[15.4,'La série'],[20.8,'Au menu'],[26.2,'Abonne-toi']];
+const DURATION=31,FPS=60;
+const CAPTIONS=[
+ [0.3,2.6,"Salut ! Moi, c'est Ping."],
+ [3.0,5.5,"Je vis dans le réseau,"],
+ [5.6,8.4,"entre ton ordi et Internet."],
+ [8.8,11.2,"Mon nom ? C'est une vraie commande."],
+ [11.4,13.0,"Ça veut dire : « T'es là ? »"],
+ [13.2,15.0,"Et le serveur répond : « Oui ! »"],
+ [15.6,18.0,"Ici, je t'explique l'informatique"],
+ [18.2,20.4,"en une minute."],
+ [20.8,23.4,"DNS, IP, Wi-Fi, pare-feu, VPN…"],
+ [23.6,26.0,"sans jargon, avec des dessins."],
+ [26.4,28.6,"Premier épisode : le DNS."],
+ [28.8,30.8,"Abonne-toi, on se voit là-bas !"]
+];
+
+// ---------- bruitages (lus par le script de rendu) ----------
+const CHIP_T=[...Array(10).keys()].map(i=>20.9+i*0.22);
+const EVENTS=[];
+[3,8.6,15.4,20.8,26.2].forEach(t=>EVENTS.push({t,type:'whoosh'}));
+[0.5,0.64,0.78,0.92,1.3,3.2,3.6,4.0,8.8,11.4,13.2,16.0,26.4,28.8,...CHIP_T].forEach(t=>EVENTS.push({t,type:'pop'}));
+for(let k=0;k<15;k++)EVENTS.push({t:9.6+k*0.08,type:'tick'});
+[13.2,13.7,14.2,18.0].forEach(t=>EVENTS.push({t,type:'ding'}));
+EVENTS.push({t:23.8,type:'thud'});
+JUMPS.forEach(t=>EVENTS.push({t,type:'boing'}));
+for(const [a,b] of [[0.1,1.0],[2.8,3.6],[26.0,26.8]])for(let t=a+0.1;t<b;t+=0.196)EVENTS.push({t,type:'step'});
+window.EVENTS=EVENTS;window.CAPTIONS=CAPTIONS;window.DURATION=DURATION;window.FPS=FPS;window.OUTPUT='intro-ping';
+
+// ---------- une image ----------
+const TINTS=[[0,3,'tint1'],[3,8.6,'tint3'],[8.6,15.4,'tint4'],[15.4,20.8,'tint2'],[20.8,26.2,'tint5'],[26.2,31.5,'tint1']];
+function renderAt(t){
+  for(const id of ['tint1','tint2','tint3','tint4','tint5'])$(id).style.opacity=0;
+  for(const [a,b,id] of TINTS){const o=Math.min(a===0?1:clamp((t-a)/0.6),clamp((b-t)/0.6));if(o>0)$(id).style.opacity=Math.max(+$(id).style.opacity,o);}
+  const {ci,since}=chrome(t);
+
+  // 1. le nom en grosses lettres
+  for(let i=0;i<4;i++)show('l'+i,t,0.5+i*0.14,2.8,{y:Math.sin(t*4+i*0.8)*9,r:Math.sin(t*2.6+i)*4});
+  show('hello',t,1.3,2.8,{r:-2});
+
+  // 2. le réseau
+  show('n0',t,3.2,8.4);show('n1',t,3.6,8.4);show('n2',t,4.0,8.4,{r:Math.sin(t*1.5)*3});
+  $('n1').querySelectorAll('.led').forEach((l,i)=>{l.style.opacity=Math.sin(t*8+i*1.9)>-0.2?1:0.25;});
+  for(const [id,t0] of [['w0',4.3],['w1',4.5]]){const e=$(id);if(t<t0||t>8.4)e.style.opacity=0;else{e.style.opacity=clamp((8.75-t)/0.35);e.style.transform=`scaleX(${out3((t-t0)/0.5)})`;}}
+  for(let i=0;i<3;i++){
+    const e=$('pk'+i),t0=4.8+i*0.4;
+    if(t<t0||t>8.3||(t>5.8&&t<7.9)){e.style.opacity=0;continue;}
+    const p=((t-t0)/1.6)%1;
+    e.style.opacity=1;e.style.background=i%2?'#FFC93C':'#2ED3A6';
+    e.style.transform=`translate(${lerp(262,790,p)}px,393px) rotate(${t*90}deg)`;
+  }
+  const mi=$('mini');
+  if(t<5.8||t>8.2)mi.style.opacity=0;else{
+    const p=inOut((t-5.8)/2.0);
+    mi.style.opacity=Math.min(clamp((t-5.8)/0.15),clamp((8.2-t)/0.25));
+    mi.style.transform=`translate(${lerp(200,830,p)}px,${352-Math.abs(Math.sin(p*Math.PI*3))*40}px) rotate(${Math.sin(t*9)*8}deg)`;
+  }
+  show('tagNet',t,6.0,8.3,{r:-4,float:true});
+
+  // 3. mon nom : la commande ping
+  show('term',t,8.8,15.2);
+  $('cmd').textContent='ping google.com'.slice(0,Math.floor(clamp((t-9.6)/1.15)*15));
+  $('caret').style.opacity=t>=11.2?0:(Math.floor(t*3)%2===0?1:0);
+  [11.2,13.2,13.7,14.2].forEach((a,i)=>{const e=$('o'+i);e.style.opacity=t>=a?1:0;e.style.color=i>0&&t>=a&&t<a+0.35?'#2ED3A6':(i===0?'#7E89A8':'#EAFBFF');});
+  show('ask',t,11.4,15.0,{r:-3,float:true});
+  show('ans',t,13.2,15.0,{r:3,float:true,ph:1});
+
+  // 4. la série
+  show('watch',t,15.6,20.5);
+  const wp=out3((t-15.8)/2.2);
+  $('arc').setAttribute('stroke-dashoffset',(703.7*(1-wp)).toFixed(1));
+  $('wtxt').textContent=wp>=1?'1:00':'0:'+String(Math.floor(wp*60)).padStart(2,'0');
+  if(t>=18.0&&t<18.5)$('watch').style.transform+=` scale(${1+0.12*Math.sin((t-18)/0.5*Math.PI)})`;
+  show('title',t,16.0,20.5);
+
+  // 5. au menu
+  CHIP_T.forEach((a,i)=>show('t'+i,t,a,25.9,{r:[-4,3,-2,4,-3,2,-4,3,-2,3][i],float:true,ph:i}));
+  show('st',t,23.8,25.9,{r:-7,slam:true});
+
+  // 6. abonne-toi
+  show('ep',t,26.4,31.5,{float:true});
+  show('sub2',t,28.8,31.5);
+  if(t>=29.3)$('sub2').style.transform+=` scale(${1+0.05*Math.sin((t-29.3)*7)})`;
+
+  // Ping et caméra
+  const [px,py,ps]=pingAt(t);
+  placePing(t,px,py,ps);
+  camera(t,ci,since,[23.8]);
+
+  $('sub').innerHTML=subtitle(t);
+}
+window.renderAt=renderAt;
+renderAt(0);
+</script>
+</body>
+</html>
