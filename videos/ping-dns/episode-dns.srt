@@ -1,0 +1,91 @@
+1
+00:00:00,200 --> 00:00:01,900
+Tu tapes google.com…
+
+2
+00:00:01,900 --> 00:00:04,200
+mais ton ordi, lui, comprend rien aux noms.
+
+3
+00:00:04,400 --> 00:00:07,000
+Sur Internet, chaque machine a un numéro :
+
+4
+00:00:07,000 --> 00:00:08,800
+son adresse IP.
+
+5
+00:00:09,000 --> 00:00:11,400
+Retenir le numéro de chaque site ?
+
+6
+00:00:11,600 --> 00:00:13,400
+Impossible.
+
+7
+00:00:16,200 --> 00:00:19,000
+Alors ton ordi demande à un serveur DNS,
+
+8
+00:00:19,000 --> 00:00:21,000
+l'annuaire d'Internet :
+
+9
+00:00:21,200 --> 00:00:24,600
+« C'est quoi le numéro de google.com ? »
+
+10
+00:00:24,800 --> 00:00:27,400
+Le DNS cherche…
+
+11
+00:00:27,600 --> 00:00:29,600
+et il répond !
+
+12
+00:00:30,200 --> 00:00:33,800
+Ton ordi a maintenant l'adresse exacte.
+
+13
+00:00:36,200 --> 00:00:37,800
+Avec ce numéro,
+
+14
+00:00:37,800 --> 00:00:41,200
+ton ordi appelle enfin le bon serveur.
+
+15
+00:00:41,500 --> 00:00:43,000
+Et tout ça…
+
+16
+00:00:43,000 --> 00:00:46,400
+en quelques millisecondes.
+
+17
+00:00:46,600 --> 00:00:49,600
+La page s'affiche. Magie ? Non : DNS.
+
+18
+00:00:50,200 --> 00:00:53,000
+Donc quand « Internet marche pas »…
+
+19
+00:00:53,000 --> 00:00:55,000
+mais que tout est branché…
+
+20
+00:00:55,200 --> 00:00:57,800
+c'est souvent le DNS.
+
+21
+00:00:58,200 --> 00:01:00,600
+Essaie-le : tape nslookup google.com
+
+22
+00:01:00,800 --> 00:01:02,700
+Le DNS te donne l'adresse !
+
+23
+00:01:02,900 --> 00:01:04,800
+Abonne-toi pour la suite !
