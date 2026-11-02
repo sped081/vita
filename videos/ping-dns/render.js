@@ -1,47 +1,73 @@
-// Rend episode.html en vidéo verticale 1080 × 1920 (30 i/s) avec bruitages, musique et voix de Ping.
-// Usage : node render.js                 -> episode-dns.mp4 (voix de Ping) + episode-dns-sans-voix.mp4
+// Rend episode.html en vidéo verticale 1080 × 1920 (60 i/s) avec bruitages, musique et, si elle existe, la voix.
+// Usage : node render.js                 -> episode-dns-sans-voix.mp4 (+ episode-dns.mp4 si voix/ contient la voix)
 //         node render.js --peek 3,12,28  -> captures PNG de contrôle dans peek/
-// Demande playwright-core (CHROMIUM_PATH si besoin), ffmpeg, et pour la voix espeak-ng + mbrola-fr1.
+// La voix : une réplique par fichier dans voix/ (01.wav, 02.mp3…), dans l'ordre de voix.json.
+// Chaque réplique est posée à son temps ; la bouche de Ping suit le volume de la voix.
+// Demande playwright-core (CHROMIUM_PATH si besoin) et ffmpeg.
 const fs = require('fs');
 const path = require('path');
-const { execFileSync, spawnSync } = require('child_process');
+const { execFileSync } = require('child_process');
 const { chromium } = require(process.env.PW_MODULE || 'playwright-core');
 
 const here = __dirname;
-const W = 1080, H = 1920, FPS = 30, DUR = 65, SR = 48000;
+const W = 1080, H = 1920, FPS = 60, DUR = 65, SR = 48000;
 const frames = path.join(here, '.frames');
 const args = process.argv.slice(2);
 const peek = args[0] === '--peek' ? args[1].split(',').map(Number) : null;
 
-async function page(browser) {
+async function page(browser, mouth) {
   const p = await browser.newPage({ viewport: { width: W, height: H } });
   await p.goto('file://' + path.join(here, 'episode.html'));
   await p.evaluate(() => document.fonts.ready);
+  if (mouth) await p.evaluate((m) => { window.MOUTH = m; }, mouth);
   return p;
 }
 
-// ---------- voix de Ping : espeak-ng + MBROLA, un peu plus aiguë et métallique ----------
+// ---------- voix : une réplique par fichier dans voix/ ----------
 function voice() {
+  const dir = path.join(here, 'voix');
+  if (!fs.existsSync(dir)) return null;
+  const files = fs.readdirSync(dir).filter((f) => /^\d+\.(wav|mp3|m4a|ogg|flac)$/i.test(f)).sort((x, y) => parseInt(x) - parseInt(y));
+  if (!files.length) return null;
   const lines = JSON.parse(fs.readFileSync(path.join(here, 'voix.json'), 'utf8'));
-  if (spawnSync('espeak-ng', ['--version']).status !== 0) { console.log('espeak-ng absent : pas de voix'); return null; }
-  return lines.map(([t, txt], i) => {
-    const wav = path.join(frames, 'v.wav');
-    execFileSync('espeak-ng', ['-v', 'mb-fr1', '-s', '160', '-p', '55', '-w', wav, txt]);
-    // si la réplique déborde sur la suivante, on l'accélère un peu (au plus 30 %)
-    const d = Number(execFileSync('ffprobe', ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', wav]));
-    const room = (i + 1 < lines.length ? lines[i + 1][0] : DUR - 0.2) - t - 0.1;
-    const fit = Math.min(1.3, Math.max(1, d / room));
+  return files.map((f) => {
+    const i = parseInt(f) - 1, t = lines[i][0];
+    const src = path.join(dir, f);
+    // si la réplique déborde sur la suivante, on l'accélère un peu (au plus 25 %)
+    const d = Number(execFileSync('ffprobe', ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', src]));
+    const room = (i + 1 < lines.length ? lines[i + 1][0] : DUR - 0.2) - t - 0.08;
+    const fit = Math.min(1.25, Math.max(1, d / room));
     if (fit > 1) console.log(`réplique ${i + 1} accélérée ×${fit.toFixed(2)}`);
-    const raw = execFileSync('ffmpeg', ['-loglevel', 'error', '-i', wav, '-af',
-      `aresample=48000,asetrate=52800,aresample=48000,atempo=${(fit / 1.1).toFixed(4)},highpass=f=110,aecho=0.8:0.5:9:0.16`,
+    const raw = execFileSync('ffmpeg', ['-loglevel', 'error', '-i', src, '-af',
+      `silenceremove=start_periods=1:start_threshold=-45dB,atempo=${fit.toFixed(4)},highpass=f=80`,
       '-f', 'f32le', '-ac', '1', '-ar', String(SR), '-'], { maxBuffer: 64 << 20 });
     return { t, s: new Float32Array(raw.buffer, raw.byteOffset, raw.length / 4) };
   });
 }
+function voiceTrack(clips) {
+  const n = SR * DUR, V = new Float32Array(n);
+  let peak = 0; for (const c of clips) for (const v of c.s) peak = Math.max(peak, Math.abs(v));
+  for (const c of clips) { const s0 = Math.floor(c.t * SR); for (let i = 0; i < c.s.length && s0 + i < n; i++) V[s0 + i] += c.s[i] * 0.9 / peak; }
+  return V;
+}
+// ouverture de la bouche, une valeur par image : volume de la voix, lissé
+function mouthFrom(V) {
+  const per = SR / FPS, out = [];
+  let m = 0;
+  for (let f = 0; f < FPS * DUR; f++) {
+    let e = 0; const a = Math.floor(f * per);
+    for (let i = a; i < a + per && i < V.length; i++) e += V[i] * V[i];
+    const v = Math.min(1, Math.sqrt(e / per) * 5.5);
+    m += (v > m ? 0.7 : 0.35) * (v - m);
+    out.push(+m.toFixed(3));
+  }
+  return out;
+}
 
 // ---------- audio : synthèse directe, échantillon par échantillon ----------
-function audio(events, clips) {
-  const n = SR * DUR, L = new Float32Array(n), R = new Float32Array(n), mL = new Float32Array(n), mR = new Float32Array(n), V = new Float32Array(n);
+function audio(events, V) {
+  const n = SR * DUR, L = new Float32Array(n), R = new Float32Array(n), mL = new Float32Array(n), mR = new Float32Array(n);
+  V = V || new Float32Array(n);
   let tL = L, tR = R;
   const add = (t0, len, fn, gain = 1, pan = 0) => {
     const L = tL, R = tR;
@@ -54,9 +80,11 @@ function audio(events, clips) {
     tick: (t) => rnd() * Math.exp(-t * 260) * 0.8 + Math.sin(2 * Math.PI * 2400 * t) * Math.exp(-t * 300) * 0.4,
     thud: (t) => Math.sin(2 * Math.PI * (95 * t - 60 * t * t)) * Math.exp(-t * 9) + rnd() * Math.exp(-t * 40) * 0.25,
     ding: (t) => (Math.sin(2 * Math.PI * 1320 * t) + 0.6 * Math.sin(2 * Math.PI * 1980 * t) + 0.25 * Math.sin(2 * Math.PI * 2640 * t)) * Math.exp(-t * 4.5) * 0.5,
+    step: (t) => Math.sin(2 * Math.PI * (180 * t - 300 * t * t)) * Math.exp(-t * 45) + rnd() * Math.exp(-t * 90) * 0.3,
+    boing: (t) => Math.sin(2 * Math.PI * (260 * t + 900 * t * t)) * Math.exp(-t * 7) * (1 + 0.3 * Math.sin(2 * Math.PI * 28 * t)),
   };
-  const LEN = { pop: 0.14, tick: 0.04, thud: 0.6, ding: 1.1 };
-  const GAIN = { pop: 0.32, tick: 0.16, thud: 0.6, ding: 0.28 };
+  const LEN = { pop: 0.14, tick: 0.04, thud: 0.6, ding: 1.1, step: 0.1, boing: 0.45 };
+  const GAIN = { pop: 0.32, tick: 0.16, thud: 0.6, ding: 0.28, step: 0.25, boing: 0.22 };
   for (const e of events) {
     if (e.type === 'whoosh') {
       // bruit filtré dont la fréquence monte puis descend
@@ -81,10 +109,6 @@ function audio(events, clips) {
     }
   }
   // voix : normalisée, et la musique baisse pendant qu'elle parle
-  if (clips) {
-    let peak = 0; for (const c of clips) for (const v of c.s) peak = Math.max(peak, Math.abs(v));
-    for (const c of clips) { const s0 = Math.floor(c.t * SR); for (let i = 0; i < c.s.length && s0 + i < n; i++) V[s0 + i] += c.s[i] * 0.85 / peak; }
-  }
   let env = 0;
   const att = 1 - Math.exp(-1 / (0.02 * SR)), rel = 1 - Math.exp(-1 / (0.35 * SR));
   for (let i = 0; i < n; i++) {
@@ -106,16 +130,19 @@ function audio(events, clips) {
 }
 
 (async () => {
+  fs.rmSync(frames, { recursive: true, force: true }); fs.mkdirSync(frames);
+  const clips = voice();
+  const V = clips ? voiceTrack(clips) : null;
+  const mouth = V ? mouthFrom(V) : null;
   const browser = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined, args: ['--no-sandbox'] });
   if (peek) {
     const dir = path.join(here, 'peek'); fs.mkdirSync(dir, { recursive: true });
-    const p = await page(browser);
+    const p = await page(browser, mouth);
     for (const t of peek) { await p.evaluate((t) => renderAt(t), t); await p.screenshot({ path: path.join(dir, `t${String(t).replace('.', '_')}.png`) }); }
-    await browser.close(); console.log('captures dans', dir); return;
+    await browser.close(); fs.rmSync(frames, { recursive: true, force: true }); console.log('captures dans', dir); return;
   }
-  fs.rmSync(frames, { recursive: true, force: true }); fs.mkdirSync(frames);
   const total = FPS * DUR, workers = 4;
-  const pages = await Promise.all(Array.from({ length: workers }, () => page(browser)));
+  const pages = await Promise.all(Array.from({ length: workers }, () => page(browser, mouth)));
   const events = await pages[0].evaluate(() => window.EVENTS);
   let next = 0, done = 0;
   await Promise.all(pages.map(async (p) => {
@@ -123,19 +150,18 @@ function audio(events, clips) {
       const i = next++;
       await p.evaluate((t) => renderAt(t), i / FPS);
       await p.screenshot({ path: path.join(frames, `${String(i).padStart(5, '0')}.jpg`), type: 'jpeg', quality: 92 });
-      if (++done % 150 === 0) console.log(`${done}/${total} images`);
+      if (++done % 600 === 0) console.log(`${done}/${total} images`);
     }
   }));
   await browser.close();
   const vid = path.join(frames, 'video.mp4');
   execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-framerate', String(FPS), '-i', path.join(frames, '%05d.jpg'),
     '-c:v', 'libx264', '-preset', 'medium', '-crf', '20', '-pix_fmt', 'yuv420p', vid], { stdio: 'inherit' });
-  const clips = voice();
   const outs = [['episode-dns-sans-voix.mp4', null]];
-  if (clips) outs.unshift(['episode-dns.mp4', clips]);
-  for (const [name, c] of outs) {
+  if (V) outs.unshift(['episode-dns.mp4', V]);
+  for (const [name, v] of outs) {
     const wav = path.join(frames, 'audio.wav');
-    fs.writeFileSync(wav, audio(events, c));
+    fs.writeFileSync(wav, audio(events, v));
     execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-i', vid, '-i', wav, '-c:v', 'copy', '-c:a', 'aac', '-b:a', '192k',
       '-movflags', '+faststart', '-shortest', path.join(here, name)], { stdio: 'inherit' });
     console.log('écrit', name);
