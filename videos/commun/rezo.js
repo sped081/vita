@@ -29,7 +29,7 @@ function rzHand(H, dir, ang, kind, skin) {
 // visage : content, curious, happy, surprised, sly, panic ; talk ouvre la bouche, blink ferme les yeux
 function rzFace(expr, look, talk, blink, skin) {
   const I = RZ.ink, H = RZ.hair, [lx, ly] = look, k = 1 - 0.9 * blink;
-  const brow = (d) => `<path d="${d}" fill="none" stroke="${H}" stroke-width="12" stroke-linecap="round"></path>`;
+  const brow = (d) => `<path d="${d}" transform="translate(0 ${f1(-5 * talk)})" fill="none" stroke="${H}" stroke-width="12" stroke-linecap="round"></path>`;
   const eye = (cx, cy, ry) => `<ellipse cx="${cx}" cy="${cy}" rx="27" ry="${f1(ry * k)}" fill="${RZ.eye}" stroke="${I}" stroke-width="5"></ellipse>`;
   const pup = (cx, cy, r) => blink > 0.6 ? '' : `<circle cx="${f1(cx + lx)}" cy="${f1(cy + ly)}" r="${r}" fill="${I}"></circle><circle cx="${f1(cx + lx + 2.5)}" cy="${f1(cy + ly - 2.5)}" r="2.2" fill="#FFFFFF"></circle>`;
   const open = (o) => `<ellipse cx="213" cy="${f1(252 + 6 * o)}" rx="${f1(30 - 6 * o)}" ry="${f1(8 + 18 * o)}" fill="${RZ.mouth}" stroke="${I}" stroke-width="5"></ellipse>` +
@@ -93,7 +93,7 @@ ${leg(160, o.legL, shoeL)}${leg(228, o.legR, shoeR)}
 <rect x="194" y="262" width="32" height="44" rx="10" fill="${skin}" stroke="${I}" stroke-width="5"></rect>
 <path d="M160 302 Q210 342 260 302 Q250 284 210 284 Q170 284 160 302 Z" fill="${hood}" stroke="${I}" stroke-width="5" stroke-linejoin="round"></path><path d="M164 302 Q210 338 256 302 Q246 288 210 288 Q174 288 164 302 Z" fill="#000" opacity=".2"></path>
 <path d="M194 316 L189 332 M226 316 L231 332" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"></path><circle cx="189" cy="336" r="5" fill="#FFFFFF" stroke="${I}" stroke-width="3"></circle><circle cx="231" cy="336" r="5" fill="#FFFFFF" stroke="${I}" stroke-width="3"></circle>
-<g transform="rotate(${f1(ht)} 210 290)">
+<g transform="translate(${f1(o.headX || 0)} ${f1(o.headY || 0)}) rotate(${f1(ht)} 210 290)">
 <circle cx="138" cy="192" r="19" fill="${skin}" stroke="${I}" stroke-width="5"></circle><path d="M134 184 Q128 194 136 202" fill="none" stroke="${I}" stroke-width="3.5" stroke-linecap="round"></path>
 <circle cx="286" cy="192" r="19" fill="${skin}" stroke="${I}" stroke-width="5"></circle><path d="M290 184 Q296 194 288 202" fill="none" stroke="${I}" stroke-width="3.5" stroke-linecap="round"></path>
 <path d="M150 120 Q150 84 212 82 Q274 84 274 120 L288 216 Q292 274 232 278 L192 278 Q132 274 136 216 Z" fill="${skin}" stroke="${I}" stroke-width="5" stroke-linejoin="round"></path>
@@ -121,17 +121,21 @@ function rezoFrame(t, expr) {
   const P = poseAt(t, RZ_POSES), j = jumpAt(t), talk = talkAt(t), e = RZ_EXPR[expr] || 'content';
   const blink = e === 'happy' || e === 'sly' ? 0 : blinkAt(t);
   const sac = Math.floor(t / 0.8), look = [P.look[0] * 0.8 + 1.2 * Math.sin(sac * 12.9898), P.look[1] * 0.8 + Math.sin(sac * 78.233)];
-  const vy = (pingY(t) - pingY(t - 0.04)) / 0.04;
+  const vy = (heroY(t) - heroY(t - 0.04)) / 0.04;
   const walk = walking(t) ? Math.sin(t * 16) : 0;
   const breathe = 1 + 0.01 * Math.sin(t * 2.4);
   const hand = (n) => (n === 'point' || n === 'side' ? 'point' : 'open');
+  // bras qui balancent en marchant, sauf s'il salue
+  const aL = [...P.L], aR = [...P.R];
+  if (walk) { if (P.names.L !== 'wave') aL[0] += 20 * walk; if (P.names.R !== 'wave') aR[0] -= 20 * walk; }
   const C = window.HERO_COLORS || RZ_COLORS;
   return rezoSVG({
-    ...C, expr: e, talk, look, blink, aL: P.L, aR: P.R, handL: hand(P.names.L), handR: hand(P.names.R),
-    y: pingY(t) / RZ_SCALE, sx: j.sx / Math.sqrt(breathe), sy: j.sy * breathe, tilt: P.tilt,
+    ...C, expr: e, talk, look, blink, aL, aR, handL: hand(P.names.L), handR: hand(P.names.R),
+    y: heroY(t) / RZ_SCALE, sx: j.sx / Math.sqrt(breathe), sy: j.sy * breathe, tilt: P.tilt + 1.2 * Math.sin(t * 1.1) + 3 * walk,
+    headX: look[0] * 0.9, headY: look[1] * 0.5 - 3 * talk,
     legL: -16 * Math.max(0, walk), legR: -16 * Math.max(0, -walk),
     swing: clamp(vy * 0.08, -25, 25) + 7 * Math.sin(t * 3.2), bob: clamp(vy * 0.03, -8, 8),
-    headTilt: 2 * Math.sin(t * 1.7) + 3 * talk * Math.sin(t * 7), air: clamp(-j.y / 150),
+    headTilt: 2 * Math.sin(t * 1.7) + look[0] * 0.5 + 3 * talk * Math.sin(t * 7), air: clamp(-j.y / 150),
     w: 460 * RZ_SCALE, h: 660 * RZ_SCALE, viewBox: '-20 -24 460 660',
     style: `position:absolute;left:${f1(210 - 230 * RZ_SCALE)}px;top:${f1(470 - 642 * RZ_SCALE)}px`,
   });

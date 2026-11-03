@@ -8,15 +8,14 @@
 </head>
 <body>
 <div id="v">
-  <div id="grid"></div>
+  <div id="world">
+  <div id="set"></div>
   <div class="tint" id="tint1" style="background:radial-gradient(70% 45% at 50% 22%,rgba(61,90,254,.30),transparent 70%)"></div>
   <div class="tint" id="tint2" style="background:radial-gradient(70% 45% at 50% 22%,rgba(255,201,60,.20),transparent 70%)"></div>
   <div class="tint" id="tint3" style="background:radial-gradient(70% 45% at 50% 22%,rgba(46,211,166,.24),transparent 70%)"></div>
   <div class="tint" id="tint4" style="background:radial-gradient(70% 45% at 50% 22%,rgba(122,77,255,.28),transparent 70%)"></div>
   <div class="tint" id="tint5" style="background:radial-gradient(70% 45% at 50% 22%,rgba(255,107,61,.26),transparent 70%)"></div>
 
-  <div id="chip"><span id="chipText">La question</span></div>
-  <div id="track"><div id="fill"></div></div>
   <div id="stage" style="position:absolute;inset:0;transform-origin:50% 32%">
 
   <!-- Scène 1 : la question -->
@@ -111,6 +110,11 @@
 
   </div>
   <div class="abs" id="ping" style="left:30px;top:880px;width:420px;height:500px;transform-origin:50% 100%"></div>
+  <div id="fx"></div>
+  </div>
+  <div id="wipe"></div><div id="wipe2"></div>
+  <div id="chip"><span id="chipText">La question</span></div>
+  <div id="track"><div id="fill"></div></div>
   <div id="sub"></div>
 </div>
 
@@ -118,6 +122,8 @@
 <script src="../commun/rezo.js"></script>
 <script>
 const HERO='rezo';
+// gros plans sur le visage : [début, fin, zoom]
+const SHOTS=[[12.6,14.9,1.9],[50.5,52.9,1.9],[56.2,57.9,1.8]];
 // ---------- le personnage dans cet épisode ----------
 // poses : temps, bras gauche, bras droit, regard [x,y], inclinaison du corps
 const POSE=[

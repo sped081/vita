@@ -38,6 +38,7 @@ Copie une page existante et change :
 - les scènes, c'est-à-dire le HTML dans `#stage` et leurs `show(...)` dans `renderAt` ;
 - `CAPTIONS`, `CHAPTERS`, `DURATION`, `OUTPUT` ;
 - `HERO` (`'rezo'` ou `'ping'`) et `POSE`, `JUMPS`, `EXPR`, c'est-à-dire ce que fait le personnage et quand ;
+- `SHOTS`, les gros plans sur le visage : `[début, fin, zoom]` ;
 - `EVENTS`, les bruitages.
 
 Poses des bras : `rest`, `wave`, `point`, `side`, `shrug`, `cheer`, `hip`, `think`, `present`.
@@ -46,7 +47,9 @@ Expressions : `content`, `curious`, `happy`, `error`, `smirk`.
 ## La signature de la série
 
 1. Rézo est un personnage animé : bras articulés, bouche qui parle, yeux qui suivent l'action, sauts, pompon RJ45 qui rebondit.
-2. La barre de chapitres en haut montre où on est dans l'histoire.
+2. La barre de chapitres en haut montre où on est dans l'histoire, et une bande de couleur balaie l'écran à chaque chapitre.
 3. Chaque épisode finit par « Essaie-le » : la vraie commande à taper (`nslookup`, `ping`, `tracert`…).
 4. Un running gag : « C'est toujours le DNS ».
+6. Le décor : l'atelier de Rézo, la nuit, avec vue sur Montréal (le mont Royal et sa croix).
+7. Les gros plans (`SHOTS`) : la caméra zoome sur le visage de Rézo pour les répliques drôles.
 5. Le prochain épisode est annoncé à la fin.

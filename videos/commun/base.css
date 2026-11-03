@@ -1,4 +1,4 @@
-/* Styles communs des vidéos de Ping (cadre 1080 × 1920). */
+/* Styles communs des vidéos (cadre 1080 × 1920). */
   *{box-sizing:border-box}
   html,body{margin:0;background:#000}
   #v{position:relative;width:1080px;height:1920px;overflow:hidden;background:#0F1424;font-family:'Nunito Sans',sans-serif;color:#F4F6FB}
@@ -26,3 +26,8 @@
   .pc .base{width:190px;height:30px;margin:0 auto;background:#2B3EA8;border:7px solid #0B0F1E;border-radius:14px}
   #sub{position:absolute;left:70px;right:70px;top:1420px;text-align:center;font:900 70px/1.15 'Nunito Sans';color:#FFFFFF;text-shadow:0 6px 0 #0B0F1E,0 0 26px rgba(0,0,0,.7)}
   #sub .on{color:#2ED3A6}
+  #world{position:absolute;inset:0;transform-origin:0 0}
+  #set,#fx{position:absolute;inset:0;pointer-events:none}
+  #wipe,#wipe2{position:absolute;top:-240px;left:0;width:760px;height:2400px;opacity:0;z-index:4}
+  #wipe2{width:120px;background:#0B0F1E}
+  #chip,#track,#sub{z-index:6}
