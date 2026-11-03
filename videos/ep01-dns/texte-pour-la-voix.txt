@@ -1,0 +1,45 @@
+Tu tapes google point com…
+
+mais ton ordi, lui, comprend rien aux noms.
+
+Sur Internet, chaque machine a un numéro :
+
+son adresse IP.
+
+Retenir le numéro de chaque site ?
+
+Impossible.
+
+Alors ton ordi demande à un serveur DNS,
+
+l'annuaire d'Internet :
+
+C'est quoi le numéro de google point com ?
+
+Le DNS cherche…
+
+et il répond !
+
+Ton ordi a maintenant l'adresse exacte.
+
+Avec ce numéro,
+
+ton ordi appelle enfin le bon serveur.
+
+Et tout ça…
+
+en quelques millisecondes.
+
+La page s'affiche. Magie ? Non : DNS.
+
+Donc quand Internet marche pas…
+
+mais que tout est branché…
+
+c'est souvent le DNS.
+
+Essaie-le : tape NS lookup google point com.
+
+Le DNS te donne l'adresse !
+
+Abonne-toi pour la suite !

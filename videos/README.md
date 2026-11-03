@@ -30,7 +30,15 @@ node commun/textes.js intro/intro.html                 # refait script.md et le 
 
 ## Ajouter la voix
 
-Mets une réplique par fichier dans le dossier `voix/` de la vidéo : `01.mp3`, `02.mp3`… dans l'ordre de `script.md` (ElevenLabs, CapCut ou ta propre voix), puis relance le rendu. Chaque réplique est posée à son temps, accélérée un peu si elle déborde, et la bouche de Diego suit le volume de la voix. Le rendu écrit alors aussi la version avec voix (`intro-diego.mp4`, `episode-dns.mp4`).
+Le plus simple, c'est **un seul fichier par vidéo** :
+
+1. Ouvre `texte-pour-la-voix.txt` dans le dossier de la vidéo : une réplique par paragraphe.
+2. Colle tout le texte d'un coup dans ElevenLabs (ou lis-le toi-même), en laissant une petite pause entre les répliques.
+3. Mets le fichier obtenu dans le dossier `voix/` de la vidéo, sous le nom `complet.mp3`, puis relance le rendu.
+
+Le rendu découpe l'enregistrement aux pauses (une réplique par morceau, dans l'ordre), pose chaque réplique à son temps, l'accélère un peu si elle déborde (au plus 20 %, sinon la suivante attend), et fait suivre à la bouche de Diego et aux sous-titres le rythme de la voix. Il écrit alors aussi la version avec voix (`intro-diego.mp4`, `episode-dns.mp4`).
+
+On peut aussi fournir une réplique par fichier : `voix/01.mp3`, `voix/02.mp3`… dans l'ordre de `script.md`.
 
 ## Faire un nouvel épisode
 

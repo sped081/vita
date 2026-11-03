@@ -2,12 +2,13 @@
 // Usage : node commun/render.js ep01-dns/episode.html               -> <OUTPUT>-sans-voix.mp4 (+ <OUTPUT>.mp4 avec la voix)
 //         node commun/render.js ep01-dns/episode.html --peek 3,12   -> captures PNG de contrôle dans peek/
 // La page fournit window.renderAt(t), DURATION, FPS, EVENTS et OUTPUT (nom des fichiers).
-// La voix : une réplique par fichier dans voix/ à côté de la page (01.wav, 02.mp3…), dans l'ordre de voix.json.
+// La voix, dans voix/ à côté de la page : soit un seul fichier complet.mp3 (toutes les répliques dans l'ordre,
+// séparées par une pause, découpé ici aux pauses), soit une réplique par fichier (01.wav, 02.mp3…), dans l'ordre de voix.json.
 // Chaque réplique est posée à son temps ; la bouche du personnage suit le volume de la voix.
 // Demande playwright-core (CHROMIUM_PATH si besoin) et ffmpeg.
 const fs = require('fs');
 const path = require('path');
-const { execFileSync } = require('child_process');
+const { execFileSync, spawnSync } = require('child_process');
 const { chromium } = require(process.env.PW_MODULE || 'playwright-core');
 
 const args = process.argv.slice(2);
@@ -17,6 +18,7 @@ const here = path.dirname(html);
 const W = 1080, H = 1920, SR = 48000;
 let FPS = 60, DUR = 60;
 const frames = path.join(here, '.frames');
+let VOICE_TIMES = null;
 const peek = args[1] === '--peek' ? args[2].split(',').map(Number) : null;
 
 async function page(browser, mouth) {
@@ -24,28 +26,57 @@ async function page(browser, mouth) {
   await p.goto('file://' + html);
   await p.evaluate(() => document.fonts.ready);
   if (mouth) await p.evaluate((m) => { window.MOUTH = m; }, mouth);
+  if (VOICE_TIMES) await p.evaluate((v) => { window.VOICE_TIMES = v; }, VOICE_TIMES);
   return p;
 }
 
 // ---------- voix : une réplique par fichier dans voix/ ----------
+// un enregistrement complet → une réplique par fichier, coupé aux N − 1 plus longues pauses
+function splitFull(src, n) {
+  const log = spawnSync('ffmpeg', ['-hide_banner', '-i', src, '-af', 'silencedetect=noise=-40dB:d=0.18', '-f', 'null', '-'], { encoding: 'utf8' }).stderr;
+  const total = Number(execFileSync('ffprobe', ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', src]));
+  const gaps = []; let st = null;
+  for (const l of log.split('\n')) {
+    const a = l.match(/silence_start: ([\d.]+)/), b = l.match(/silence_end: ([\d.]+)/);
+    if (a) st = Number(a[1]);
+    if (b && st !== null) { const e = Number(b[1]); if (st > 0.05 && e < total - 0.05) gaps.push([st, e]); st = null; }
+  }
+  if (gaps.length < n - 1) throw new Error(`voix : ${gaps.length + 1} morceaux trouvés pour ${n} répliques ; mets une pause plus longue entre les répliques`);
+  const cuts = gaps.sort((x, y) => (y[1] - y[0]) - (x[1] - x[0])).slice(0, n - 1).sort((x, y) => x[0] - y[0]);
+  const bounds = [[0, cuts[0][0]], ...cuts.slice(0, -1).map((c, i) => [c[1], cuts[i + 1][0]]), [cuts[n - 2][1], total]];
+  return bounds.map(([a, b], i) => {
+    const out = path.join(frames, `voix-${String(i + 1).padStart(2, '0')}.wav`);
+    execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-i', src, '-ss', Math.max(0, a - 0.04).toFixed(3), '-to', (b + 0.06).toFixed(3), out]);
+    return out;
+  });
+}
 function voice() {
   const dir = path.join(here, 'voix');
   if (!fs.existsSync(dir)) return null;
-  const files = fs.readdirSync(dir).filter((f) => /^\d+\.(wav|mp3|m4a|ogg|flac)$/i.test(f)).sort((x, y) => parseInt(x) - parseInt(y));
-  if (!files.length) return null;
   const lines = JSON.parse(fs.readFileSync(path.join(here, 'voix.json'), 'utf8'));
-  return files.map((f) => {
-    const i = parseInt(f) - 1, t = lines[i][0];
-    const src = path.join(dir, f);
+  const full = fs.readdirSync(dir).find((f) => /^complet\.(wav|mp3|m4a|ogg|flac)$/i.test(f));
+  const files = full ? splitFull(path.join(dir, full), lines.length)
+    : fs.readdirSync(dir).filter((f) => /^\d+\.(wav|mp3|m4a|ogg|flac)$/i.test(f)).sort((x, y) => parseInt(x) - parseInt(y)).map((f) => path.join(dir, f));
+  if (!files.length) return null;
+  let free = 0;
+  return files.map((src, k) => {
+    const i = full ? k : parseInt(path.basename(src)) - 1;
     // si la réplique déborde sur la suivante, on l'accélère un peu (au plus 25 %)
-    const d = Number(execFileSync('ffprobe', ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', src]));
-    const room = (i + 1 < lines.length ? lines[i + 1][0] : DUR - 0.2) - t - 0.08;
-    const fit = Math.min(1.25, Math.max(1, d / room));
-    if (fit > 1) console.log(`réplique ${i + 1} accélérée ×${fit.toFixed(2)}`);
-    const raw = execFileSync('ffmpeg', ['-loglevel', 'error', '-i', src, '-af',
-      `silenceremove=start_periods=1:start_threshold=-45dB,atempo=${fit.toFixed(4)},highpass=f=80`,
+    const raw0 = execFileSync('ffmpeg', ['-loglevel', 'error', '-i', src, '-af',
+      'silenceremove=start_periods=1:start_threshold=-45dB,areverse,silenceremove=start_periods=1:start_threshold=-45dB,areverse',
       '-f', 'f32le', '-ac', '1', '-ar', String(SR), '-'], { maxBuffer: 64 << 20 });
-    return { t, s: new Float32Array(raw.buffer, raw.byteOffset, raw.length / 4) };
+    const d = raw0.length / 4 / SR;
+    const start = Math.max(lines[i][0], free);
+    const room = (i + 1 < lines.length ? lines[i + 1][0] : DUR - 0.2) - start - 0.08;
+    // si la réplique déborde sur la suivante, on l'accélère un peu (au plus 20 %), sinon la suivante attend
+    const fit = Math.min(1.2, Math.max(1, d / Math.max(0.3, room)));
+    if (fit > 1.01) console.log(`réplique ${i + 1} accélérée ×${fit.toFixed(2)}`);
+    if (d / fit > room + 0.05) console.log(`réplique ${i + 1} déborde de ${(d / fit - room).toFixed(2)} s : la suivante est décalée`);
+    const raw = fit > 1.01 ? execFileSync('ffmpeg', ['-loglevel', 'error', '-f', 'f32le', '-ac', '1', '-ar', String(SR), '-i', '-', '-af', `atempo=${fit.toFixed(4)},highpass=f=80`,
+      '-f', 'f32le', '-ac', '1', '-ar', String(SR), '-'], { input: raw0, maxBuffer: 64 << 20 }) : raw0;
+    const s = new Float32Array(raw.buffer.slice(raw.byteOffset, raw.byteOffset + raw.length));
+    free = start + s.length / SR + 0.05;
+    return { t: start, s, i };
   });
 }
 function voiceTrack(clips) {
@@ -142,6 +173,7 @@ function audio(events, V) {
   DUR = info.dur; FPS = info.fps;
   const clips = voice();
   const V = clips ? voiceTrack(clips) : null;
+  if (clips) VOICE_TIMES = Object.fromEntries(clips.map((c) => [c.i, [c.t, c.t + c.s.length / SR]]));
   const mouth = V ? mouthFrom(V) : null;
   if (peek) {
     const dir = path.join(here, 'peek'); fs.mkdirSync(dir, { recursive: true });

@@ -1,0 +1,23 @@
+Salut ! Moi, c'est Diego.
+
+Moi, je m'occupe du réseau :
+
+tout ce qui relie ton ordi à Internet.
+
+Mon outil préféré ? La commande ping.
+
+Ça veut dire : « T'es là ? »
+
+Et le serveur répond : « Oui ! »
+
+Ici, je t'explique l'informatique
+
+en une minute.
+
+DNS, IP, Wi-Fi, pare-feu, VPN…
+
+sans jargon, avec des dessins.
+
+Premier épisode : le DNS.
+
+Abonne-toi, on se voit là-bas !

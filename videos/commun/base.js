@@ -149,7 +149,11 @@ function exprAt(t){let e='content';for(const [a,x] of EXPR)if(t>=a)e=x;return e;
 
 function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;');}
 function subtitle(t){
-  for(const [a,b,txt] of CAPTIONS){
+  for(let ci=0;ci<CAPTIONS.length;ci++){
+    let [a,b,txt]=CAPTIONS[ci];
+    // avec une vraie voix, les mots apparaissent au rythme de la réplique
+    const vt=window.VOICE_TIMES&&window.VOICE_TIMES[ci];
+    if(vt){a=vt[0];b=Math.max(vt[1],a+0.4);}
     if(t<a||t>b+0.12)continue;
     // espaces insécables du français : jamais de « ? » ou « ! » seul en début de ligne
     const words=txt.replace(/ ([?!:;»…])/g,'\u00a0$1').replace(/« /g,'«\u00a0').split(' ');
