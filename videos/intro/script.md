@@ -1,4 +1,4 @@
-# Présentation de la chaîne
+# Rézo — Présentation de la chaîne
 
 Avec Ping. Durée : 31 s, format vertical 1080 × 1920.
 
@@ -8,20 +8,20 @@ Pour la voix : une réplique par fichier, dans l'ordre (01, 02…), à mettre da
 
 | N° | Temps | Réplique |
 |---|---|---|
-| 01 | 0:00.3 | Salut ! Moi, c'est Ping. |
+| 01 | 0:00.3 | Salut ! Moi, c'est Rézo. |
 
 ## 0:03.0 — Le réseau
 
 | N° | Temps | Réplique |
 |---|---|---|
-| 02 | 0:03.0 | Je vis dans le réseau, |
-| 03 | 0:05.6 | entre ton ordi et Internet. |
+| 02 | 0:03.0 | Moi, je m'occupe du réseau : |
+| 03 | 0:05.6 | tout ce qui relie ton ordi à Internet. |
 
-## 0:08.6 — Mon nom
+## 0:08.6 — Mon outil
 
 | N° | Temps | Réplique |
 |---|---|---|
-| 04 | 0:08.8 | Mon nom ? C'est une vraie commande. |
+| 04 | 0:08.8 | Mon outil préféré ? La commande ping. |
 | 05 | 0:11.4 | Ça veut dire : « T'es là ? » |
 | 06 | 0:13.2 | Et le serveur répond : « Oui ! » |
 

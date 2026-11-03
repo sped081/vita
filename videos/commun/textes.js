@@ -1,5 +1,5 @@
 // Écrit le script à lire (script.md) et les sous-titres (<OUTPUT>.srt) d'une page de vidéo de Ping.
-// Usage : node commun/textes.js ping-intro/intro.html
+// Usage : node commun/textes.js intro/intro.html
 const fs = require('fs');
 const path = require('path');
 const html = path.resolve(process.argv[2]);

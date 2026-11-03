@@ -1,9 +1,9 @@
-// Rend une page de vidéo de Ping en MP4 vertical 1080 × 1920 avec bruitages, musique et, si elle existe, la voix.
-// Usage : node commun/render.js ping-dns/episode.html               -> <OUTPUT>-sans-voix.mp4 (+ <OUTPUT>.mp4 avec la voix)
-//         node commun/render.js ping-dns/episode.html --peek 3,12   -> captures PNG de contrôle dans peek/
+// Rend une page de vidéo de la série en MP4 vertical 1080 × 1920 avec bruitages, musique et, si elle existe, la voix.
+// Usage : node commun/render.js ep01-dns/episode.html               -> <OUTPUT>-sans-voix.mp4 (+ <OUTPUT>.mp4 avec la voix)
+//         node commun/render.js ep01-dns/episode.html --peek 3,12   -> captures PNG de contrôle dans peek/
 // La page fournit window.renderAt(t), DURATION, FPS, EVENTS et OUTPUT (nom des fichiers).
 // La voix : une réplique par fichier dans voix/ à côté de la page (01.wav, 02.mp3…), dans l'ordre de voix.json.
-// Chaque réplique est posée à son temps ; la bouche de Ping suit le volume de la voix.
+// Chaque réplique est posée à son temps ; la bouche du personnage suit le volume de la voix.
 // Demande playwright-core (CHROMIUM_PATH si besoin) et ffmpeg.
 const fs = require('fs');
 const path = require('path');

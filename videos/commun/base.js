@@ -1,5 +1,6 @@
-// Base commune des vidéos de Ping : outils d'animation, squelette de Ping, sous-titres, barre de chapitres, caméra.
-// Chaque page définit avant d'appeler renderAt : POSE, JUMPS, EXPR, walking(t), CHAPTERS, CAPTIONS, DURATION.
+// Base commune des vidéos : outils d'animation, squelettes des personnages, sous-titres, barre de chapitres, caméra.
+// Chaque page définit avant d'appeler renderAt : POSE, JUMPS, EXPR, walking(t), CHAPTERS, CAPTIONS, DURATION,
+// et HERO = 'rezo' (le technicien, dans rezo.js) ou 'ping' (le petit routeur).
 const INK='#151A2E',BODY='#3D5AFE',LEG='#2B3EA8',MINT='#2ED3A6',YEL='#FFC93C',ORA='#FF6B3D',SCR='#0E1630',EYE='#EAFBFF',WHITE='#FFFFFF';
 const $=id=>document.getElementById(id);
 const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
@@ -26,8 +27,8 @@ const D2R=Math.PI/180;
 const inOut=x=>{x=clamp(x);return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;};
 // bras : angle de l'épaule (0 = vers le bas, positif = vers l'extérieur) et pli du coude
 const ARM={rest:[16,-6],wave:[140,30],point:[128,-6],side:[96,-4],shrug:[62,92],cheer:[166,6],hip:[46,-118],think:[26,-152],present:[72,40]};
-function armAngles(name,t,ph){
-  let [a1,a2]=ARM[name];
+function armAngles(name,t,ph,T=ARM){
+  let [a1,a2]=T[name];
   if(name==='wave'){a2+=30*Math.sin(t*11+ph);a1+=6*Math.sin(t*11+ph+1);}
   else if(name==='cheer'){a1+=8*Math.sin(t*9+ph);a2+=8*Math.sin(t*9+ph+.6);}
   else if(name==='point'||name==='side'){a1+=3*Math.sin(t*2.2+ph);a2+=2*Math.sin(t*3.1+ph);}
@@ -35,11 +36,12 @@ function armAngles(name,t,ph){
   else{a1+=3*Math.sin(t*2.4+ph);a2+=4*Math.sin(t*2.4+ph+.8);}
   return [a1,a2];
 }
-function poseAt(t){
+function poseAt(t,T=ARM){
   let i=0;for(let k=0;k<POSE.length;k++)if(t>=POSE[k][0])i=k;
   const cur=POSE[i],prev=POSE[Math.max(0,i-1)],p=i===0?1:inOut((t-cur[0])/0.32);
-  const mix=(side)=>{const a=armAngles(prev[side],t,side*2),b=armAngles(cur[side],t,side*2);return [lerp(a[0],b[0],p),lerp(a[1],b[1],p)];};
-  return {L:mix(1),R:mix(2),look:[lerp(prev[3][0],cur[3][0],p),lerp(prev[3][1],cur[3][1],p)],tilt:lerp(prev[4],cur[4],p)};
+  const mix=(side)=>{const a=armAngles(prev[side],t,side*2,T),b=armAngles(cur[side],t,side*2,T);return [lerp(a[0],b[0],p),lerp(a[1],b[1],p)];};
+  const nm=p<0.5?prev:cur;
+  return {names:{L:nm[1],R:nm[2]},L:mix(1),R:mix(2),look:[lerp(prev[3][0],cur[3][0],p),lerp(prev[3][1],cur[3][1],p)],tilt:lerp(prev[4],cur[4],p)};
 }
 function armPath(S,dir,[a1,a2]){
   const l1=54,l2=50;
@@ -167,12 +169,12 @@ function chrome(t){
   marks.forEach((c,i)=>{const m=$('mk'+i);m.classList.toggle('on',t>=c);m.style.transform=`rotate(45deg) scale(${t>=c&&t-c<0.4?back((t-c)/0.4):1})`;});
   return {ci,since};
 }
-// ---------- Ping à l'écran ----------
-function placePing(t,x,y,s){
+// ---------- le personnage à l'écran ----------
+function placeHero(t,x,y,s){
   const ex=exprAt(t);
   const sinceE=t-([...EXPR].reverse().find(e=>t>=e[0])||[0])[0];
   if(ex==='error'&&sinceE<0.6)x+=9*Math.sin(t*70)*(1-sinceE/0.6);
-  $('ping').innerHTML=pingSVG(t,ex);
+  $('ping').innerHTML=(typeof HERO!=='undefined'&&HERO==='rezo'?rezoFrame:pingSVG)(t,ex);
   $('ping').style.transform=`translate(${x.toFixed(1)}px,${y.toFixed(1)}px) scale(${s.toFixed(4)})`;
 }
 // ---------- caméra : poussée à chaque chapitre, dérive lente, secousses ----------

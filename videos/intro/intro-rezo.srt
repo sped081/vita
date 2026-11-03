@@ -1,18 +1,18 @@
 1
 00:00:00,300 --> 00:00:02,600
-Salut ! Moi, c'est Ping.
+Salut ! Moi, c'est Rézo.
 
 2
 00:00:03,000 --> 00:00:05,500
-Je vis dans le réseau,
+Moi, je m'occupe du réseau :
 
 3
 00:00:05,600 --> 00:00:08,400
-entre ton ordi et Internet.
+tout ce qui relie ton ordi à Internet.
 
 4
 00:00:08,800 --> 00:00:11,200
-Mon nom ? C'est une vraie commande.
+Mon outil préféré ? La commande ping.
 
 5
 00:00:11,400 --> 00:00:13,000

@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<title>Ping — C'est quoi réellement le DNS ?</title>
+<title>Rézo — C'est quoi réellement le DNS ?</title>
 <link rel="stylesheet" href="../commun/fonts/fonts.css">
 <link rel="stylesheet" href="../commun/base.css">
 </head>
@@ -28,12 +28,12 @@
   <div class="abs" id="q1" style="left:360px;top:700px;font:700 190px Fredoka;color:#FF6B3D;-webkit-text-stroke:8px #0B0F1E;paint-order:stroke fill">?</div>
 
   <!-- Scène 2 : le problème -->
-  <div class="abs card" id="c0" style="left:300px;top:330px"><span id="ic0"></span>142.250.65.78</div>
-  <div class="abs card" id="c1" style="left:330px;top:440px"><span id="ic1"></span>151.101.1.140</div>
-  <div class="abs card" id="c2" style="left:290px;top:550px"><span id="ic2"></span>104.16.132.229</div>
-  <div class="abs card" id="c3" style="left:340px;top:660px"><span id="ic3"></span>13.107.42.14</div>
-  <div class="abs card" id="c4" style="left:300px;top:770px"><span id="ic4"></span>31.13.71.36</div>
-  <div class="abs card" id="c5" style="left:330px;top:880px"><span id="ic5"></span>185.199.108.153</div>
+  <div class="abs card" id="c0" style="left:360px;top:330px"><span id="ic0"></span>142.250.65.78</div>
+  <div class="abs card" id="c1" style="left:390px;top:440px"><span id="ic1"></span>151.101.1.140</div>
+  <div class="abs card" id="c2" style="left:350px;top:550px"><span id="ic2"></span>104.16.132.229</div>
+  <div class="abs card" id="c3" style="left:400px;top:660px"><span id="ic3"></span>13.107.42.14</div>
+  <div class="abs card" id="c4" style="left:360px;top:770px"><span id="ic4"></span>31.13.71.36</div>
+  <div class="abs card" id="c5" style="left:390px;top:880px"><span id="ic5"></span>185.199.108.153</div>
   <div class="abs pill" id="tagIP" style="left:70px;top:290px;background:#FFC93C">Adresse IP</div>
   <div class="abs stamp" id="st1" style="left:200px;top:560px">Impossible</div>
 
@@ -53,7 +53,7 @@
   </div>
   <div class="abs pill" id="tagBook" style="left:470px;top:800px;background:#2ED3A6">L'annuaire d'Internet</div>
   <div class="abs" id="arr3" style="left:410px;top:470px;width:140px;height:0;border-top:9px dashed #FFC93C;transform-origin:left center"></div>
-  <div class="abs bubble" id="bub3" style="left:60px;top:660px;width:540px">C'est quoi le numéro de google.com ?</div>
+  <div class="abs bubble" id="bub3" style="left:60px;top:622px;width:600px">C'est quoi le numéro de google.com ?</div>
   <div class="abs" id="mag" style="left:0;top:0;width:170px;height:170px">
     <svg width="170" height="170" viewBox="0 0 170 170" aria-hidden="true"><circle cx="70" cy="70" r="50" fill="rgba(234,251,255,.35)" stroke="#0B0F1E" stroke-width="12"></circle><circle cx="70" cy="70" r="50" fill="none" stroke="#FFC93C" stroke-width="6"></circle><path d="M108 108 L150 150" stroke="#0B0F1E" stroke-width="22" stroke-linecap="round"></path><path d="M108 108 L150 150" stroke="#FF6B3D" stroke-width="12" stroke-linecap="round"></path></svg>
   </div>
@@ -114,9 +114,11 @@
   <div id="sub"></div>
 </div>
 
-<script src="../commun/ping-base.js"></script>
+<script src="../commun/base.js"></script>
+<script src="../commun/rezo.js"></script>
 <script>
-// ---------- Ping dans cet épisode ----------
+const HERO='rezo';
+// ---------- le personnage dans cet épisode ----------
 // poses : temps, bras gauche, bras droit, regard [x,y], inclinaison du corps
 const POSE=[
  [0,'wave','rest',[0,3],0],[1.6,'rest','point',[6,-6],3],[3.0,'rest','think',[-3,-7],-5],
@@ -262,7 +264,7 @@ function renderAt(t){
   show('cta',t,62.9,65.5);
 
   // Ping et caméra
-  placePing(t,pingX(t),0,t>62.6?lerp(1,1.1,inOut((t-62.6)/0.8)):1);
+  placeHero(t,pingX(t),0,1);
   camera(t,ci,since,[11.8,55.3]);
 
   $('sub').innerHTML=subtitle(t);

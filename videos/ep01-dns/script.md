@@ -1,4 +1,4 @@
-# C'est quoi réellement le DNS ?
+# Rézo — C'est quoi réellement le DNS ?
 
 Avec Ping. Durée : 65 s, format vertical 1080 × 1920.
 
