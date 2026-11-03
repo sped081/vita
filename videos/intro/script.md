@@ -1,6 +1,6 @@
-# Rézo — Présentation de la chaîne
+# Présentation de la chaîne
 
-Avec Ping. Durée : 31 s, format vertical 1080 × 1920.
+Avec Rézo. Durée : 31 s, format vertical 1080 × 1920.
 
 Pour la voix : une réplique par fichier, dans l'ordre (01, 02…), à mettre dans `voix/`. Les sous-titres sont déjà dans la vidéo.
 

@@ -1,6 +1,6 @@
-# Rézo — C'est quoi réellement le DNS ?
+# C'est quoi réellement le DNS ?
 
-Avec Ping. Durée : 65 s, format vertical 1080 × 1920.
+Avec Rézo. Durée : 65 s, format vertical 1080 × 1920.
 
 Pour la voix : une réplique par fichier, dans l'ordre (01, 02…), à mettre dans `voix/`. Les sous-titres sont déjà dans la vidéo.
 
