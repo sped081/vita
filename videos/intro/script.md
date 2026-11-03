@@ -1,6 +1,6 @@
 # Présentation de la chaîne
 
-Avec Rézo. Durée : 31 s, format vertical 1080 × 1920.
+Avec Diego. Durée : 31 s, format vertical 1080 × 1920.
 
 Pour la voix : une réplique par fichier, dans l'ordre (01, 02…), à mettre dans `voix/`. Les sous-titres sont déjà dans la vidéo.
 
@@ -8,7 +8,7 @@ Pour la voix : une réplique par fichier, dans l'ordre (01, 02…), à mettre da
 
 | N° | Temps | Réplique |
 |---|---|---|
-| 01 | 0:00.3 | Salut ! Moi, c'est Rézo. |
+| 01 | 0:00.3 | Salut ! Moi, c'est Diego. |
 
 ## 0:03.0 — Le réseau
 

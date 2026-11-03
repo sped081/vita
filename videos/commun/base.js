@@ -1,6 +1,6 @@
 // Base commune des vidéos : outils d'animation, squelettes des personnages, sous-titres, barre de chapitres, caméra.
 // Chaque page définit avant d'appeler renderAt : POSE, JUMPS, EXPR, walking(t), CHAPTERS, CAPTIONS, DURATION,
-// et HERO = 'rezo' (le technicien, dans rezo.js) ou 'ping' (le petit routeur).
+// et HERO = 'diego' (l'animateur, dans diego.js), 'rezo' (le technicien, dans rezo.js) ou 'ping' (le petit routeur).
 const INK='#151A2E',BODY='#3D5AFE',LEG='#2B3EA8',MINT='#2ED3A6',YEL='#FFC93C',ORA='#FF6B3D',SCR='#0E1630',EYE='#EAFBFF',WHITE='#FFFFFF';
 const $=id=>document.getElementById(id);
 const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
@@ -62,8 +62,8 @@ function jumpAt(t){
   }
   return {y:0,sx:1,sy:1};
 }
-// hauteur du personnage : Rézo saute un peu moins haut que Ping
-function heroY(t){return pingY(t)-(typeof HERO!=='undefined'&&HERO==='rezo'?0.3*jumpAt(t).y:0);}
+// hauteur du personnage : les humains sautent un peu moins haut que Ping
+function heroY(t){return pingY(t)-(typeof HERO!=='undefined'&&HERO!=='ping'?0.3*jumpAt(t).y:0);}
 function pingY(t){const j=jumpAt(t);const w=walking(t)?-5*Math.abs(Math.sin(t*16)):0;return Math.sin(t*2.4)*5+j.y+w;}
 // bouche : enveloppe de la voix si elle existe, sinon syllabes simulées pendant les sous-titres
 function talkAt(t){
@@ -183,11 +183,12 @@ function placeHero(t,x,y,s){
   const ex=exprAt(t);
   const sinceE=t-([...EXPR].reverse().find(e=>t>=e[0])||[0])[0];
   if(ex==='error'&&sinceE<0.6)x+=9*Math.sin(t*70)*(1-sinceE/0.6);
-  $('ping').innerHTML=(typeof HERO!=='undefined'&&HERO==='rezo'?rezoFrame:pingSVG)(t,ex);
+  const draw={diego:typeof diegoFrame!=='undefined'?diegoFrame:null,rezo:typeof rezoFrame!=='undefined'?rezoFrame:null}[typeof HERO!=='undefined'?HERO:'']||pingSVG;
+  $('ping').innerHTML=draw(t,ex);
   $('ping').style.transform=`translate(${x.toFixed(1)}px,${y.toFixed(1)}px) scale(${s.toFixed(4)})`;
   // boîte de 420 × 500 à (30, 880), mise à l'échelle depuis le bas au centre
   const P=(lx,ly)=>[30+x+210+(lx-210)*s,880+y+500+(ly-500)*s];
-  const rz=typeof HERO!=='undefined'&&HERO==='rezo';
+  const rz=typeof HERO!=='undefined'&&(HERO==='rezo'||HERO==='diego');
   window.HERO_POS={feet:P(210,470),face:P(rz?212:210,(rz?85:240)+heroY(t)),s,x,y};
 }
 // ---------- caméra : poussée à chaque chapitre, dérive lente, secousses ----------

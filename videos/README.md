@@ -1,12 +1,12 @@
-# Vidéos de Rézo
+# Vidéos de Diego
 
-Série verticale (TikTok, Reels, Shorts) *Une minute pour comprendre l'informatique*, avec Rézo, le technicien réseau de Montréal.
+Série verticale (Instagram Reels, TikTok, Shorts) *Une minute pour comprendre l'informatique*, avec Diego, l'animateur.
 
 | Dossier | Vidéo |
 |---|---|
-| `intro/` | Présentation de la chaîne (31 s) : qui est Rézo, son outil préféré (`ping`), ce que la série explique. |
+| `intro/` | Présentation de la chaîne (31 s) : qui est Diego, son outil préféré (`ping`), ce que la série explique. |
 | `ep01-dns/` | Épisode 1 : C'est quoi réellement le DNS ? (65 s). |
-| `commun/` | Ce que toutes les vidéos partagent : les personnages animés (`rezo.js`, et Ping dans `base.js`), les polices, les styles, le rendu. |
+| `commun/` | Ce que toutes les vidéos partagent : les personnages animés (`diego.js`, `rezo.js`, et Ping dans `base.js`), les polices, les styles, le rendu. |
 
 Chaque dossier de vidéo contient :
 
@@ -30,14 +30,14 @@ node commun/textes.js intro/intro.html                 # refait script.md et le 
 
 ## Ajouter la voix
 
-Mets une réplique par fichier dans le dossier `voix/` de la vidéo : `01.mp3`, `02.mp3`… dans l'ordre de `script.md` (ElevenLabs, CapCut ou ta propre voix), puis relance le rendu. Chaque réplique est posée à son temps, accélérée un peu si elle déborde, et la bouche de Rézo suit le volume de la voix. Le rendu écrit alors aussi la version avec voix (`intro-rezo.mp4`, `episode-dns.mp4`).
+Mets une réplique par fichier dans le dossier `voix/` de la vidéo : `01.mp3`, `02.mp3`… dans l'ordre de `script.md` (ElevenLabs, CapCut ou ta propre voix), puis relance le rendu. Chaque réplique est posée à son temps, accélérée un peu si elle déborde, et la bouche de Diego suit le volume de la voix. Le rendu écrit alors aussi la version avec voix (`intro-diego.mp4`, `episode-dns.mp4`).
 
 ## Faire un nouvel épisode
 
 Copie une page existante et change :
 - les scènes, c'est-à-dire le HTML dans `#stage` et leurs `show(...)` dans `renderAt` ;
 - `CAPTIONS`, `CHAPTERS`, `DURATION`, `OUTPUT` ;
-- `HERO` (`'rezo'` ou `'ping'`) et `POSE`, `JUMPS`, `EXPR`, c'est-à-dire ce que fait le personnage et quand ;
+- `HERO` (`'diego'`, `'rezo'` ou `'ping'`) et `POSE`, `JUMPS`, `EXPR`, c'est-à-dire ce que fait le personnage et quand ;
 - `SHOTS`, les gros plans sur le visage : `[début, fin, zoom]` ;
 - `EVENTS`, les bruitages.
 
@@ -46,10 +46,10 @@ Expressions : `content`, `curious`, `happy`, `error`, `smirk`.
 
 ## La signature de la série
 
-1. Rézo est un personnage animé : bras articulés, bouche qui parle, yeux qui suivent l'action, sauts, pompon RJ45 qui rebondit.
+1. Diego est un personnage animé : bras articulés, bouche qui parle, yeux qui suivent l'action, clignements, sauts, cinq expressions.
 2. La barre de chapitres en haut montre où on est dans l'histoire, et une bande de couleur balaie l'écran à chaque chapitre.
 3. Chaque épisode finit par « Essaie-le » : la vraie commande à taper (`nslookup`, `ping`, `tracert`…).
 4. Un running gag : « C'est toujours le DNS ».
-6. Le décor : l'atelier de Rézo, la nuit, avec vue sur Montréal (le mont Royal et sa croix).
-7. Les gros plans (`SHOTS`) : la caméra zoome sur le visage de Rézo pour les répliques drôles.
+6. Le décor : l'atelier, la nuit, avec vue sur Montréal (le mont Royal et sa croix).
+7. Les gros plans (`SHOTS`) : la caméra zoome sur le visage de Diego pour les répliques drôles.
 5. Le prochain épisode est annoncé à la fin.

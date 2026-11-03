@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<title>Rézo — Présentation de la chaîne</title>
+<title>Diego — Présentation de la chaîne</title>
 <link rel="stylesheet" href="../commun/fonts/fonts.css">
 <link rel="stylesheet" href="../commun/base.css">
 <style>
@@ -28,10 +28,11 @@
   <div id="stage" style="position:absolute;inset:0;transform-origin:50% 32%">
 
   <!-- 1. Salut ! -->
-  <div class="abs tile" id="l0" style="left:144px;top:290px;background:#3D5AFE;color:#FFFFFF">R</div>
-  <div class="abs tile" id="l1" style="left:348px;top:290px;background:#2ED3A6;color:#151A2E">É</div>
-  <div class="abs tile" id="l2" style="left:552px;top:290px;background:#FFC93C;color:#151A2E">Z</div>
-  <div class="abs tile" id="l3" style="left:756px;top:290px;background:#FF6B3D;color:#151A2E">O</div>
+  <div class="abs tile" id="l0" style="left:100px;top:290px;width:160px;height:184px;font-size:128px;background:#3D5AFE;color:#FFFFFF">D</div>
+  <div class="abs tile" id="l1" style="left:280px;top:290px;width:160px;height:184px;font-size:128px;background:#2ED3A6;color:#151A2E">I</div>
+  <div class="abs tile" id="l2" style="left:460px;top:290px;width:160px;height:184px;font-size:128px;background:#FFC93C;color:#151A2E">E</div>
+  <div class="abs tile" id="l3" style="left:640px;top:290px;width:160px;height:184px;font-size:128px;background:#FF6B3D;color:#151A2E">G</div>
+  <div class="abs tile" id="l4" style="left:820px;top:290px;width:160px;height:184px;font-size:128px;background:#C2A8FF;color:#151A2E">O</div>
   <div class="abs center" id="hello" style="top:520px"><span class="pill" style="background:#F7F9FC">Ton guide du réseau</span></div>
 
   <!-- 2. Le réseau -->
@@ -107,8 +108,9 @@
 
 <script src="../commun/base.js"></script>
 <script src="../commun/rezo.js"></script>
+<script src="../commun/diego.js"></script>
 <script>
-const HERO='rezo';
+const HERO='diego';
 // gros plans sur le visage : [début, fin, zoom]
 const SHOTS=[[11.6,12.9,1.75]];
 // ---------- le personnage dans cette vidéo ----------
@@ -133,7 +135,7 @@ function walking(t){for(let i=0;i<KEYS.length-1;i++){const a=KEYS[i],b=KEYS[i+1]
 const CHAPTERS=[[0,'Salut !'],[3,'Le réseau'],[8.6,'Mon outil'],[15.4,'La série'],[20.8,'Au menu'],[26.2,'Abonne-toi']];
 const DURATION=31,FPS=60;
 const CAPTIONS=[
- [0.3,2.6,"Salut ! Moi, c'est Rézo."],
+ [0.3,2.6,"Salut ! Moi, c'est Diego."],
  [3.0,5.5,"Moi, je m'occupe du réseau :"],
  [5.6,8.4,"tout ce qui relie ton ordi à Internet."],
  [8.8,11.2,"Mon outil préféré ? La commande ping."],
@@ -151,13 +153,13 @@ const CAPTIONS=[
 const CHIP_T=[...Array(10).keys()].map(i=>20.9+i*0.22);
 const EVENTS=[];
 [3,8.6,15.4,20.8,26.2].forEach(t=>EVENTS.push({t,type:'whoosh'}));
-[0.5,0.64,0.78,0.92,1.3,3.2,3.6,4.0,8.8,11.4,13.2,16.0,26.4,28.8,...CHIP_T].forEach(t=>EVENTS.push({t,type:'pop'}));
+[0.5,0.62,0.74,0.86,0.98,1.3,3.2,3.6,4.0,8.8,11.4,13.2,16.0,26.4,28.8,...CHIP_T].forEach(t=>EVENTS.push({t,type:'pop'}));
 for(let k=0;k<15;k++)EVENTS.push({t:9.6+k*0.08,type:'tick'});
 [13.2,13.7,14.2,18.0].forEach(t=>EVENTS.push({t,type:'ding'}));
 EVENTS.push({t:23.8,type:'thud'});
 JUMPS.forEach(t=>EVENTS.push({t,type:'boing'}));
 for(const [a,b] of [[0.1,1.0],[2.8,3.6],[26.0,26.8]])for(let t=a+0.1;t<b;t+=0.196)EVENTS.push({t,type:'step'});
-window.EVENTS=EVENTS;window.CAPTIONS=CAPTIONS;window.DURATION=DURATION;window.FPS=FPS;window.OUTPUT='intro-rezo';
+window.EVENTS=EVENTS;window.CAPTIONS=CAPTIONS;window.DURATION=DURATION;window.FPS=FPS;window.OUTPUT='intro-diego';
 
 // ---------- une image ----------
 const TINTS=[[0,3,'tint1'],[3,8.6,'tint3'],[8.6,15.4,'tint4'],[15.4,20.8,'tint2'],[20.8,26.2,'tint5'],[26.2,31.5,'tint1']];
@@ -167,7 +169,7 @@ function renderAt(t){
   const {ci,since}=chrome(t);
 
   // 1. le nom en grosses lettres
-  for(let i=0;i<4;i++)show('l'+i,t,0.5+i*0.14,2.8,{y:Math.sin(t*4+i*0.8)*9,r:Math.sin(t*2.6+i)*4});
+  for(let i=0;i<5;i++)show('l'+i,t,0.5+i*0.12,2.8,{y:Math.sin(t*4+i*0.8)*9,r:Math.sin(t*2.6+i)*4});
   show('hello',t,1.3,2.8,{r:-2});
 
   // 2. le réseau
